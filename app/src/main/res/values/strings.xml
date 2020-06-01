@@ -56,6 +56,7 @@
 
     //Image Label
     <string name="label_logo">Logo Liquid Galaxy</string>
+    <string name="tittle_TobBar">Topbar</string>
 
     <string-array name="actions">
         <item>Actions</item>

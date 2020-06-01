@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="horizontal"
+    tools:context=".top_bar.TobBar">
+
+    <Button
+        android:id="@+id/butt_create_menu"
+        android:layout_width="255dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:text="@string/menu_create"
+        android:textColor="@color/textColor"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/primary_text_font_size"
+        android:textAllCaps="false"
+        android:onClick="buttCreateMenu"
+        tools:ignore="ButtonStyle" />
+    <Button
+        android:id="@+id/butt_my_storyboards_menu"
+        android:layout_width="260dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:text="@string/menu_my_storyboards"
+        android:textColor="@color/textColor"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/primary_text_font_size"
+        android:textAllCaps="false"
+        android:onClick="buttMyStoryboardsMenu"
+        tools:ignore="ButtonStyle" />
+    <Button
+        android:id="@+id/butt_import_google_drive"
+        android:layout_width="255dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:text="@string/menu_import_file"
+        android:textColor="@color/textColor"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/primary_text_font_size"
+        android:textAllCaps="false"
+        android:onClick="buttImportGoogleDrive"
+        tools:ignore="ButtonStyle" />
+    <Button
+        android:id="@+id/butt_connect_menu"
+        android:layout_width="250dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:text="@string/menu_connect"
+        android:textColor="@color/textColor"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/primary_text_font_size"
+        android:textAllCaps="false"
+        android:onClick="buttConnectMenu"
+        tools:ignore="ButtonStyle" />
+    <Button
+        android:id="@+id/butt_account"
+        android:layout_width="260dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:text="@string/menu_account"
+        android:textColor="@color/textColor"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/primary_text_font_size"
+        android:textAllCaps="false"
+        android:onClick="buttAccount"
+        tools:ignore="ButtonStyle" />
+
+</LinearLayout>
