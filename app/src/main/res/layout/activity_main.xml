@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/top_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/activity_top_bar"/>
+
+    <TextView
+        android:layout_width="665dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
+        android:gravity="top"
+        android:text="@string/insert_the_URL"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/hint_text_font_size" />
+
+
+    <EditText
+        android:id="@+id/insert_the_url"
+        android:layout_width="556dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/rectangle_insert_url"
+        android:fontFamily="@font/roboto_thin"
+        android:inputType="textUri"
+        android:textAlignment="center"
+        android:textSize="@dimen/hint_text_font_size"
+        android:maxLength="50"
+        android:autofillHints="@string/example_to_connect"
+        android:hint="@string/example_to_connect"
+        android:textColorHint="@color/hintColor"
+        android:textColor="@color/textColor"
+        tools:ignore="RtlCompat" />
+
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="320dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/button_text_font_size"
+        android:text="@string/button_connect"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

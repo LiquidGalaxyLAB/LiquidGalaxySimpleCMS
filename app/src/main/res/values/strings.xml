@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">SimpleCMS</string>
+    <string name="insert_the_URL">Insert the URL to connect to Liquid Galaxy</string>
+    <string name="connection_failed">Connection Failed</string>
+    <string name="example_to_connect">http://192.38.48.77:5555</string>
+    <string name="example_name">Insert your file name</string>
+    <string name="save_locally">Save Locally</string>
+    <string name="save_google_drive">Save on Google Drive</string>
+    <string name="Sign_in_alert">Please Sign in to get full access</string>
+    <string name="image_available_on_screen">Image Available on screen</string>
+
+    <string name="button_connect">Connect</string>
+    <string name="button_try_again">Try Again</string>
+    <string name="button_change">Change</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_open">Open</string>
+    <string name="button_back">Back</string>
+    <string name="button_previous">Previous</string>
+    <string name="button_save">Save</string>
+    <string name="button_next">Next</string>
+    <string name="button_log_in">Log in</string>
+    <string name="button_log_out">Log Out</string>
+    <string name="button_Connect_Google">Continue with Google</string>
+    <string name="button_import_drive">Connect to Google Drive</string>
+
+    <string name="file_name">File Name</string>
+    <string name="file_name_example">Sample File 1</string>
+    <string name="file_description">Description</string>
+    <string name="file_description_slot">Description needed</string>
+    <string name="file_latitude">Latitude</string>
+    <string name="file_latitude_results">-0,000000</string>
+    <string name="file_longitude">Longitude</string>
+    <string name="file_longitude_results">0,000000</string>
+
+    <string name="status_of_connection_on">Image Available on screen</string>
+    <string name="status_of_connection_off">Image Unavailable on screen</string>
+
+    <string name="menu_import_file">Import</string>
+    <string name="menu_my_storyboards">My Storyboards</string>
+    <string name="menu_create">Create</string>
+    <string name="menu_connect">Connect</string>
+    <string name="menu_account">Account</string>
+
+    <string name="account_username">Username</string>
+    <string name="account_password">Password</string>
+    <string name="account_hint_username">Your username</string>
+    <string name="account_hint_password">Your password</string>
+    <string name="account_liquid_galaxy">liquid galaxy</string>
+
+    //Labels of Activities
+    <string name="tittle_create">Create</string>
+    <string name="tittle_my_storyboard">My Storyboard</string>
+    <string name="tittle_import_google_drive">Import</string>
+    <string name="tittle_connect">Connect</string>
+    <string name="tittle_account">Account</string>
+
+    //Image Label
+    <string name="label_logo">Logo Liquid Galaxy</string>
+
+    <string-array name="actions">
+        <item>Actions</item>
+        <item>Add Graphics</item>
+        <item>Add Shapes</item>
+        <item>Add Movements</item>
+        <item>Add Description</item>
+        <item>Set Timer</item>
+        <item>Add location</item>
+    </string-array>
+    <dimen name="primary_text_font_size">20sp</dimen>
+    <dimen name="button_text_font_size">23sp</dimen>
+    <dimen name="button_main_text_font_size">25sp</dimen>
+    <dimen name="information_text_font_size">35sp</dimen>
+    <dimen name="results_text_font_size">28sp</dimen>
+    <dimen name="hint_text_font_size">30sp</dimen>
+    <dimen name="simple_cms">35sp</dimen>
+</resources>
