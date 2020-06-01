@@ -1,29 +1,34 @@
 package com.example.simple_cms;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
-import com.example.simple_cms.account.LogIn;
-import com.example.simple_cms.create.CreateActionsMain;
-import com.example.simple_cms.import_google_drive.ImportGoogleDrive;
-import com.example.simple_cms.my_storyboards.MyStoryBoard;
-import com.example.simple_cms.top_bar.TobBar;
+import com.example.simple_cms.top_bar.TobBarActivity;
 
-public class MainActivity extends TobBar {
+/**
+ * This activity is in charge of connecting the application with liquid Galaxy
+ */
+public class MainActivity extends TobBarActivity {
 
     //private final static String TAG_DEBUG = "MainActivity";
+    private View topBar;
+    private Button buttConnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        changeButtonClickableBackgroundColor();
+    }
+
+    /**
+     * Change the background color and the option clickable to false of the button_connect
+     */
+    private void changeButtonClickableBackgroundColor() {
+        topBar = findViewById(R.id.top_bar);
+        buttConnect = topBar.findViewById(R.id.butt_connect_menu);
+        changeButtonClickableBackgroundColor(getApplicationContext(), buttConnect);
     }
 }

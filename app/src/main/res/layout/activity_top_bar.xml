@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="horizontal"
-    tools:context=".top_bar.TobBar">
+    tools:context=".top_bar.TobBarActivity">
 
     <Button
         android:id="@+id/butt_create_menu"
