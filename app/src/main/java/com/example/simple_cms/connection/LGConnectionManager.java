@@ -22,17 +22,20 @@ public class LGConnectionManager implements Runnable {
     private int port;
     private Session session;
 
-    private LGConnectionManager(String hostname, int port) {
+    /**
+     * Enforce private constructor and add the default values
+     */
+    private LGConnectionManager() {
         user = "lg";
         password = "1234";
-        this.hostname = hostname;
-        this.port = port;
+        this.hostname = "192.168.0.17";
+        this.port = 22;
         session = null;
     }
 
-    public static LGConnectionManager getInstance(String hostname, int port) {
+    public static LGConnectionManager getInstance() {
         if (instance == null) {
-            instance = new LGConnectionManager(hostname, port);
+            instance = new LGConnectionManager();
             new Thread(instance).start();
         }
         return instance;
@@ -48,6 +51,10 @@ public class LGConnectionManager implements Runnable {
         }
     }
 
+    /**
+     * Create a session if the old session is nul
+     * @return Session
+     */
     private Session getSession() {
         Session oldSession = this.session;
         if (oldSession == null || !oldSession.isConnected()) {
