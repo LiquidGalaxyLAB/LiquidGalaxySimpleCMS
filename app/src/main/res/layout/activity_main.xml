@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/connect_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -9,9 +10,9 @@
 
     <include
         android:id="@+id/top_bar"
+        layout="@layout/activity_top_bar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        layout="@layout/activity_top_bar"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="665dp"
@@ -19,32 +20,32 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="20dp"
         android:layout_marginTop="150dp"
-        android:gravity="top"
         android:text="@string/insert_the_URL"
-        android:textColor="@color/textColor"
+        android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size" />
 
 
     <EditText
-        android:id="@+id/insert_the_url"
+        android:id="@+id/uri"
         android:layout_width="556dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
+        android:autofillHints="@string/example_to_connect"
         android:background="@drawable/rectangle_insert_url"
         android:fontFamily="@font/roboto_thin"
-        android:inputType="textUri"
-        android:textAlignment="center"
-        android:textSize="@dimen/hint_text_font_size"
-        android:maxLength="50"
-        android:autofillHints="@string/example_to_connect"
         android:hint="@string/example_to_connect"
+        android:inputType="textUri"
+        android:maxLength="50"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
         android:textColorHint="@color/hintColor"
-        android:textColor="@color/textColor"
+        android:textSize="@dimen/hint_text_font_size"
+        android:text=""
         tools:ignore="RtlCompat" />
 
     <Button
-        android:id="@+id/connect"
+        android:id="@+id/connect_liquid_galaxy"
         android:layout_width="320dp"
         android:layout_height="86dp"
         android:layout_gravity="center_horizontal"
@@ -52,9 +53,21 @@
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/button_text_font_size"
         android:text="@string/button_connect"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+    <TextView
+        android:id="@+id/connecting"
+        android:layout_width="665dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="-90dp"
+        android:textColor="@color/textColorClick"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:textSize="@dimen/simple_cms" />
 
 </LinearLayout>

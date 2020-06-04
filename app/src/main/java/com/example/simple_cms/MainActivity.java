@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
 import com.example.simple_cms.dialog.CustomDialog;
 import com.example.simple_cms.top_bar.TobBarActivity;
@@ -84,13 +86,22 @@ public class MainActivity extends TobBarActivity {
             editor.apply();
             return;
         }
+        //earth
+        //mars
+        String command = "echo 'planet=mars' > /tmp/query.txt";
+        LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, (String response) -> {
+            if(response == null) {
+                Toast.makeText(getApplicationContext(), "FAIL PRUEBA", Toast.LENGTH_LONG).show();
+            }
+            Toast.makeText(getApplicationContext(), "YEI PRUEBA", Toast.LENGTH_LONG).show();
+        });
 
-        createConnection(hostPort);
+        createConnection(hostPort, lgCommand);
         editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
         editor.apply();
 
         changeButtonText();
-        sendMessageError();
+        sendMessageError(lgCommand);
     }
 
     /**
@@ -106,11 +117,12 @@ public class MainActivity extends TobBarActivity {
     /**
      * Create a Dialog to inform the user that the connection to the liquid galaxy has fail
      */
-    private void sendMessageError() {
+    private void sendMessageError(LGCommand lgCommand) {
         handler.postDelayed(() -> {
             connecting.setVisibility(View.INVISIBLE);
             buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
             buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+            LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);
             String message = getResources().getString(R.string.activity_connection_error);
             CustomDialog.showDialog(MainActivity.this, message);
         }, 2000);
@@ -121,13 +133,14 @@ public class MainActivity extends TobBarActivity {
      *
      * @param hostPort The string with the host and the port
      */
-    private void createConnection(String hostPort) {
+    private void createConnection(String hostPort, LGCommand lgCommand) {
         String[] hostNPort = hostPort.split(":");
         String hostname = hostNPort[0];
         int port = Integer.parseInt(hostNPort[1]);
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.setData(hostname, port);
         lgConnectionManager.startConnection();
+        LGConnectionManager.getInstance().addCommandToLG(lgCommand);
     }
 
     /**
