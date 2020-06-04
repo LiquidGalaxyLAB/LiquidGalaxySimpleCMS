@@ -1,53 +1,159 @@
 package com.example.simple_cms;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.dialog.CustomDialog;
 import com.example.simple_cms.top_bar.TobBarActivity;
+import com.example.simple_cms.utility.ConstantPrefs;
+
+import java.util.regex.Pattern;
 
 /**
  * This activity is in charge of connecting the application with liquid Galaxy
  */
 public class MainActivity extends TobBarActivity {
 
-    private final static String TAG_DEBUG = "MainActivity";
-    private View topBar;
+    private static final String TAG_DEBUG = "MainActivity";
+    private static final Pattern HOST_PORT = Pattern.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$");
+
     private Button buttConnectMenu, buttConnectLiquidGalaxy;
+    private TextView connecting;
     private EditText URI;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        View topBar = findViewById(R.id.top_bar);
+        buttConnectMenu = topBar.findViewById(R.id.butt_connect_menu);
+        connecting = findViewById(R.id.connecting);
+
         changeButtonClickableBackgroundColor();
 
         buttConnectLiquidGalaxy = findViewById(R.id.connect_liquid_galaxy);
         URI = findViewById(R.id.uri);
 
-        buttConnectLiquidGalaxy.setOnClickListener((view) -> {
-            String hostname ="192.168.0.17";
-            int port = 22;
-            String hostNPort =  URI.getText().toString();
-            if(!hostNPort.equals("")){
-                String[] hostport = URI.getText().toString().split(":");
-                hostname = hostport[0];
-                port = Integer.parseInt(hostport[1]);
-                LGConnectionManager.getInstance(hostname, port);
-            } else LGConnectionManager.getInstance(hostname, port);
-        });
+        loadSharedData();
+
+        buttConnectLiquidGalaxy.setOnClickListener((view) -> connectionTest());
+    }
+
+    @Override
+    protected void onResume() {
+        Log.w(TAG_DEBUG, "RESUME");
+        loadSharedData();
+        super.onResume();
+}
+
+    /**
+     * Load the data that is in shared preferences
+     */
+    private void loadSharedData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+
+        String text = sharedPreferences.getString(ConstantPrefs.URI_TEXT.name(), "");
+        boolean isTryToReconnect = sharedPreferences.getBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), false);
+
+        if(!text.equals("")) URI.setText(text);
+        if(isTryToReconnect) buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+    }
+
+    /**
+     * Create a connection to the liquid galaxy and Test if it is working
+     */
+    private void connectionTest() {
+        String hostPort = URI.getText().toString();
+
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putString(ConstantPrefs.URI_TEXT.name(), hostPort);
+
+        if (!isValidHostNPort(hostPort)) {
+            String message = getResources().getString(R.string.activity_connection_host_port_error);
+            CustomDialog.showDialog(MainActivity.this, message);
+            editor.apply();
+            return;
+        }
+
+        createConnection(hostPort);
+        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
+        editor.apply();
+
+        changeButtonText();
+        sendMessageError();
+    }
+
+    /**
+     * Change the Button for a TextView with the text "Connecting ..."
+     */
+    private void changeButtonText() {
+        buttConnectLiquidGalaxy.setVisibility(View.INVISIBLE);
+        connecting.setVisibility(View.VISIBLE);
+        connecting.setText(getResources().getString(R.string.connecting));
+    }
+
+
+    /**
+     * Create a Dialog to inform the user that the connection to the liquid galaxy has fail
+     */
+    private void sendMessageError() {
+        handler.postDelayed(() -> {
+            connecting.setVisibility(View.INVISIBLE);
+            buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
+            buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+            String message = getResources().getString(R.string.activity_connection_error);
+            CustomDialog.showDialog(MainActivity.this, message);
+        }, 2000);
+    }
+
+    /**
+     * Create the connection between the application and the liquid galaxy
+     *
+     * @param hostPort The string with the host and the port
+     */
+    private void createConnection(String hostPort) {
+        String[] hostNPort = hostPort.split(":");
+        String hostname = hostNPort[0];
+        int port = Integer.parseInt(hostNPort[1]);
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.setData(hostname, port);
+        lgConnectionManager.startConnection();
+    }
+
+    /**
+     * Validate if the string is valid
+     *
+     * @param hostPort The string with the host and the port
+     * @return true if is a valid string with the host and the port
+     */
+    private boolean isValidHostNPort(String hostPort) {
+        return HOST_PORT.matcher(hostPort).matches();
     }
 
     /**
      * Change the background color and the option clickable to false of the button_connect
      */
     private void changeButtonClickableBackgroundColor() {
-        topBar = findViewById(R.id.top_bar);
-        buttConnectMenu = topBar.findViewById(R.id.butt_connect_menu);
         changeButtonClickableBackgroundColor(getApplicationContext(), buttConnectMenu);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.w(TAG_DEBUG, "DESTROY");
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putString(ConstantPrefs.URI_TEXT.name(), "");
+        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), false);
+        editor.apply();
+        super.onDestroy();
     }
 }
