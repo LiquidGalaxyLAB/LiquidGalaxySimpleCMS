@@ -1,15 +1,19 @@
 package com.example.simple_cms.create.utility.poi;
 
+import android.util.Log;
+
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
 
 public class POIController {
 
+    //private static final String TAG_DEBUG = "POIController";
+
     private static POIController instance = null;
     private POI currentPOI;
 
     public static final POI EARTH_POI = new POI()
-            .setPoiLocation(new POILocation("earth", 10.52668d, 40.085941d)).setPoiCamera(new POICamera(0.0d, 0.0d, 0.0d, 10000000.0d, "relativeToSeaFloor", 3));
+            .setPoiLocation(new POILocation("earth", 10.52668d, 40.085941d)).setPoiCamera(new POICamera(0.0d, 0.0d, 0.0d, 5000000.0d, "relativeToSeaFloor", 3));
 
     public synchronized static POIController getInstance() {
         if (instance == null)
@@ -36,14 +40,17 @@ public class POIController {
     /**
      * Create the lGCommand to send to the liquid galaxy
      * @param listener The LGCommand listener
-     * @return LGCommand
+     * @return LGCommandTAG_DEBUG
      */
     private LGCommand sendPoiToLG(LGCommand.Listener listener) {
         LGCommand lgCommand = new LGCommand(buildCommand(currentPOI), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if(listener != null)
+            if(listener != null) {
                 listener.onResponse(result);
+            }
         });
-        LGConnectionManager.getInstance().addCommandToLG(lgCommand);
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
         return lgCommand;
     }
 

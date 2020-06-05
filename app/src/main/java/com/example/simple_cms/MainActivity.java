@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.create.utility.poi.POIController;
 import com.example.simple_cms.dialog.CustomDialog;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -100,7 +101,7 @@ public class MainActivity extends TobBarActivity {
         editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
         editor.apply();
 
-        //earth
+        /* //earth
         //mars
         String command = "echo 'planet=earth' > /tmp/query.txt";
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, (String response) -> {
@@ -109,10 +110,13 @@ public class MainActivity extends TobBarActivity {
             }
             Toast.makeText(getApplicationContext(), "YEI PRUEBA", Toast.LENGTH_LONG).show();
         });
-
         createConnection(usernameText, passwordText, hostPort, lgCommand);
+        sendMessageError(lgCommand);*/
+
         changeButtonText();
-        sendMessageError(lgCommand);
+        sendMessageError();
+        POIController.getInstance().moveToPOI(POIController.EARTH_POI, null);
+        buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
     }
 
     /**
@@ -128,12 +132,12 @@ public class MainActivity extends TobBarActivity {
     /**
      * Create a Dialog to inform the user that the connection to the liquid galaxy has fail
      */
-    private void sendMessageError(LGCommand lgCommand) {
+    private void sendMessageError() {
         handler.postDelayed(() -> {
             connecting.setVisibility(View.INVISIBLE);
             buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
             buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
-            LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);
+            /*LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);*/
             String message = getResources().getString(R.string.activity_connection_error);
             CustomDialog.showDialog(MainActivity.this, message);
         }, 2000);
