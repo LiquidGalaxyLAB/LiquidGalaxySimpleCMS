@@ -61,7 +61,9 @@ public class LGConnectionManager implements Runnable {
         return instance;
     }
 
-    public void setData(String hostname, int port) {
+    public void setData(String user, String password, String hostname, int port) {
+        this.user = user;
+        this.password = password;
         this.hostname = hostname;
         this.port = port;
 
@@ -70,35 +72,12 @@ public class LGConnectionManager implements Runnable {
         addCommandToLG(new LGCommand("echo 'connection';", LGCommand.CRITICAL_MESSAGE, null));
     }
 
-    public void startConnection(){
+    public void startConnection() {
         new Thread(instance).start();
         statusUpdater = new StatusUpdater(instance);
         new Thread(statusUpdater).start();
     }
 
-    public void removeActivity(ILGConnection activity) {
-        if(this.activity == activity)
-            this.activity = null;
-    }
-
-    public void setActivity(ILGConnection activity) {
-        this.activity = activity;
-    }
-
-    public void addCommandToLG(LGCommand lgCommand) {
-        queue.offer(lgCommand);
-    }
-
-    public boolean removeCommandFromLG(LGCommand lgCommand) {
-        if(lgCommand == lgCommandToReSend) {
-            lgCommandToReSend = null;
-        }
-        return queue.remove(lgCommand);
-    }
-
-    public boolean containsCommandFromLG(LGCommand lgCommand) {
-        return lgCommand == lgCommandToReSend || queue.contains(lgCommand);
-    }
 
     @Override
     public void run() {
@@ -136,6 +115,12 @@ public class LGConnectionManager implements Runnable {
         }
     }
 
+    /**
+     * The method that send a lgcommand
+     *
+     * @param lgCommand LgCommand that is going to be send
+     * @return boolean of if the lgCommand is send or no
+     */
     private boolean sendLGCommand(LGCommand lgCommand) {
         lgCommandToReSend = lgCommand;
         Log.d("ConnectionManager", "sending a lgcommand: " + lgCommand.getCommand());
@@ -145,56 +130,43 @@ public class LGConnectionManager implements Runnable {
             return false;
         }
 
-        ChannelExec channelSsh;
-        StringBuilder outputBuffer = lgCommand.getPriorityType() == LGCommand.CRITICAL_MESSAGE ? new StringBuilder() : null;
         try {
-            channelSsh = (ChannelExec) session.openChannel("exec");
-        } catch (Exception e) {
-            Log.d("ConnectionManager", "couldn't open channel exec: " + lgCommand.getCommand());
-            e.printStackTrace();
-            return false;
-        }
-
-        InputStream commandOutput;
-        try {
-            commandOutput = channelSsh.getInputStream();
+            ChannelExec channelSsh = (ChannelExec) session.openChannel("exec");
+            StringBuilder outputBuffer = lgCommand.getPriorityType() == LGCommand.CRITICAL_MESSAGE ? new StringBuilder() : null;
+            InputStream commandOutput = channelSsh.getInputStream();
             channelSsh.setCommand(lgCommand.getCommand());
-
-            try {
-                channelSsh.connect();
-            } catch (Exception e) {
-                Log.d("ConnectionManager", "connect exception: " + e.getMessage());
-                return false;
-            }
-
-            if(lgCommand.getPriorityType() == LGCommand.CRITICAL_MESSAGE) {
+            channelSsh.connect();
+            if (lgCommand.getPriorityType() == LGCommand.CRITICAL_MESSAGE) {
                 int readByte = commandOutput.read();
 
                 while (readByte != 0xffffffff) {
-                    outputBuffer.append((char) readByte);
+                    Objects.requireNonNull(outputBuffer).append((char) readByte);
                     readByte = commandOutput.read();
                 }
             }
-        } catch(IOException ioX) {
-            Log.d("ConnectionManager", "couldn't get InputStream or read from it: " + ioX.getMessage());
+            channelSsh.disconnect();
+
+            String response = "";
+
+            if (lgCommand.getPriorityType() == LGCommand.CRITICAL_MESSAGE) {
+                response = Objects.requireNonNull(outputBuffer).toString();
+                Log.w(TAG_DEBUG, "response: " + response);
+            }
+
+            lgCommand.doAction(response);
+            return true;
+        } catch (JSchException jSchException) {
+            Log.w(TAG_DEBUG, Objects.requireNonNull(jSchException.getMessage()));
+            return false;
+        } catch(IOException iOException){
+            Log.w(TAG_DEBUG, "couldn't get InputStream or read from it: " + iOException.getMessage());
             return false;
         }
-
-        channelSsh.disconnect();
-
-        String response = "";
-
-        if(lgCommand.getPriorityType() == LGCommand.CRITICAL_MESSAGE) {
-            response = outputBuffer.toString();
-            Log.d("ConnectionManager", "response: " + response);
-        }
-
-        lgCommand.doAction(response);
-        return true;
     }
 
     /**
      * Create a session if the old session is nul
+     *
      * @return Session
      */
     private Session getSession() {
@@ -236,6 +208,30 @@ public class LGConnectionManager implements Runnable {
                 activityCopy.setStatus(LGConnectionManager.QUEUE_BUSY);
             }
         }
+    }
+
+    public void removeActivity(ILGConnection activity) {
+        if (this.activity == activity)
+            this.activity = null;
+    }
+
+    public void setActivity(ILGConnection activity) {
+        this.activity = activity;
+    }
+
+    public void addCommandToLG(LGCommand lgCommand) {
+        queue.offer(lgCommand);
+    }
+
+    public boolean removeCommandFromLG(LGCommand lgCommand) {
+        if (lgCommand == lgCommandToReSend) {
+            lgCommandToReSend = null;
+        }
+        return queue.remove(lgCommand);
+    }
+
+    public boolean containsCommandFromLG(LGCommand lgCommand) {
+        return lgCommand == lgCommandToReSend || queue.contains(lgCommand);
     }
 
     public String getUser() {

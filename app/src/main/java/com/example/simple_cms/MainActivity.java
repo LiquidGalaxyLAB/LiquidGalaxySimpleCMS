@@ -28,7 +28,7 @@ public class MainActivity extends TobBarActivity {
 
     private Button buttConnectMenu, buttConnectLiquidGalaxy;
     private TextView connecting;
-    private EditText URI;
+    private EditText URI, username, password;
     private Handler handler = new Handler();
 
     @Override
@@ -45,6 +45,8 @@ public class MainActivity extends TobBarActivity {
 
         buttConnectLiquidGalaxy = findViewById(R.id.connect_liquid_galaxy);
         URI = findViewById(R.id.uri);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
 
         loadSharedData();
 
@@ -65,9 +67,13 @@ public class MainActivity extends TobBarActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
 
         String text = sharedPreferences.getString(ConstantPrefs.URI_TEXT.name(), "");
+        String usernameText = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "");
+        String passwordText = sharedPreferences.getString(ConstantPrefs.USER_PASSWORD.name(), "");
         boolean isTryToReconnect = sharedPreferences.getBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), false);
 
         if(!text.equals("")) URI.setText(text);
+        if(!usernameText.equals("")) username.setText(usernameText);
+        if(!passwordText.equals("")) password.setText(passwordText);
         if(isTryToReconnect) buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
     }
 
@@ -76,9 +82,13 @@ public class MainActivity extends TobBarActivity {
      */
     private void connectionTest() {
         String hostPort = URI.getText().toString();
+        String usernameText = username.getText().toString();
+        String passwordText = password.getText().toString();
 
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putString(ConstantPrefs.URI_TEXT.name(), hostPort);
+        editor.putString(ConstantPrefs.USER_NAME.name(), usernameText);
+        editor.putString(ConstantPrefs.USER_PASSWORD.name(), passwordText);
 
         if (!isValidHostNPort(hostPort)) {
             String message = getResources().getString(R.string.activity_connection_host_port_error);
@@ -86,9 +96,13 @@ public class MainActivity extends TobBarActivity {
             editor.apply();
             return;
         }
+
+        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
+        editor.apply();
+
         //earth
         //mars
-        String command = "echo 'planet=mars' > /tmp/query.txt";
+        String command = "echo 'planet=earth' > /tmp/query.txt";
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, (String response) -> {
             if(response == null) {
                 Toast.makeText(getApplicationContext(), "FAIL PRUEBA", Toast.LENGTH_LONG).show();
@@ -96,10 +110,7 @@ public class MainActivity extends TobBarActivity {
             Toast.makeText(getApplicationContext(), "YEI PRUEBA", Toast.LENGTH_LONG).show();
         });
 
-        createConnection(hostPort, lgCommand);
-        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
-        editor.apply();
-
+        createConnection(usernameText, passwordText, hostPort, lgCommand);
         changeButtonText();
         sendMessageError(lgCommand);
     }
@@ -133,12 +144,12 @@ public class MainActivity extends TobBarActivity {
      *
      * @param hostPort The string with the host and the port
      */
-    private void createConnection(String hostPort, LGCommand lgCommand) {
+    private void createConnection(String username, String password, String hostPort, LGCommand lgCommand) {
         String[] hostNPort = hostPort.split(":");
         String hostname = hostNPort[0];
         int port = Integer.parseInt(hostNPort[1]);
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.setData(hostname, port);
+        lgConnectionManager.setData(username, password, hostname, port);
         lgConnectionManager.startConnection();
         LGConnectionManager.getInstance().addCommandToLG(lgCommand);
     }
@@ -166,6 +177,8 @@ public class MainActivity extends TobBarActivity {
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putString(ConstantPrefs.URI_TEXT.name(), "");
         editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), false);
+        editor.putString(ConstantPrefs.USER_NAME.name(), "");
+        editor.putString(ConstantPrefs.USER_PASSWORD.name(), "");
         editor.apply();
         super.onDestroy();
     }

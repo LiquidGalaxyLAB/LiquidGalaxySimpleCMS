@@ -23,7 +23,7 @@ import com.example.simple_cms.my_storyboards.MyStoryBoard;
  */
 public class TobBarActivity extends AppCompatActivity {
 
-    //private final static String TAG_DEBUG = "TobBarActivity";
+    //private static final String TAG_DEBUG = "TobBarActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +84,7 @@ public class TobBarActivity extends AppCompatActivity {
      */
     public void changeButtonClickableBackgroundColor(Context context, Button button){
         button.setBackgroundColor(ContextCompat.getColor(context, R.color.background));
+        button.setTextColor(ContextCompat.getColor(context, R.color.textColorClick));
         button.setClickable(false);
     }
 }
