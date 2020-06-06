@@ -34,9 +34,4 @@ public class CreateActionsMainActivity extends TobBarActivity {
         changeButtonClickableBackgroundColor(getApplicationContext(), buttCreate);
     }
 
-    public void onClickCancel(View view) {
-    }
-
-    public void onClickSave(View view) {
-    }
 }

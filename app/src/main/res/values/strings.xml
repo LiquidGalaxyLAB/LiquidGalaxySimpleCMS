@@ -19,6 +19,11 @@
     <string name="button_previous">Previous</string>
     <string name="button_save">Save</string>
     <string name="button_next">Next</string>
+    <string name="button_location">Location</string>
+    <string name="button_movements">Movements</string>
+    <string name="button_graphics">Graphics</string>
+    <string name="button_shapes">Shapes</string>
+    <string name="button_description">Description</string>
     <string name="button_log_in">Log in</string>
     <string name="button_log_out">Log Out</string>
     <string name="button_Connect_Google">Continue with Google</string>

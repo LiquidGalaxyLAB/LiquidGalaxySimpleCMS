@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".create.CreateActionsMainActivity">
+
+
+    <TextView
+        android:id="@+id/image_available"
+        android:layout_width="635dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="576dp"
+        android:layout_marginTop="132dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_horizontal|top"
+        android:text="@string/image_available_on_screen"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/simple_cms" />
+
+    <TextView
+        android:id="@+id/connection_status"
+        android:layout_width="27dp"
+        android:layout_height="26dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="1133dp"
+        android:layout_marginTop="142dp"
+        android:background="@drawable/ic_status_connection_red"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_horizontal|top" />
+
+    <Button
+        android:id="@+id/location"
+        android:layout_width="237dp"
+        android:layout_height="86dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="389dp"
+        android:layout_marginTop="393dp"
+        android:background="@drawable/button_location"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_location"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+    <Button
+        android:id="@+id/movements"
+        android:layout_width="237dp"
+        android:layout_height="86dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="702dp"
+        android:layout_marginTop="396dp"
+        android:background="@drawable/button_movement"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_movements"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+    <Button
+        android:id="@+id/graphics"
+        android:layout_width="237dp"
+        android:layout_height="86dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="257dp"
+        android:layout_marginTop="500dp"
+        android:background="@drawable/button_graphic"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_graphics"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+    <Button
+        android:id="@+id/shapes"
+        android:layout_width="237dp"
+        android:layout_height="86dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="546dp"
+        android:layout_marginTop="501dp"
+        android:background="@drawable/button_shapes"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_shapes"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+    <Button
+        android:id="@+id/description"
+        android:layout_width="237dp"
+        android:layout_height="86dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="828dp"
+        android:layout_marginTop="502dp"
+        android:background="@drawable/button_description"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_description"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+
+</RelativeLayout>
