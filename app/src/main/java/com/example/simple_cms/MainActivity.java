@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.create.utility.poi.POI;
 import com.example.simple_cms.create.utility.poi.POIController;
 import com.example.simple_cms.dialog.CustomDialog;
 import com.example.simple_cms.top_bar.TobBarActivity;

@@ -60,7 +60,8 @@ public class POIController {
         POICamera poiCamera = poi.getPoiCamera();
 
         return "echo 'flytoview=" +
-                "<gx:duration>" + poiCamera.getDuration() + "</gx:duration><gx:flyToMode>smooth</gx:flyToMode><LookAt>" +
+                "<gx:duration>" + poiCamera.getDuration() + "</gx:duration>" +
+                "<gx:flyToMode>smooth</gx:flyToMode><LookAt>" +
                 "<longitude>" + poiLocation.getLongitude() + "</longitude>" +
                 "<latitude>" + poiLocation.getLatitude() + "</latitude>" +
                 "<altitude>" + poiCamera.getAltitude() + "</altitude>" +
