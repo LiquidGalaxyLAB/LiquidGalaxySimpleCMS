@@ -1,1 +1,1 @@
-"# LiquidGalaxySimpleCMS" 
+# LiquidGalaxySimpleCMS 
