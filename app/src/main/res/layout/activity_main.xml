@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/connect_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/activity_top_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="140dp"
+            android:layout_marginStart="350dp"
+            android:text="@string/account_username"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="374dp"
+            android:layout_height="53dp"
+            android:autofillHints="@string/account_hint_username"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/account_hint_username"
+            android:inputType="text"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColor="@color/textColorClick"
+            android:textColorHint="@color/hintColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="140dp"
+            android:layout_marginStart="350dp"
+            android:text="@string/account_password"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="374dp"
+            android:layout_height="53dp"
+            android:background="@drawable/rectangle_insert_url"
+            android:autofillHints="@string/account_hint_password"
+            android:hint="@string/account_hint_password"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textColor="@color/textColorClick"
+            android:fontFamily="@font/roboto_thin"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="665dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/insert_the_URL"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size" />
+
+
+    <EditText
+        android:id="@+id/uri"
+        android:layout_width="540dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:autofillHints="@string/example_to_connect"
+        android:background="@drawable/rectangle_insert_url"
+        android:fontFamily="@font/roboto_thin"
+        android:hint="@string/example_to_connect"
+        android:inputType="textUri"
+        android:maxLength="50"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/hint_text_font_size"
+        android:text=""
+        tools:ignore="RtlCompat" />
+
+    <Button
+        android:id="@+id/connect_liquid_galaxy"
+        android:layout_width="320dp"
+        android:layout_height="86dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_connect"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size" />
+
+    <TextView
+        android:id="@+id/connecting"
+        android:layout_width="665dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="-90dp"
+        android:textColor="@color/textColorClick"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:textSize="@dimen/simple_cms" />
+
+</LinearLayout>
