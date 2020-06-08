@@ -20,7 +20,7 @@ public class CreateActionsMainActivity extends TobBarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_actions);
+        setContentView(R.layout.activity_create_actions_main);
 
         changeButtonClickableBackgroundColor();
     }

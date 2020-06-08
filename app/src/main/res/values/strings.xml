@@ -8,7 +8,7 @@
     <string name="save_google_drive">Save on Google Drive</string>
     <string name="Sign_in_alert">Please Sign in to get full access</string>
     <string name="image_available_on_screen">Image Available on screen</string>
-    <string name="connecting"> Connecting ...</string>
+    <string name="connecting"> Connecting …</string>
 
     <string name="button_connect">Connect</string>
     <string name="button_try_again">Try Again</string>
@@ -24,6 +24,7 @@
     <string name="button_graphics">Graphics</string>
     <string name="button_shapes">Shapes</string>
     <string name="button_description">Description</string>
+    <string name="button_add">Add</string>
     <string name="button_log_in">Log in</string>
     <string name="button_log_out">Log Out</string>
     <string name="button_Connect_Google">Continue with Google</string>
