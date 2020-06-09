@@ -7,7 +7,7 @@ public enum ConstantPrefs {
 
     SHARED_PREFS("sharedPrefs"), TRY_TO_RECONNECT("tryingReconnect"),
     URI_TEXT("uriText"), USER_NAME("userName"),
-    USER_PASSWORD("userPassword"), IS_CONNECTED("isConnected");
+    USER_PASSWORD("userPassword"), IS_CONNECTED("Connected");
 
     private final String name;
 

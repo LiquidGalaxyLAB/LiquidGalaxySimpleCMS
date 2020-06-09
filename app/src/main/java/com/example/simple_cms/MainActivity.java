@@ -1,19 +1,18 @@
 package com.example.simple_cms;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
-import com.example.simple_cms.create.utility.poi.POIController;
-import com.example.simple_cms.dialog.CustomDialog;
+import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
 
@@ -24,12 +23,13 @@ import java.util.regex.Pattern;
  */
 public class MainActivity extends TobBarActivity {
 
-    private static final String TAG_DEBUG = "MainActivity";
+    //private static final String TAG_DEBUG = "MainActivity";
     private static final Pattern HOST_PORT = Pattern.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$");
 
-    private Button buttConnectMenu, buttConnectLiquidGalaxy;
-    private TextView connecting;
+    private Button buttConnectMenu, buttConnectLiquidGalaxy, buttTryAgain;
+    private TextView connecting, textUsername, textPassword, textInsertUrl;
     private EditText URI, username, password;
+    private ImageView logo;
     private Handler handler = new Handler();
 
     @Override
@@ -49,14 +49,24 @@ public class MainActivity extends TobBarActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
 
-        loadSharedData();
+        textUsername = findViewById(R.id.text_username);
+        textPassword = findViewById(R.id.text_password);
+        textInsertUrl = findViewById(R.id.text_insert_url);
+        logo = findViewById(R.id.logo);
+        buttTryAgain = findViewById(R.id.butt_try_again);
 
         buttConnectLiquidGalaxy.setOnClickListener((view) -> connectionTest());
+        buttTryAgain.setOnClickListener((view) -> {
+            changeToMainView();
+            SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+            editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
+            editor.apply();
+        });
     }
+
 
     @Override
     protected void onResume() {
-        Log.w(TAG_DEBUG, "RESUME");
         loadSharedData();
         super.onResume();
 }
@@ -66,16 +76,21 @@ public class MainActivity extends TobBarActivity {
      */
     private void loadSharedData() {
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
 
-        String text = sharedPreferences.getString(ConstantPrefs.URI_TEXT.getName(), "");
-        String usernameText = sharedPreferences.getString(ConstantPrefs.USER_NAME.getName(), "");
-        String passwordText = sharedPreferences.getString(ConstantPrefs.USER_PASSWORD.getName(), "");
-        boolean isTryToReconnect = sharedPreferences.getBoolean(ConstantPrefs.TRY_TO_RECONNECT.getName(), false);
+        if(isConnected){
+            changeToNewView();
+        } else {
+            String text = sharedPreferences.getString(ConstantPrefs.URI_TEXT.name(), "");
+            String usernameText = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "");
+            String passwordText = sharedPreferences.getString(ConstantPrefs.USER_PASSWORD.name(), "");
+            boolean isTryToReconnect = sharedPreferences.getBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), false);
 
-        if(!text.equals("")) URI.setText(text);
-        if(!usernameText.equals("")) username.setText(usernameText);
-        if(!passwordText.equals("")) password.setText(passwordText);
-        if(isTryToReconnect) buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+            if(!text.equals("")) URI.setText(text);
+            if(!usernameText.equals("")) username.setText(usernameText);
+            if(!passwordText.equals("")) password.setText(passwordText);
+            if(isTryToReconnect) buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+        }
     }
 
     /**
@@ -86,27 +101,37 @@ public class MainActivity extends TobBarActivity {
         String usernameText = username.getText().toString();
         String passwordText = password.getText().toString();
 
-        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.getName(), MODE_PRIVATE).edit();
-        editor.putString(ConstantPrefs.URI_TEXT.getName(), hostPort);
-        editor.putString(ConstantPrefs.USER_NAME.getName(), usernameText);
-        editor.putString(ConstantPrefs.USER_PASSWORD.getName(), passwordText);
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putString(ConstantPrefs.URI_TEXT.name(), hostPort);
+        editor.putString(ConstantPrefs.USER_NAME.name(), usernameText);
+        editor.putString(ConstantPrefs.USER_PASSWORD.name(), passwordText);
 
         if (!isValidHostNPort(hostPort)) {
             String message = getResources().getString(R.string.activity_connection_host_port_error);
-            CustomDialog.showDialog(MainActivity.this, message);
+            CustomDialogUtility.showDialog(MainActivity.this, message);
             editor.apply();
             return;
         }
 
-        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.getName(), true);
+        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
         editor.apply();
 
-        changeButtonText();
+        Dialog dialog = CustomDialogUtility.getDialog(this, getResources().getString(R.string.connecting));
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        changeButtonTextConnecting();
+        createLgCommand(hostPort, usernameText, passwordText, dialog);
+    }
 
-         /*
-            Pruebas test
-          */
-        String command = "echo 'flytoview=" +
+    /**
+     * Create LgCommand  for the test
+     * @param hostPort A string with the host and the port
+     * @param usernameText The username
+     * @param passwordText The password
+     * @param dialog The dialog that is going to be shown to the user
+     */
+    private void createLgCommand(String hostPort, String usernameText, String passwordText, Dialog dialog) {
+        final String command = "echo 'flytoview=" +
                 "<gx:duration> 3 </gx:duration>" +
                 "<gx:flyToMode>smooth</gx:flyToMode>" +
                 "<LookAt>" +
@@ -118,26 +143,18 @@ public class MainActivity extends TobBarActivity {
                 "<range>" + 200000d + "</range>" +
                 "<gx:altitudeMode> relativeToSeaFloor </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
-        LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, (String response) -> {
-            if(response == null) {
-                Toast.makeText(getApplicationContext(), "FAIL PRUEBA", Toast.LENGTH_LONG).show();
-            }
-            Toast.makeText(getApplicationContext(), "YEI PRUEBA", Toast.LENGTH_LONG).show();
-        });
+        LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
-        sendMessageError(lgCommand);
-
-        /* Connection Test with a POI*/
-       /* changeButtonText();
-        sendMessageError();
-        POIController.getInstance().moveToPOI(POIController.EARTH_POI, null);
-        buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));*/
+        sendMessageError(lgCommand, dialog);
     }
 
+
     /**
-     * Create the connection between the application and the liquid galaxy
-     *
-     * @param hostPort The string with the host and the port
+     * Create the connection to the liquid galaxy
+     * @param username The username of the connection
+     * @param password The password of the connection
+     * @param hostPort The String with the hos and the port of the liquid galxy
+     * @param lgCommand The command to be send
      */
     private void createConnection(String username, String password, String hostPort, LGCommand lgCommand) {
         String[] hostNPort = hostPort.split(":");
@@ -146,13 +163,13 @@ public class MainActivity extends TobBarActivity {
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.setData(username, password, hostname, port);
         lgConnectionManager.startConnection();
-        LGConnectionManager.getInstance().addCommandToLG(lgCommand);
+        lgConnectionManager.addCommandToLG(lgCommand);
     }
 
     /**
      * Change the Button for a TextView with the text "Connecting ..."
      */
-    private void changeButtonText() {
+    private void changeButtonTextConnecting() {
         buttConnectLiquidGalaxy.setVisibility(View.INVISIBLE);
         connecting.setVisibility(View.VISIBLE);
         connecting.setText(getResources().getString(R.string.connecting));
@@ -160,17 +177,60 @@ public class MainActivity extends TobBarActivity {
 
 
     /**
-     * Create a Dialog to inform the user that the connection to the liquid galaxy has fail
+     * Create a Dialog to inform the user if the connection to the liquid galaxy has fail or not
+     * @param lgCommand The command send to liquid galaxy
+     * @param dialog The dialog that has been show to the user
      */
-    private void sendMessageError(LGCommand lgCommand) {
+    private void sendMessageError(LGCommand lgCommand, Dialog dialog) {
         handler.postDelayed(() -> {
-            LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);
-            String message = getResources().getString(R.string.activity_connection_error);
-            CustomDialog.showDialog(MainActivity.this, message);
-            connecting.setVisibility(View.INVISIBLE);
-            buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
-            buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+            if (dialog.isShowing()){
+                LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);
+                dialog.dismiss();
+                CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_error));
+                connecting.setVisibility(View.INVISIBLE);
+                buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
+                buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
+            }else{
+                CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_success));
+                SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+                editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), true);
+                editor.apply();
+                changeToNewView();
+            }
         }, 2000);
+
+    }
+
+    /**
+     * Change the view to the connected to liquid galaxy view
+     */
+    private void changeToNewView() {
+        buttConnectLiquidGalaxy.setVisibility(View.INVISIBLE);
+        connecting.setVisibility(View.INVISIBLE);
+        URI.setVisibility(View.INVISIBLE);
+        username.setVisibility(View.INVISIBLE);
+        password.setVisibility(View.INVISIBLE);
+        textUsername.setVisibility(View.INVISIBLE);
+        textPassword.setVisibility(View.INVISIBLE);
+        textInsertUrl.setVisibility(View.INVISIBLE);
+        logo.setVisibility(View.VISIBLE);
+        buttTryAgain.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Change the view to the try to connect to liquid galaxy view
+     */
+    private void changeToMainView() {
+        buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
+        connecting.setVisibility(View.VISIBLE);
+        URI.setVisibility(View.VISIBLE);
+        username.setVisibility(View.VISIBLE);
+        password.setVisibility(View.VISIBLE);
+        textUsername.setVisibility(View.VISIBLE);
+        textPassword.setVisibility(View.VISIBLE);
+        textInsertUrl.setVisibility(View.VISIBLE);
+        logo.setVisibility(View.INVISIBLE);
+        buttTryAgain.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -190,15 +250,4 @@ public class MainActivity extends TobBarActivity {
         changeButtonClickableBackgroundColor(getApplicationContext(), buttConnectMenu);
     }
 
-    @Override
-    protected void onDestroy() {
-        Log.w(TAG_DEBUG, "DESTROY");
-        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.getName(), MODE_PRIVATE).edit();
-        editor.putString(ConstantPrefs.URI_TEXT.getName(), "");
-        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.getName(), false);
-        editor.putString(ConstantPrefs.USER_NAME.getName(), "");
-        editor.putString(ConstantPrefs.USER_PASSWORD.getName(), "");
-        editor.apply();
-        super.onDestroy();
-    }
 }

@@ -1,8 +1,7 @@
 package com.example.simple_cms.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.DialogFragment;
 
-import com.example.simple_cms.MainActivity;
 import com.example.simple_cms.R;
 
 import java.util.Objects;
@@ -23,13 +20,13 @@ import java.util.Objects;
 /**
  * Create the toast for the message to the user
  */
-public class CustomDialog extends AppCompatDialogFragment {
+public class CustomDialog extends DialogFragment {
 
    //private final static String TAG_DEBUG = "DEBUGG_TOAST";
 
     @NonNull
     @Override
-    public android.app.Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
         @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.dialog_fragment, null);
 
@@ -50,11 +47,4 @@ public class CustomDialog extends AppCompatDialogFragment {
         return builder.create();
     }
 
-    public static void showDialog(AppCompatActivity activity, String Message){
-        CustomDialog dialogFragment = new CustomDialog();
-        Bundle bundle = new Bundle();
-        bundle.putString("TEXT", Message);
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(activity.getSupportFragmentManager(),"Image Dialog");
-    }
 }
