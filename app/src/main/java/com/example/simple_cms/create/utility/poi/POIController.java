@@ -5,6 +5,8 @@ import android.util.Log;
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
 
+import java.time.DayOfWeek;
+
 public class POIController {
 
     //private static final String TAG_DEBUG = "POIController";
@@ -13,7 +15,7 @@ public class POIController {
     private POI currentPOI;
 
     public static final POI EARTH_POI = new POI()
-            .setPoiLocation(new POILocation("earth", 10.52668d, 40.085941d)).setPoiCamera(new POICamera(0.0d, 0.0d, 0.0d, 5000000.0d, "relativeToSeaFloor", 3));
+            .setPoiLocation(new POILocation("earth", 10.52668d, 40.085941d, 0.0d)).setPoiCamera(new POICamera(0.0d, 0.0d, 5000000.0d, "relativeToSeaFloor", 3));
 
     public synchronized static POIController getInstance() {
         if (instance == null)
@@ -24,11 +26,13 @@ public class POIController {
     /**
      * Enforce private constructor
      */
-    private POIController() {}
+    private POIController() {
+    }
 
     /**
      * Move the screen to the poi
-     * @param poi The POI that is going to move
+     *
+     * @param poi      The POI that is going to move
      * @param listener The listener of lgcommand
      * @return the lgcommand
      */
@@ -39,12 +43,13 @@ public class POIController {
 
     /**
      * Create the lGCommand to send to the liquid galaxy
+     *
      * @param listener The LGCommand listener
      * @return LGCommandTAG_DEBUG
      */
     private LGCommand sendPoiToLG(LGCommand.Listener listener) {
         LGCommand lgCommand = new LGCommand(buildCommand(currentPOI), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if(listener != null) {
+            if (listener != null) {
                 listener.onResponse(result);
             }
         });
@@ -64,7 +69,7 @@ public class POIController {
                 "<gx:flyToMode>smooth</gx:flyToMode><LookAt>" +
                 "<longitude>" + poiLocation.getLongitude() + "</longitude>" +
                 "<latitude>" + poiLocation.getLatitude() + "</latitude>" +
-                "<altitude>" + poiCamera.getAltitude() + "</altitude>" +
+                "<altitude>" + poiLocation.getAltitude() + "</altitude>" +
                 "<heading>" + poiCamera.getHeading() + "</heading>" +
                 "<tilt>" + poiCamera.getTilt() + "</tilt>" +
                 "<range>" + poiCamera.getRange() + "</range>" +

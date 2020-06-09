@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat;
 import com.example.simple_cms.MainActivity;
 import com.example.simple_cms.R;
 import com.example.simple_cms.account.LogIn;
-import com.example.simple_cms.create.CreateActionsMainActivity;
+import com.example.simple_cms.create.CreateStoryBoardActivity;
 import com.example.simple_cms.import_google_drive.ImportGoogleDrive;
 import com.example.simple_cms.my_storyboards.MyStoryBoard;
 
@@ -35,7 +35,7 @@ public class TobBarActivity extends AppCompatActivity {
      * @param view The view which is call.
      */
     public void buttCreateMenu(View view) {
-        Intent intent = new Intent(getApplicationContext(), CreateActionsMainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
         startActivity(intent);
     }
 

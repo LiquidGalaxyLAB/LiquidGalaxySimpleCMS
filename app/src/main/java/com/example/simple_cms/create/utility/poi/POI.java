@@ -47,15 +47,15 @@ public class POI implements IJsonPacker, Parcelable {
         String name = in.readString();
         double longitude = in.readDouble();
         double latitude = in.readDouble();
-        this.poiLocation = new POILocation(name, longitude, latitude);
-
         double altitude = in.readDouble();
+        this.poiLocation = new POILocation(name, longitude, latitude,altitude);
+
         double heading = in.readDouble();
         double tilt = in.readDouble();
         double range = in.readDouble();
         String altitudeMode = in.readString();
         int duration = in.readInt();
-        this.poiCamera = new POICamera(altitude, heading, tilt, range, altitudeMode, duration);
+        this.poiCamera = new POICamera(heading, tilt, range, altitudeMode, duration);
     }
 
     public POI(POI poi) {
@@ -98,7 +98,7 @@ public class POI implements IJsonPacker, Parcelable {
         obj.put("poi_location_name", poiLocation.getName());
         obj.put("poi_location_longitude", poiLocation.getLongitude());
         obj.put("poi_location_latitude", poiLocation.getLatitude());
-        obj.put("poi_camera_altitude", poiCamera.getAltitude());
+        obj.put("poi_camera_altitude", poiLocation.getAltitude());
         obj.put("poi_camera_heading", poiCamera.getHeading());
         obj.put("poi_camera_tilt", poiCamera.getTilt());
         obj.put("poi_camera_range", poiCamera.getRange());
@@ -115,15 +115,15 @@ public class POI implements IJsonPacker, Parcelable {
         String name = obj.getString("poi_location_name");
         double longitude = obj.getDouble("poi_location_longitude");
         double latitude = obj.getDouble("poi_location_latitude");
-        poiLocation = new POILocation(name, longitude, latitude);
-
         double altitude = obj.getDouble("poi_camera_altitude");
+        poiLocation = new POILocation(name, longitude, latitude, altitude);
+
         double heading = obj.getDouble("poi_camera_heading");
         double tilt = obj.getDouble("poi_camera_tilt");
         double range = obj.getDouble("poi_camera_range");
         String altitudeMode = obj.getString("poi_camera_altitudeMode");
         int duration = obj.getInt("poi_camera_duration");
-        poiCamera = new POICamera(altitude, heading, tilt, range, altitudeMode, duration);
+        poiCamera = new POICamera(heading, tilt, range, altitudeMode, duration);
 
         return this;
     }
@@ -145,7 +145,7 @@ public class POI implements IJsonPacker, Parcelable {
         parcel.writeString(poiLocation.getName());
         parcel.writeDouble(poiLocation.getLongitude());
         parcel.writeDouble(poiLocation.getLatitude());
-        parcel.writeDouble(poiCamera.getAltitude());
+        parcel.writeDouble(poiLocation.getAltitude());
         parcel.writeDouble(poiCamera.getHeading());
         parcel.writeDouble(poiCamera.getTilt());
         parcel.writeDouble(poiCamera.getRange());
