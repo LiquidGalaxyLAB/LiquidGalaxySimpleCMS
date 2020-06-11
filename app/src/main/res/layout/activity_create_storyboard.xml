@@ -28,18 +28,19 @@
         android:layout_marginBottom="13dp"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
-        android:text="@string/image_available_on_screen"
+        android:text="@string/image_not_available_on_screen"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/simple_cms"
         app:layout_constraintBottom_toTopOf="@+id/file_name"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
     <TextView
         android:id="@+id/connection_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="51dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
@@ -47,7 +48,6 @@
         app:layout_constraintBottom_toTopOf="@+id/file_name_title"
         app:layout_constraintEnd_toEndOf="@+id/image_available"
         app:layout_constraintTop_toBottomOf="@+id/top_bar" />
-
 
     <TextView
         android:id="@+id/file_name_title"

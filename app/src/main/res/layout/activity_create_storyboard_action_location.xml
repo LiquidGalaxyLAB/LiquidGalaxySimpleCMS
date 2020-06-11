@@ -21,7 +21,7 @@
             android:minWidth="635dp"
             android:layout_marginStart="300dp"
             android:fontFamily="@font/roboto"
-            android:text="@string/image_available_on_screen"
+            android:text="@string/image_not_available_on_screen"
             android:textAlignment="center"
             android:textColor="@color/textColorClick"
             android:textSize="@dimen/simple_cms" />
@@ -94,7 +94,10 @@
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            />
 
 
     </LinearLayout>
@@ -130,6 +133,9 @@
             android:textColorHint="@color/hintColor"
             android:textAlignment="center"
             android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10.0000"
             />
 
         <TextView
@@ -159,7 +165,10 @@
             android:singleLine="true"
             android:textColorHint="@color/hintColor"
             android:textAlignment="center"
-            android:textSize="@dimen/primary_text_font_size"/>
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10.0000"/>
 
     </LinearLayout>
 
@@ -188,12 +197,15 @@
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto_thin"
             android:hint="@string/example_latitude_longitude_altitude"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:maxLength="30"
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10.0000"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -209,17 +221,20 @@
             android:id="@+id/duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="244dp"
             android:autofillHints="@string/example_latitude_longitude_altitude"
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto_thin"
             android:hint="@string/duration_example"
             android:inputType="number"
             android:maxLength="30"
+            android:minWidth="244dp"
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="4"/>
 
     </LinearLayout>
 
@@ -253,7 +268,10 @@
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10.0000"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -279,7 +297,11 @@
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10.0000"/>
+
     </LinearLayout>
 
 
@@ -314,7 +336,10 @@
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10.0000"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -340,7 +365,11 @@
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/primary_text_font_size" />
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="relativeToSeaFloor"/>
+
     </LinearLayout>
 
     <LinearLayout

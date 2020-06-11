@@ -148,7 +148,6 @@ public class MainActivity extends TobBarActivity {
         sendMessageError(lgCommand, dialog);
     }
 
-
     /**
      * Create the connection to the liquid galaxy
      * @param username The username of the connection
@@ -187,6 +186,9 @@ public class MainActivity extends TobBarActivity {
                 LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);
                 dialog.dismiss();
                 CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_error));
+                SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+                editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
+                editor.apply();
                 connecting.setVisibility(View.INVISIBLE);
                 buttConnectLiquidGalaxy.setVisibility(View.VISIBLE);
                 buttConnectLiquidGalaxy.setText(getResources().getString(R.string.button_try_again));
@@ -198,7 +200,6 @@ public class MainActivity extends TobBarActivity {
                 changeToNewView();
             }
         }, 2000);
-
     }
 
     /**
