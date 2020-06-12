@@ -1,11 +1,13 @@
-package com.example.simple_cms.create.utility.poi;
+package com.example.simple_cms.create.utility.model.poi;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.IJsonPacker;
+import com.example.simple_cms.create.utility.model.Action;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +15,7 @@ import org.json.JSONObject;
 /**
  * This class is in charge of saving and load the POI data for the database.
  */
-public class POI implements IJsonPacker, Parcelable {
+public class POI extends Action implements IJsonPacker, Parcelable {
 
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -33,15 +35,19 @@ public class POI implements IJsonPacker, Parcelable {
     /**
      * Empty Constructor
      */
-    public POI(){}
+    public POI(){
+        super(ActionIdentifier.LOCATION_ACTIVITY.getId());
+    }
 
     public POI(long id, POILocation poiLocation, POICamera poiCamera){
+        super(ActionIdentifier.LOCATION_ACTIVITY.getId());
         this.id = id;
         this.poiLocation = poiLocation;
         this.poiCamera = poiCamera;
     }
 
     public POI(Parcel in) {
+        super(ActionIdentifier.LOCATION_ACTIVITY.getId());
         this.id = in.readLong();
 
         String name = in.readString();
@@ -59,6 +65,7 @@ public class POI implements IJsonPacker, Parcelable {
     }
 
     public POI(POI poi) {
+        super(ActionIdentifier.LOCATION_ACTIVITY.getId());
         this.id = poi.id;
         this.poiLocation = poi.poiLocation;
         this.poiCamera = poi.poiCamera;

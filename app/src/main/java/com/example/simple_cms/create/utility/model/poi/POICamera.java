@@ -1,4 +1,4 @@
-package com.example.simple_cms.create.utility.poi;
+package com.example.simple_cms.create.utility.model.poi;
 
 /**
  * This is the class in charge of the action of the camera in the location

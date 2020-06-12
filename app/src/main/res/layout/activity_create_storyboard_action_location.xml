@@ -292,7 +292,7 @@
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto_thin"
             android:hint="@string/duration_example"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:maxLength="30"
             android:singleLine="true"
             android:textAlignment="center"
@@ -331,7 +331,7 @@
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto_thin"
             android:hint="@string/range_example"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:maxLength="30"
             android:singleLine="true"
             android:textAlignment="center"
@@ -394,12 +394,28 @@
             android:textSize="@dimen/button_text_font_size" />
 
         <Button
+            android:id="@+id/butt_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:layout_marginStart="250dp"
+            android:background="@drawable/button_primary"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/button_delete"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size"
+            android:visibility="invisible"/>
+
+        <Button
             android:id="@+id/butt_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="200dp"
             android:minHeight="80dp"
-            android:layout_marginStart="350dp"
+            android:layout_marginStart="50dp"
             android:background="@drawable/button_primary"
             android:elevation="8dp"
             android:fontFamily="@font/roboto_light"

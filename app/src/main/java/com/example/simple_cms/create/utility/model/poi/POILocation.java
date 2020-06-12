@@ -1,4 +1,4 @@
-package com.example.simple_cms.create.utility.poi;
+package com.example.simple_cms.create.utility.model.poi;
 
 /**
  * This class is in charge of saving the location parameters

@@ -16,6 +16,7 @@
     <string name="button_try_again">Try Again</string>
     <string name="button_change">Change</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
     <string name="button_test">Test</string>
     <string name="button_open">Open</string>
     <string name="button_back">Back</string>

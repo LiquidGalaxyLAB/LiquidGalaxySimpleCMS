@@ -1,11 +1,7 @@
-package com.example.simple_cms.create.utility.poi;
-
-import android.util.Log;
+package com.example.simple_cms.create.utility.model.poi;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
-
-import java.time.DayOfWeek;
 
 public class POIController {
 
@@ -26,8 +22,7 @@ public class POIController {
     /**
      * Enforce private constructor
      */
-    private POIController() {
-    }
+    private POIController() {}
 
     /**
      * Move the screen to the poi
