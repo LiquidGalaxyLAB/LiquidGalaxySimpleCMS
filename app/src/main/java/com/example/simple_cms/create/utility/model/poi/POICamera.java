@@ -1,11 +1,11 @@
-package com.example.simple_cms.create.utility.poi;
+package com.example.simple_cms.create.utility.model.poi;
 
 /**
  * This is the class in charge of the action of the camera in the location
  */
 public class POICamera {
 
-    private double altitude;
+
     private double heading;
     private double tilt;
     private double range;
@@ -13,17 +13,12 @@ public class POICamera {
     private int duration;
 
 
-    public POICamera(double altitude, double heading, double tilt, double range, String altitudeMode, int duration) {
-        this.altitude = altitude;
+    public POICamera(double heading, double tilt, double range, String altitudeMode, int duration) {
         this.heading = heading;
         this.tilt = tilt;
         this.range = range;
         this.altitudeMode = altitudeMode;
         this.duration = duration;
-    }
-
-    public double getAltitude() {
-        return altitude;
     }
 
     public double getHeading() {
