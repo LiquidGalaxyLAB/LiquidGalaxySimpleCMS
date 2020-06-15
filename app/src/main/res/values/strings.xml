@@ -15,6 +15,7 @@
     <string name="button_connect">Connect</string>
     <string name="button_try_again">Try Again</string>
     <string name="button_change">Change</string>
+    <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_delete">Delete</string>
     <string name="button_test">Test</string>
@@ -113,6 +114,9 @@
     <string name="activity_create_location_missing_range_field_error">Please, fill the range field</string>
     <string name="activity_create_location_missing_altitude_mode_field_error">Please, fill the altitude mode field</string>
     <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
+    <string name="alert_message_delete">Deleting this location will delete all the actions depeding of this location</string>
+
+
 
 
 

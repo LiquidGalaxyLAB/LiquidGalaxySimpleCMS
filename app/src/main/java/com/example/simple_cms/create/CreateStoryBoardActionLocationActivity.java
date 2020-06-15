@@ -1,6 +1,10 @@
 package com.example.simple_cms.create;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -232,11 +236,30 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
      * Send the information of deleting the POI selected
      */
     private void deletePoi() {
-        Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-        returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
-        setResult(Activity.RESULT_OK, returnInfoIntent);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
+        v.getBackground().setAlpha(220);
+        Button ok = v.findViewById(R.id.ok);
+        ok.setOnClickListener( view -> {
+            Intent returnInfoIntent = new Intent();
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
+            setResult(Activity.RESULT_OK, returnInfoIntent);
+            finish();
+        });
+        TextView textMessage = v.findViewById(R.id.message);
+        textMessage.setText(getResources().getString(R.string.alert_message_delete));
+        textMessage.setTextSize(23);
+        textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        Button cancel = v.findViewById(R.id.cancel);
+        cancel.setVisibility(View.VISIBLE);
+        builder.setView(v);
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        cancel.setOnClickListener( view -> {
+            dialog.dismiss();
+        });
     }
 
     /**
