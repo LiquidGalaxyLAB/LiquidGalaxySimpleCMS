@@ -57,36 +57,36 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
 
-        Button butt_test = findViewById(R.id.butt_test);
-        Button butt_cancel = findViewById(R.id.butt_cancel);
-        Button butt_add = findViewById(R.id.butt_add);
-        Button butt__delete = findViewById(R.id.butt_delete);
+        Button buttTest = findViewById(R.id.butt_test);
+        Button buttCancel = findViewById(R.id.butt_cancel);
+        Button buttAdd = findViewById(R.id.butt_add);
+        Button buttDelete = findViewById(R.id.butt_delete);
 
         Intent intent = getIntent();
         POI poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         if(poi != null){
             position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
-            butt_add.setText(getResources().getString(R.string.button_save));
-            butt__delete.setVisibility(View.VISIBLE);
+            buttAdd.setText(getResources().getString(R.string.button_save));
+            buttDelete.setVisibility(View.VISIBLE);
             loadPoiData(poi);
         }else{
             loadData();
         }
 
-        butt_cancel.setOnClickListener( (view) ->
+        buttCancel.setOnClickListener( (view) ->
             finish()
         );
 
-        butt_test.setOnClickListener( (view) ->
+        buttTest.setOnClickListener( (view) ->
             testConnection()
         );
 
-        butt_add.setOnClickListener((view) ->
+        buttAdd.setOnClickListener((view) ->
             addPOI()
         );
 
-        butt__delete.setOnClickListener( (view) -> deletePoi());
+        buttDelete.setOnClickListener( (view) -> deletePoi());
     }
 
     /**
@@ -124,6 +124,10 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         altitude_mode.setText(sharedPreferences.getString(ConstantPrefs.ALTITUDE_MODE.name(), ""));
     }
 
+    /**
+     * Set the conenction status on the view
+     * @param sharedPreferences sharedPreferences
+     */
     private void loadConnectionStatus(SharedPreferences sharedPreferences) {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if(isConnected){

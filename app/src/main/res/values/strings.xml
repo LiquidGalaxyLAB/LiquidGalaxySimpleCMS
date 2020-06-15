@@ -54,7 +54,7 @@
     <string name="account_hint_password">Your password</string>
     <string name="account_liquid_galaxy">liquid galaxy</string>
 
-    //String for create storyboard activity
+    //String for create storyboard location activity
     <string name="location_name">Location name</string>
     <string name="example_location_name">Insert the name of your Location</string>
     <string name="latitude">Latitude</string>
@@ -74,6 +74,10 @@
     <string name="altitude_mode">Altitude Mode</string>
     <string name="altitude_mode_example">relativeToSeaFloor</string>
 
+    //String for create storyboard movements activity
+    <string name="old_heading">Old Heading</string>
+    <string name="old_tilt">Old Tilt</string>
+    <string name="seekbar_hint">0°</string>
 
     //Labels of Activities
     <string name="tittle_create">Create</string>
@@ -108,6 +112,8 @@
     <string name="activity_create_location_missing_tilt_field_error">Please, fill the tilt field</string>
     <string name="activity_create_location_missing_range_field_error">Please, fill the range field</string>
     <string name="activity_create_location_missing_altitude_mode_field_error">Please, fill the altitude mode field</string>
+    <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
+
 
 
 

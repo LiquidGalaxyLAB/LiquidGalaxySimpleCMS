@@ -135,13 +135,13 @@ public class MainActivity extends TobBarActivity {
                 "<gx:duration> 3 </gx:duration>" +
                 "<gx:flyToMode>smooth</gx:flyToMode>" +
                 "<LookAt>" +
-                "<longitude>" + 10.52668d + "</longitude>" +
-                "<latitude>" + 40.085941d + "</latitude>" +
-                "<altitude>" + 0.0d + "</altitude>" +
-                "<heading>" + 0.0d + "</heading>" +
-                "<tilt>" + 0.0d + "</tilt>" +
-                "<range>" + 200000d + "</range>" +
-                "<gx:altitudeMode> relativeToSeaFloor </gx:altitudeMode>" +
+                "<longitude>" + -122.4783d + "</longitude>" +
+                "<latitude>" + 37.8120 + "</latitude>" +
+                "<altitude>" + 2.0d + "</altitude>" +
+                "<heading>" + 10d + "</heading>" +
+                "<tilt>" + 90.0d + "</tilt>" +
+                "<range>" + 10d + "</range>" +
+                "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);

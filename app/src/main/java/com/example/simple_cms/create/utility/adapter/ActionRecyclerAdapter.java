@@ -35,7 +35,7 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.create_storyboard_action_icon, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_create_storyboard_action_icon, parent, false);
         return new ViewHolder(view, mOnNoteListener);
     }
 
