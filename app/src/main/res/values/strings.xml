@@ -114,7 +114,7 @@
     <string name="activity_create_location_missing_range_field_error">Please, fill the range field</string>
     <string name="activity_create_location_missing_altitude_mode_field_error">Please, fill the altitude mode field</string>
     <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
-    <string name="alert_message_delete">Deleting this location will delete all the actions depeding of this location</string>
+    <string name="alert_message_delete">Deleting this location will delete all the actions depending of this location</string>
 
 
 

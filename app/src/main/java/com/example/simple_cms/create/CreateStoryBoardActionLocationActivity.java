@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -257,9 +256,8 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-        cancel.setOnClickListener( view -> {
-            dialog.dismiss();
-        });
+        cancel.setOnClickListener( view ->
+            dialog.dismiss());
     }
 
     /**
