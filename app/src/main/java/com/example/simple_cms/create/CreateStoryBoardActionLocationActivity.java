@@ -166,7 +166,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
                     connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
                 loadConnectionStatus(sharedPreferences);
-                LGConnectionTest.cleanKML();
+                LGConnectionTest.cleanQuery();
             }, 1200);
         }
     }

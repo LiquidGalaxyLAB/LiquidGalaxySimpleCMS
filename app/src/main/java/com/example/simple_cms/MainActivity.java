@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.create.utility.connection.LGConnectionTest;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -131,7 +132,7 @@ public class MainActivity extends TobBarActivity {
      * @param dialog The dialog that is going to be shown to the user
      */
     private void createLgCommand(String hostPort, String usernameText, String passwordText, Dialog dialog) {
-        final String command = "echo 'flytoview=" +
+       final String command = "echo 'flytoview=" +
                 "<gx:duration> 3 </gx:duration>" +
                 "<gx:flyToMode>smooth</gx:flyToMode>" +
                 "<LookAt>" +
@@ -143,7 +144,105 @@ public class MainActivity extends TobBarActivity {
                 "<range>" + 10d + "</range>" +
                 "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
-        LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
+        final String command2 = "echo '" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2 xmlns:gx=\"http://www.google.com/kml/ext/2.2 \">\n" +
+                "<Document>\n" +
+                "  <name>lolool</name>\n" +
+                "  <open>1</open>\n" +
+                "  <Style id=\"exampleBalloonStyle\">\n" +
+                "    <BalloonStyle>\n" +
+                "      <!-- a background color for the balloon -->\n" +
+                "      <bgColor>ffffffbb</bgColor>\n" +
+                "      <!-- styling of the balloon text -->\n" +
+                "      <text><![CDATA[\n" +
+                "      <b><font color=\"#CC0000\" size=\"+3\">$[name]</font></b>\n" +
+                "      <br/><br/>\n" +
+                "      <font face=\"Courier\">$[description]</font>\n" +
+                "      <br/><br/>\n" +
+                "      Extra text that will appear in the description balloon\n" +
+                "      <br/><br/>\n" +
+                "      <!-- insert the to/from hyperlinks -->\n" +
+                "      $[geDirections]\n" +
+                "      ]]></text>\n" +
+                "    </BalloonStyle>\n" +
+                "  </Style>\n" +
+                "  <Placemark>\n" +
+                "    <name>BalloonStyle</name>\n" +
+                "    <description>An example of BalloonStyle</description>\n" +
+                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
+                "    <styleUrl>#exampleBalloonStyle</styleUrl>\n" +
+                "    <Point>\n" +
+                "      <coordinates>-122.4783, 37.8120, 0</coordinates>\n" +
+                "    </Point>\n" +
+                "  </Placemark>\n" +
+                "</Document>\n" +
+                "</kml>' > /var/www/html/kmls.txt";
+        final String command3 = "echo '" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
+                " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
+                "\n" +
+                "<Document>\n" +
+                "  <name>gx:AnimatedUpdate example</name>\n" +
+                "\n" +
+                "  <Style id=\"pushpin\">\n" +
+                "    <IconStyle id=\"mystyle\">\n" +
+                "      <Icon>\n" +
+                "        <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>\n" +
+                "        <scale>1.0</scale>\n" +
+                "      </Icon>\n" +
+                "    </IconStyle>\n" +
+                "  </Style>\n" +
+                "\n" +
+                "  <Placemark id=\"mountainpin1\">\n" +
+                "    <name>Pin on a mountaintop</name>\n" +
+                "    <styleUrl>#pushpin</styleUrl>\n" +
+                "    <Point>\n" +
+                "      <coordinates>170.1435558771009,-43.60505741890396,0</coordinates>\n" +
+                "    </Point>\n" +
+                "  </Placemark>\n" +
+                "\n" +
+                "  <gx:Tour>\n" +
+                "    <name>Play me!</name>\n" +
+                "\n" +
+                "    <gx:Playlist>\n" +
+                "\n" +
+                "      <gx:FlyTo>\n" +
+                "        <gx:flyToMode>bounce</gx:flyToMode>\n" +
+                "        <gx:duration>3</gx:duration>\n" +
+                "        <Camera>\n" +
+                "          <longitude>170.157</longitude>\n" +
+                "          <latitude>-43.671</latitude>\n" +
+                "          <altitude>9700</altitude>\n" +
+                "          <heading>-6.333</heading>\n" +
+                "          <tilt>33.5</tilt>\n" +
+                "        </Camera>\n" +
+                "      </gx:FlyTo>\n" +
+                "\n" +
+                "      <gx:AnimatedUpdate>\n" +
+                "        <gx:duration>5</gx:duration>\n" +
+                "        <Update>\n" +
+                "          <targetHref></targetHref>\n" +
+                "          <Change>\n" +
+                "            <IconStyle targetId=\"mystyle\">\n" +
+                "              <scale>10.0</scale>\n" +
+                "            </IconStyle>\n" +
+                "          </Change>\n" +
+                "        </Update>\n" +
+                "      </gx:AnimatedUpdate>\n" +
+                "\n" +
+                "      <gx:Wait>\n" +
+                "        <gx:duration>5</gx:duration>\n" +
+                "      </gx:Wait>\n" +
+                "\n" +
+                "    </gx:Playlist>\n" +
+                "  </gx:Tour>\n" +
+                "\n" +
+                "</Document>\n" +
+                "</kml>' > /var/www/html/kmls.txt; echo 'playtour=Play me!' > /tmp/query.txt";
+        final String command4 = "echo 'playtour=Play me!' > /tmp/query.txt";
+        LGCommand lgCommand = new LGCommand(command4, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
         sendMessageError(lgCommand, dialog);
     }

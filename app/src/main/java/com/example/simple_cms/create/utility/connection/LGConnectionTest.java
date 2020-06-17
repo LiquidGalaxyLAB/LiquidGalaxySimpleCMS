@@ -47,12 +47,25 @@ public class LGConnectionTest {
     }
 
     /**
-     * Clean the KML
+     * Clean the query.text file
+     */
+    public static void cleanQuery() {
+        handler.postDelayed(() -> {
+            String cleanTempTxt = "chmod 777 /tmp/query.txt; echo '' > /tmp/query.txt";
+            LGCommand lgCommand = new LGCommand(cleanTempTxt, LGCommand.CRITICAL_MESSAGE, null);
+            sendCommand(lgCommand);
+            } , 5000);
+    }
+
+    /**
+     * Clean the kml
      */
     public static void cleanKML() {
-        String cleanKMLCommand = "chmod 777 /var/www/html/kmls.txt; echo '' > /var/www/html/kmls.txt";
-        LGCommand lgCommand = new LGCommand("echo 'connection';", LGCommand.CRITICAL_MESSAGE, null);
-        sendCommand(lgCommand);
+        handler.postDelayed(() -> {
+            String cleanKMLCommand = "chmod 777 /var/www/html/kmls.txt; echo '' > /var/www/html/kmls.txt";
+            LGCommand lgCommand = new LGCommand(cleanKMLCommand, LGCommand.CRITICAL_MESSAGE, null);
+            sendCommand(lgCommand);
+            } , 5000);
     }
 
     /**

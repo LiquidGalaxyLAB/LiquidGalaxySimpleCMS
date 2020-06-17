@@ -167,16 +167,33 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
      */
     private void deletePOI(int position) {
         Action action;
+        ArrayList<Action> newActions = new ArrayList<>();
+        POI newCurrent = null;
         int startNewPoi = -1;
-        for(int i = position + 1; i < actions.size(); i++ ){
+        for (int i = 0; i < position; i++){
             action = actions.get(i);
-            if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId() ){
+            newActions.add(action);
+            if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
+                newCurrent = (POI) action;
+            }
+        }
+        for(int i = position + 1; i < actions.size(); i++ ){
+            if(actions.get(i).getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
                 startNewPoi = i;
+                newCurrent = (POI) actions.get(i);
+                newActions.add(actions.get(i));
                 break;
             }
         }
-        if(startNewPoi == -1) startNewPoi = actions.size();
-        ArrayList<Action> newActions = new ArrayList<>(actions.subList(startNewPoi, actions.size()));
+        if(startNewPoi == -1 ) startNewPoi = actions.size();
+        for(int i = startNewPoi + 1; i < actions.size(); i++ ){
+            action = actions.get(i);
+            newActions.add(action);
+            if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
+                newCurrent = (POI) action;
+            }
+        }
+        currentPoi = newCurrent;
         actions.clear();
         actions.addAll(newActions);
     }
