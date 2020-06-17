@@ -84,6 +84,8 @@
     <string name="tittle_create">Create</string>
     <string name="tittle_create_action_location">Location</string>
     <string name="tittle_create_action_movement">Movement</string>
+    <string name="tittle_create_action_place_mark">PlaceMark</string>
+    <string name="tittle_create_save">Save</string>
     <string name="tittle_create_action_graphic">Graphic</string>
     <string name="tittle_create_action_shape">Shape</string>
     <string name="tittle_create_action_description">Description</string>
@@ -114,7 +116,7 @@
     <string name="activity_create_location_missing_range_field_error">Please, fill the range field</string>
     <string name="activity_create_location_missing_altitude_mode_field_error">Please, fill the altitude mode field</string>
     <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
-    <string name="alert_message_delete">Deleting this location will delete all the actions depending of this location</string>
+    <string name="alert_message_delete">The actions related to the location will be deleted</string>
 
 
 
