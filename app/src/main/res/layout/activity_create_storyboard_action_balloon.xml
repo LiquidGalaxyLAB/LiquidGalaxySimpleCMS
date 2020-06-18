@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".create.CreateStoryBoardActionMovementActivity">
+    android:orientation="vertical"
+    tools:context=".create.CreateStoryBoardActionBallonActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/image_available"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="635dp"
             android:layout_marginStart="300dp"
             android:fontFamily="@font/roboto"
+            android:minWidth="635dp"
             android:text="@string/image_not_available_on_screen"
             android:textAlignment="center"
             android:textColor="@color/textColorClick"
@@ -31,11 +30,12 @@
             android:id="@+id/connection_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
             android:layout_marginStart="-50dp"
+            android:layout_marginTop="-10dp"
             android:background="@drawable/ic_status_connection_red"
             android:fontFamily="@font/roboto" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,141 +70,112 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="467dp"
-        android:padding="20dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="300dp"
-            android:text="@string/old_heading"
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="420dp"
+            android:layout_height="300dp"
+            android:layout_marginEnd="132dp"
+            android:autofillHints="@string/hint_insert_text"
+            android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto"
+            android:hint="@string/hint_insert_text"
+            android:inputType="none"
+            android:maxLength="300"
             android:textAlignment="center"
             android:textColor="@color/textColorClick"
+            android:textColorHint="@color/hintColor"
             android:textSize="@dimen/hint_text_font_size"
+            app:layout_constraintBottom_toBottomOf="@+id/butt_add_image"
+            app:layout_constraintEnd_toStartOf="@+id/butt_add_image" />
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="200dp"
+            android:layout_height="110dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/description_image"
+            app:layout_constraintBottom_toTopOf="@+id/butt_add_image"
+            app:layout_constraintEnd_toStartOf="@+id/butt_add_video" />
+
+        <Button
+            android:id="@+id/butt_add_image"
+            android:layout_width="225dp"
+            android:layout_height="79dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_add_image"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:text="@string/button_add_image"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/old_heading" />
+            app:layout_constraintEnd_toStartOf="@+id/butt_add_video"
+            tools:ignore="ButtonStyle" />
 
-        <TextView
-            android:id="@+id/old_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="470dp"
-            android:layout_marginBottom="300dp"
-            android:textAlignment="center"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/hint_text_font_size"
+        <FrameLayout
+            android:layout_width="193dp"
+            android:layout_height="110dp"
+            android:layout_marginEnd="56dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/butt_add_video"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <VideoView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/butt_add_video"
+            android:layout_width="224dp"
+            android:layout_height="79dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_add_video"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:text="@string/button_add_video"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="240dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/old_tilt"
-            android:textAlignment="center"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/hint_text_font_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/old_tilt" />
-
-        <TextView
-            android:id="@+id/old_tilt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="470dp"
-            android:layout_marginBottom="240dp"
-            android:textAlignment="center"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/hint_text_font_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <TextView
-            android:id="@+id/seek_bar_value_heading"
-            android:layout_width="48dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="610dp"
-            android:layout_marginBottom="100dp"
-            android:text="@string/seek_bar_hint"
-            android:textAlignment="center"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/primary_text_font_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <SeekBar
-            android:id="@+id/seek_bar_heading"
-            android:layout_width="580dp"
-            android:layout_height="74dp"
-            android:layout_marginTop="450dp"
-            android:layout_marginEnd="350dp"
-            android:layout_marginBottom="36dp"
-            android:background="@null"
-            android:max="360"
-            android:progressDrawable="@drawable/custom_seek_bar"
-            android:splitTrack="false"
-            android:thumb="@drawable/custom_seek_bar_thumb"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/seek_bar_value_tilt"
-            android:layout_width="48dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="340dp"
-            android:layout_marginBottom="240dp"
-            android:text="@string/seek_bar_hint"
-            android:textAlignment="center"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/primary_text_font_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <SeekBar
-            android:id="@+id/seek_bar_tilt"
-            android:layout_width="384dp"
-            android:layout_height="67dp"
-            android:layout_marginTop="450dp"
-            android:layout_marginEnd="126dp"
-            android:layout_marginBottom="219dp"
-            android:background="@null"
-            android:max="90"
-            android:progressDrawable="@drawable/custom_seek_bar"
-            android:rotation="270"
-            android:splitTrack="false"
-            android:thumb="@drawable/custom_seek_bar_thumb"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="ButtonStyle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/butt_test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200dp"
-            android:minHeight="80dp"
             android:layout_marginStart="80dp"
             android:background="@drawable/button_test"
             android:elevation="8dp"
             android:fontFamily="@font/roboto_light"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
             android:text="@string/button_test"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
@@ -215,12 +186,12 @@
             android:id="@+id/butt_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200dp"
-            android:minHeight="80dp"
             android:layout_marginStart="250dp"
             android:background="@drawable/button_primary"
             android:elevation="8dp"
             android:fontFamily="@font/roboto_light"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
             android:text="@string/button_delete"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
@@ -232,12 +203,12 @@
             android:id="@+id/butt_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200dp"
-            android:minHeight="80dp"
             android:layout_marginStart="50dp"
             android:background="@drawable/button_primary"
             android:elevation="8dp"
             android:fontFamily="@font/roboto_light"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
             android:text="@string/button_cancel"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
@@ -248,12 +219,12 @@
             android:id="@+id/butt_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200dp"
-            android:minHeight="80dp"
             android:layout_marginStart="50dp"
             android:background="@drawable/button_primary"
             android:elevation="8dp"
             android:fontFamily="@font/roboto_light"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
             android:text="@string/button_add"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
@@ -261,5 +232,6 @@
             tools:ignore="ButtonStyle" />
 
     </LinearLayout>
+
 
 </LinearLayout>

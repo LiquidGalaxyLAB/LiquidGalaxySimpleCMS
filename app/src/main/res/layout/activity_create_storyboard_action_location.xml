@@ -36,38 +36,11 @@
             android:fontFamily="@font/roboto" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="496dp"
-            android:text="@string/file_name"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/primary_text_font_size"
-            android:visibility="invisible"/>
-
-        <TextView
-            android:id="@+id/storyboard_name"
-            android:layout_width="218dp"
-            android:layout_height="wrap_content"
-            android:text="@string/file_name"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/primary_text_font_size"
-            android:visibility="invisible"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="60dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -106,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="80dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -176,7 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -242,7 +215,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -309,7 +282,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
 
         <TextView
@@ -376,7 +349,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="120dp">
 
         <Button
             android:id="@+id/butt_test"

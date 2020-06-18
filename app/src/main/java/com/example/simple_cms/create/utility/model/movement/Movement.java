@@ -128,7 +128,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "Location Name: " + this.poi.getPoiLocation().getName() + " New Heading: " + this.newHeading  + " New Tilt: " +  this.newTilt;
+        return "Location Name: " + this.poi.getPoiLocation().getName() + " New Heading: " + this.newHeading + " New Tilt: " +  this.newTilt;
     }
 
 

@@ -36,6 +36,32 @@ public class POIController {
         return sendPoiToLG(listener);
     }
 
+    public synchronized void orbit(double angle, double percentDistance) {
+        //.setLongitude() [-180 to +180]: X (cos)
+        //.setLatitude() [-90 to +90]: Y (sin)
+
+        /*POI newPoi = new POI(currentPOI);
+        //0.0001% of RANGE
+        double STEP_XY = 0.000001;
+        newPoi.setLongitude(newPoi.getLongitude() + Math.cos(angle) * percentDistance * STEP_XY * newPoi.getRange());
+        while (newPoi.getLongitude() > 180) {
+            newPoi.setLongitude(newPoi.getLongitude() - 360);
+        }
+        while (newPoi.getLongitude() < -180) {
+            newPoi.setLongitude(newPoi.getLongitude() + 360);
+        }
+
+        newPoi.setLatitude(newPoi.getLatitude() - Math.sin(angle) * percentDistance * STEP_XY * newPoi.getRange());
+        while (newPoi.getLatitude() > 90) {
+            newPoi.setLatitude(newPoi.getLatitude() - 180);
+        }
+        while (newPoi.getLatitude() < -90) {
+            newPoi.setLatitude(newPoi.getLatitude() + 180);
+        }
+
+        moveToPOI(newPoi, null);*/
+    }
+
     /**
      * Create the lGCommand to send to the liquid galaxy
      *
