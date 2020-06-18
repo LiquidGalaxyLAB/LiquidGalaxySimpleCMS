@@ -247,7 +247,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
             finish();
         });
         TextView textMessage = v.findViewById(R.id.message);
-        textMessage.setText(getResources().getString(R.string.alert_message_delete));
+        textMessage.setText(getResources().getString(R.string.alert_message_delete_action_location));
         textMessage.setTextSize(23);
         textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
         Button cancel = v.findViewById(R.id.cancel);

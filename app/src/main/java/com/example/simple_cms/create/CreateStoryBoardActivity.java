@@ -1,6 +1,9 @@
 package com.example.simple_cms.create;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import com.example.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.movement.Movement;
+import com.example.simple_cms.create.utility.model.placemark.PlaceMark;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
@@ -42,7 +46,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     private RecyclerView.Adapter mAdapter;
     private POI currentPoi;
 
-    private Button buttCreate, buttLocation, buttMovements, buttGraphics, buttShapes, buttDescription, buttCancel, buttSave;
+    private Button buttCreate, buttLocation, buttMovements, buttPlaceMark, buttShapes, buttTest, buttDelete, buttSave;
     private TextView connectionStatus, imageAvailable;
 
     @Override
@@ -57,10 +61,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttLocation = findViewById(R.id.butt_location);
         buttMovements = findViewById(R.id.butt_movements);
-        buttGraphics = findViewById(R.id.butt_graphics);
+        buttPlaceMark = findViewById(R.id.butt_place_mark);
         buttShapes = findViewById(R.id.butt_shapes);
-        buttDescription = findViewById(R.id.butt_description);
-        buttCancel = findViewById(R.id.butt_cancel);
+        buttDelete = findViewById(R.id.butt_delete);
         buttSave = findViewById(R.id.butt_save);
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
@@ -81,7 +84,46 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             }
         });
 
+        buttPlaceMark.setOnClickListener( (view) -> {
+            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionMovementActivity.class);
+            if(currentPoi == null){
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.You_need_a_location_to_create_a_placemark));
+            } else {
+                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), currentPoi);
+                startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
+            }
+        });
+
+        buttDelete.setOnClickListener( (view) -> {
+            deleteStoryboard();
+        });
+
         changeButtonClickableBackgroundColor();
+    }
+
+    private void deleteStoryboard() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
+        v.getBackground().setAlpha(220);
+        Button ok = v.findViewById(R.id.ok);
+        ok.setOnClickListener(v1 -> {
+            actions = new ArrayList<>();
+            currentPoi = null;
+            initRecyclerView();
+        });
+        TextView textMessage = v.findViewById(R.id.message);
+        textMessage.setText(getResources().getString(R.string.alert_message_delete_storyboard));
+        textMessage.setTextSize(23);
+        textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        Button cancel = v.findViewById(R.id.cancel);
+        cancel.setVisibility(View.VISIBLE);
+        builder.setView(v);
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        cancel.setOnClickListener( v1 ->
+                dialog.dismiss());
     }
 
 
@@ -246,6 +288,11 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             intent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), (Movement) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
+        }else if(selected instanceof PlaceMark){
+           /* Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionPlaceMarkActivity.class);
+            intent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), (PlaceMark) selected);
+            intent.putExtra(ActionIdentifier.POSITION.name(), position);
+            startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());*/
         }else {
             Log.w(TAG_DEBUG, "ERROR");
         }
