@@ -158,7 +158,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
             handler.postDelayed(() -> {
                 if(isConnected.get()){
-                    POILocation poiLocation = new POILocation("Test", Double.parseDouble(latitudeText), Double.parseDouble(longitudeText), Double.parseDouble(altitudeText));
+                    POILocation poiLocation = new POILocation("Test", Double.parseDouble(longitudeText), Double.parseDouble(latitudeText), Double.parseDouble(altitudeText));
                     POICamera poiCamera = new POICamera(Double.parseDouble(headingText), Double.parseDouble(tiltText), Double.parseDouble(rangeText), altitudeModeText, Integer.parseInt(durationText));
                     POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
                     POIController.getInstance().moveToPOI(poi, null);
@@ -166,8 +166,8 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
                     connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
                 loadConnectionStatus(sharedPreferences);
-                LGConnectionTest.cleanQuery();
-            }, 1200);
+                LGConnectionTest.cleanKML();
+            }, 1300);
         }
     }
 

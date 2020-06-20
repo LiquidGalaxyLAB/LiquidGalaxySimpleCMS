@@ -136,12 +136,12 @@ public class MainActivity extends TobBarActivity {
                 "<gx:duration> 3 </gx:duration>" +
                 "<gx:flyToMode>smooth</gx:flyToMode>" +
                 "<LookAt>" +
-                "<longitude>" + -122.4783d + "</longitude>" +
+                "<longitude>" + -122.4783 + "</longitude>" +
                 "<latitude>" + 37.8120 + "</latitude>" +
-                "<altitude>" + 2.0d + "</altitude>" +
-                "<heading>" + 10d + "</heading>" +
-                "<tilt>" + 90.0d + "</tilt>" +
-                "<range>" + 10d + "</range>" +
+                "<altitude>" + 2.0 + "</altitude>" +
+                "<heading>" + 10 + "</heading>" +
+                "<tilt>" + 90.0 + "</tilt>" +
+                "<range>" + 10 + "</range>" +
                 "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
         final String command3 = "echo '" +

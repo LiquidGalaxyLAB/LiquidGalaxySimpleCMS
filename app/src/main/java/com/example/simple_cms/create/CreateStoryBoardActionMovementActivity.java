@@ -160,7 +160,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
             loadConnectionStatus(sharedPreferences);
-            LGConnectionTest.cleanQuery();
+            LGConnectionTest.cleanKML();
         }, 1200);
     }
 

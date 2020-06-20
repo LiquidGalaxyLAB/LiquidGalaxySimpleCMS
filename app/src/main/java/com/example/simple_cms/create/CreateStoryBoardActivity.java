@@ -46,7 +46,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     private RecyclerView.Adapter mAdapter;
     private POI currentPoi;
 
-    private Button buttCreate, buttLocation, buttMovements, buttPlaceMark, buttShapes, buttTest, buttDelete, buttSave;
+    private Button buttCreate, buttLocation, buttMovements, buttBallon, buttShapes, buttTest, buttDelete, buttSave;
     private TextView connectionStatus, imageAvailable;
 
     @Override
@@ -61,7 +61,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttLocation = findViewById(R.id.butt_location);
         buttMovements = findViewById(R.id.butt_movements);
-        buttPlaceMark = findViewById(R.id.butt_place_mark);
+        buttBallon = findViewById(R.id.butt_balloon);
         buttShapes = findViewById(R.id.butt_shapes);
         buttDelete = findViewById(R.id.butt_delete);
         buttSave = findViewById(R.id.butt_save);
@@ -84,8 +84,8 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             }
         });
 
-        buttPlaceMark.setOnClickListener( (view) -> {
-            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionMovementActivity.class);
+        buttBallon.setOnClickListener( (view) -> {
+            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBallonActivity.class);
             if(currentPoi == null){
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_placemark));
@@ -107,11 +107,6 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
         v.getBackground().setAlpha(220);
         Button ok = v.findViewById(R.id.ok);
-        ok.setOnClickListener(v1 -> {
-            actions = new ArrayList<>();
-            currentPoi = null;
-            initRecyclerView();
-        });
         TextView textMessage = v.findViewById(R.id.message);
         textMessage.setText(getResources().getString(R.string.alert_message_delete_storyboard));
         textMessage.setTextSize(23);
@@ -122,6 +117,12 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+        ok.setOnClickListener(v1 -> {
+            actions = new ArrayList<>();
+            currentPoi = null;
+            initRecyclerView();
+            dialog.dismiss();
+        });
         cancel.setOnClickListener( v1 ->
                 dialog.dismiss());
     }
@@ -167,6 +168,8 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         if(requestCode == ActionIdentifier.LOCATION_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
             resolvePOIAction(data);
         } else if(requestCode == ActionIdentifier.MOVEMENT_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
+            resolveMovementAction(data);
+        } else if(requestCode == ActionIdentifier.PLACE_MARK_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
             boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
             int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
             if(isDelete){
@@ -174,18 +177,19 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
                     actions.remove(position);
                 }
             }else{
-                Movement movement = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
+                PlaceMark placeMark = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
                 if(isSave){
                     if(position != -1 ){
-                        actions.set(position, movement);
+                        actions.set(position, placeMark);
                     }
                 }else {
-                    actions.add(movement);
+                    actions.add(placeMark);
                 }
             }
         }
     }
+
 
     /**
      * Resolve if the poi is going to be deleted or saved
@@ -200,6 +204,30 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             }
         }else{
             savePOI(data, position);
+        }
+    }
+
+    /**
+     * Resolve if the movement is going to be deleted or saved
+     * @param data Intent with the info
+     */
+    private void resolveMovementAction(@Nullable Intent data) {
+        boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
+        int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        if(isDelete){
+            if(position != -1 ){
+                actions.remove(position);
+            }
+        }else{
+            Movement movement = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            if(isSave){
+                if(position != -1 ){
+                    actions.set(position, movement);
+                }
+            }else {
+                actions.add(movement);
+            }
         }
     }
 
@@ -289,10 +317,10 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         }else if(selected instanceof PlaceMark){
-           /* Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionPlaceMarkActivity.class);
+           Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBallonActivity.class);
             intent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), (PlaceMark) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
-            startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());*/
+            startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
         }else {
             Log.w(TAG_DEBUG, "ERROR");
         }
