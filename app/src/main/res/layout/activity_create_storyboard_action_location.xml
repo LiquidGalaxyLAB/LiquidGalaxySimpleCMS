@@ -108,7 +108,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="10.0000"
+            android:text="37.8120"
             />
 
         <TextView
@@ -141,7 +141,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="10.0000"/>
+            android:text="-122.4783"/>
 
     </LinearLayout>
 
@@ -178,7 +178,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="10.0000"/>
+            android:text="2.0"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="10.0000"/>
+            android:text="10"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -273,7 +273,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="10.0000"/>
+            android:text="90.0"/>
 
     </LinearLayout>
 
@@ -312,7 +312,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="10.0000"/>
+            android:text="10"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -341,7 +341,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="relativeToSeaFloor"/>
+            android:text="clampToGround"/>
 
     </LinearLayout>
 

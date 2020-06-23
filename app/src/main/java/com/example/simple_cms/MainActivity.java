@@ -207,7 +207,35 @@ public class MainActivity extends TobBarActivity {
                 "\n" +
                 "</Document>\n" +
                 "</kml>' > /var/www/html/kmls.txt";
-        final String command4 = "echo 'balloonflytoview=' > /tmp/query.txt";
+        final String command4 = "echo ' " +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                "<ns2:kml xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:xal=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\">\n" +
+                "    <ns2:Document>\n" +
+                "        <ns2:name>My KML File</ns2:name>\n" +
+                "        <ns2:open>1</ns2:open>\n" +
+                "        <ns2:Style id=\"balloonstyle\">\n" +
+                "            <ns2:BalloonStyle id=\"ID\">\n" +
+                "                <ns2:text>&lt;font face='Courier' size='3'&gt;$[description]&lt;/font&gt;</ns2:text>\n" +
+                "            </ns2:BalloonStyle>\n" +
+                "        </ns2:Style>\n" +
+                "        <ns2:Folder>\n" +
+                "            <ns2:name>Placemark -- Points</ns2:name>\n" +
+                "            <ns2:open>1</ns2:open>\n" +
+                "            <ns2:Placemark>\n" +
+                "                <ns2:name>My Placemark</ns2:name>\n" +
+                "                <ns2:visibility>1</ns2:visibility>\n" +
+                "                <ns2:open>1</ns2:open>\n" +
+                "                <ns2:description>&lt;button type=&quot;button&quot; onclick=&quot;callAPI()&quot;/&gt;Call API&lt;/button&gt;&lt;script type=&quot;text/javascript&quot;&gt; function callAPI() { var xhttp = new XMLHttpRequest(); xhttp.open('GET', 'https://jsonplaceholder.typicode.com/todos/1', true); xhttp.send(); }&lt;/script&gt;</ns2:description>\n" +
+                "                <ns2:styleUrl>#balloonstyle</ns2:styleUrl>\n" +
+                "                <ns2:Point>\n" +
+                "                    <ns2:extrude>0</ns2:extrude>\n" +
+                "                    <ns2:altitudeMode>clampToGround</ns2:altitudeMode>\n" +
+                "                    <ns2:coordinates>0.0,0.0</ns2:coordinates>\n" +
+                "                </ns2:Point>\n" +
+                "            </ns2:Placemark>\n" +
+                "        </ns2:Folder>\n" +
+                "    </ns2:Document>\n" +
+                "</ns2:kml>' > /var/www/html/kmls.kml";
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
         sendMessageError(lgCommand, dialog);

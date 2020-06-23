@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.simple_cms.R;
@@ -36,6 +37,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             oldHeading, oldTilt, connectionStatus, imageAvailable,
             locationName, locationNameTitle;
     private SeekBar seekBarHeading, seekBarTilt;
+    private SwitchCompat switchCompatOrbitMode;
 
     private Handler handler = new Handler();
     private POI poi;
@@ -61,6 +63,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
 
         seekBarHeading = findViewById(R.id.seek_bar_heading);
         seekBarTilt = findViewById(R.id.seek_bar_tilt);
+        switchCompatOrbitMode = findViewById(R.id.switch_button);
 
         Button buttTest = findViewById(R.id.butt_test);
         Button buttCancel = findViewById(R.id.butt_cancel);
@@ -88,7 +91,12 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             seekBarHeading.setProgress((int) movement.getNewHeading());
             seekBarTilt.setMax(90);
             seekBarTilt.setProgress((int) movement.getNewTilt());
+            boolean isOrbitMode = movement.isOrbitMode();
+            switchCompatOrbitMode.setChecked(movement.isOrbitMode());
+            setSwitchAndSeekBar(isOrbitMode);
         }
+
+        switchCompatOrbitMode.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitchAndSeekBar(isChecked));
 
 
         seekBarHeading.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -141,6 +149,25 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             deleteMovement() );
     }
 
+
+    /**
+     * Set the seekbar and the switch
+     * @param isOrbitMode If is orbit mode slected or no
+     */
+    private void setSwitchAndSeekBar(boolean isOrbitMode) {
+        if (isOrbitMode) {
+            seekBarTilt.setEnabled(false);
+            seekBarHeading.setEnabled(false);
+            seekBarTilt.setProgressDrawable(ContextCompat.getDrawable(this, R.drawable.custom_seek_bar_black));
+            seekBarHeading.setProgressDrawable(ContextCompat.getDrawable(this, R.drawable.custom_seek_bar_black));
+        } else {
+            seekBarTilt.setEnabled(true);
+            seekBarHeading.setEnabled(true);
+            seekBarTilt.setProgressDrawable(ContextCompat.getDrawable(this, R.drawable.custom_seek_bar));
+            seekBarHeading.setProgressDrawable(ContextCompat.getDrawable(this, R.drawable.custom_seek_bar));
+        }
+    }
+
     /**
      * Test the connection to the liquid galaxy
      */
@@ -150,12 +177,17 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         handler.postDelayed(() -> {
             if(isConnected.get()){
-                POI poiSend = new POI(poi);
-                POICamera poiCamera = poiSend.getPoiCamera();
-                POICamera poiCameraSend = new POICamera(seekBarHeading.getProgress(),
-                        seekBarTilt.getProgress(), poiCamera.getRange(), poiCamera.getAltitudeMode(), poiCamera.getDuration());
-                poiSend.setPoiCamera(poiCameraSend);
-                POIController.getInstance().moveToPOI(poiSend, null);
+                if(switchCompatOrbitMode.isChecked()){
+                    POIController.getInstance().orbit();
+                } else{
+                    POI poiSend = new POI(poi);
+                    POICamera poiCamera = poiSend.getPoiCamera();
+                    POICamera poiCameraSend = new POICamera(seekBarHeading.getProgress(),
+                            seekBarTilt.getProgress(), poiCamera.getRange(),
+                            poiCamera.getAltitudeMode(), poiCamera.getDuration());
+                    poiSend.setPoiCamera(poiCameraSend);
+                    POIController.getInstance().moveToPOI(poiSend, null);
+                }
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
@@ -193,7 +225,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         int seekBarHeadingValue = seekBarHeading.getProgress();
         int seekBarTiltValue = seekBarTilt.getProgress();
         Movement movement = new Movement().setNewHeading(seekBarHeadingValue)
-                .setNewTilt(seekBarTiltValue).setPoi(poi);
+                .setNewTilt(seekBarTiltValue).setPoi(poi).setOrbitMode(switchCompatOrbitMode.isChecked());
         Intent returnInfoIntent = new Intent();
         returnInfoIntent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), movement);
         returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);

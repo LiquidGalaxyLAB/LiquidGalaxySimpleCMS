@@ -84,7 +84,7 @@
             android:textSize="@dimen/primary_text_font_size"/>
 
         <Button
-            android:id="@+id/butt_cancel"
+            android:id="@+id/butt_delete"
             android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
