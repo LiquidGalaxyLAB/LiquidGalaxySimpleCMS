@@ -1,4 +1,4 @@
-package com.example.simple_cms.create.utility.model.placemark;
+package com.example.simple_cms.create.utility.model.balloon;
 
 import android.net.Uri;
 import android.os.Parcel;
@@ -19,16 +19,16 @@ import org.json.JSONObject;
  * The class has a poi with the location information
  * making the class use composition over inheritance
  */
-public class PlaceMark extends Action implements IJsonPacker, Parcelable {
+public class Balloon extends Action implements IJsonPacker, Parcelable {
 
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public PlaceMark createFromParcel(Parcel in) {
-            return new PlaceMark(in);
+        public Balloon createFromParcel(Parcel in) {
+            return new Balloon(in);
         }
 
-        public PlaceMark[] newArray(int size) {
-            return new PlaceMark[size];
+        public Balloon[] newArray(int size) {
+            return new Balloon[size];
         }
     };
 
@@ -41,11 +41,11 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
     /**
      * Empty Constructor
      */
-    public PlaceMark() {
+    public Balloon() {
         super(ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
     }
 
-    public PlaceMark(long id, POI poi, String description, Uri imageUri, Uri videoUri) {
+    public Balloon(long id, POI poi, String description, Uri imageUri, Uri videoUri) {
         super(ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
         this.id = id;
         this.poi = poi;
@@ -54,7 +54,7 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
         this.videoUri = videoUri;
     }
 
-    public PlaceMark(Parcel in) {
+    public Balloon(Parcel in) {
         super(ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
         this.id = in.readLong();
         this.poi = in.readParcelable(POI.class.getClassLoader());
@@ -63,13 +63,13 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
         this.videoUri = in.readParcelable(Uri.class.getClassLoader());
     }
 
-    public PlaceMark(PlaceMark placeMark) {
+    public Balloon(Balloon balloon) {
         super(ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
-        this.id = placeMark.id;
-        this.poi = placeMark.poi;
-        this.description = placeMark.description;
-        this.imageUri = placeMark.imageUri;
-        this.videoUri = placeMark.videoUri;
+        this.id = balloon.id;
+        this.poi = balloon.poi;
+        this.description = balloon.description;
+        this.imageUri = balloon.imageUri;
+        this.videoUri = balloon.videoUri;
     }
 
 
@@ -86,7 +86,7 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
         return poi;
     }
 
-    public PlaceMark setPoi(POI poi) {
+    public Balloon setPoi(POI poi) {
         this.poi = poi;
         return this;
     }
@@ -95,7 +95,7 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
         return description;
     }
 
-    public PlaceMark setDescription(String description) {
+    public Balloon setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -104,7 +104,7 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
         return imageUri;
     }
 
-    public PlaceMark setImageUri(Uri imageUri) {
+    public Balloon setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
         return this;
     }
@@ -113,7 +113,7 @@ public class PlaceMark extends Action implements IJsonPacker, Parcelable {
         return videoUri;
     }
 
-    public PlaceMark setVideoUri(Uri videoUri) {
+    public Balloon setVideoUri(Uri videoUri) {
         this.videoUri = videoUri;
         return this;
     }

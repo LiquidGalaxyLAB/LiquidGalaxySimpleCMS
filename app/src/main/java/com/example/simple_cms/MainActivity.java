@@ -144,98 +144,49 @@ public class MainActivity extends TobBarActivity {
                 "<range>" + 10 + "</range>" +
                 "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
-        final String command3 = "echo '" +
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+
+        final String command4 = "echo '" +
+               "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
                 "\n" +
-                "<Document>\n" +
-                "  <name>gx:AnimatedUpdate example</name>\n" +
+                "  <Placemark>\n" +
+                "    <name>Eiffel Tower</name>\n" +
+                "    <description>\n" +
+                "<![CDATA[\n" +
+                "  <head>\n" +
+                "    <!-- Required meta tags -->\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
                 "\n" +
-                "  <Style id=\"pushpin\">\n" +
-                "    <IconStyle id=\"mystyle\">\n" +
-                "      <Icon>\n" +
-                "        <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>\n" +
-                "        <scale>1.0</scale>\n" +
-                "      </Icon>\n" +
-                "    </IconStyle>\n" +
-                "  </Style>\n" +
+                "    <!-- Bootstrap CSS -->\n" +
+                "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
                 "\n" +
-                "  <Placemark id=\"mountainpin1\">\n" +
-                "    <name>Pin on a mountaintop</name>\n" +
-                "    <styleUrl>#pushpin</styleUrl>\n" +
+                "  </head>\n" +
+                "  <body>\n" +
+                "    <div class=\"p-lg-5\" align=\"center\">\n" +
+                "\n" +
+                "        <h1>" + " Located in Paris, France." + "</h1>\n" +
+                "        <hr>\n" +
+                "        <h3>" + "This description balloon opens \n when the Placemark is loaded.\n" + "</h3>\n" +
+                "        <br>\n" +
+                "\n" +
+                "    </div>\n" +
+                "\n" +
+                "    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
+                "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
+                "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
+                "  </body>\n" +
+                "]]>" +
+                "    </description>\n" +
+                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
                 "    <Point>\n" +
-                "      <coordinates>170.1435558771009,-43.60505741890396,0</coordinates>\n" +
+                "      <coordinates>2.294785,48.858093,0</coordinates>\n" +
                 "    </Point>\n" +
                 "  </Placemark>\n" +
                 "\n" +
-                "  <gx:Tour>\n" +
-                "    <name>12345</name>\n" +
-                "\n" +
-                "    <gx:Playlist>\n" +
-                "\n" +
-                "      <gx:FlyTo>\n" +
-                "        <gx:flyToMode>bounce</gx:flyToMode>\n" +
-                "        <gx:duration>3</gx:duration>\n" +
-                "        <Camera>\n" +
-                "          <longitude>170.157</longitude>\n" +
-                "          <latitude>-43.671</latitude>\n" +
-                "          <altitude>9700</altitude>\n" +
-                "          <heading>-6.333</heading>\n" +
-                "          <tilt>33.5</tilt>\n" +
-                "        </Camera>\n" +
-                "      </gx:FlyTo>\n" +
-                "\n" +
-                "      <gx:AnimatedUpdate>\n" +
-                "        <gx:duration>5</gx:duration>\n" +
-                "        <Update>\n" +
-                "          <targetHref></targetHref>\n" +
-                "          <Change>\n" +
-                "            <IconStyle targetId=\"mystyle\">\n" +
-                "              <scale>10.0</scale>\n" +
-                "            </IconStyle>\n" +
-                "          </Change>\n" +
-                "        </Update>\n" +
-                "      </gx:AnimatedUpdate>\n" +
-                "\n" +
-                "      <gx:Wait>\n" +
-                "        <gx:duration>5</gx:duration>\n" +
-                "      </gx:Wait>\n" +
-                "\n" +
-                "    </gx:Playlist>\n" +
-                "  </gx:Tour>\n" +
-                "\n" +
-                "</Document>\n" +
-                "</kml>' > /var/www/html/kmls.txt";
-        final String command4 = "echo ' " +
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                "<ns2:kml xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:ns2=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:xal=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\">\n" +
-                "    <ns2:Document>\n" +
-                "        <ns2:name>My KML File</ns2:name>\n" +
-                "        <ns2:open>1</ns2:open>\n" +
-                "        <ns2:Style id=\"balloonstyle\">\n" +
-                "            <ns2:BalloonStyle id=\"ID\">\n" +
-                "                <ns2:text>&lt;font face='Courier' size='3'&gt;$[description]&lt;/font&gt;</ns2:text>\n" +
-                "            </ns2:BalloonStyle>\n" +
-                "        </ns2:Style>\n" +
-                "        <ns2:Folder>\n" +
-                "            <ns2:name>Placemark -- Points</ns2:name>\n" +
-                "            <ns2:open>1</ns2:open>\n" +
-                "            <ns2:Placemark>\n" +
-                "                <ns2:name>My Placemark</ns2:name>\n" +
-                "                <ns2:visibility>1</ns2:visibility>\n" +
-                "                <ns2:open>1</ns2:open>\n" +
-                "                <ns2:description>&lt;button type=&quot;button&quot; onclick=&quot;callAPI()&quot;/&gt;Call API&lt;/button&gt;&lt;script type=&quot;text/javascript&quot;&gt; function callAPI() { var xhttp = new XMLHttpRequest(); xhttp.open('GET', 'https://jsonplaceholder.typicode.com/todos/1', true); xhttp.send(); }&lt;/script&gt;</ns2:description>\n" +
-                "                <ns2:styleUrl>#balloonstyle</ns2:styleUrl>\n" +
-                "                <ns2:Point>\n" +
-                "                    <ns2:extrude>0</ns2:extrude>\n" +
-                "                    <ns2:altitudeMode>clampToGround</ns2:altitudeMode>\n" +
-                "                    <ns2:coordinates>0.0,0.0</ns2:coordinates>\n" +
-                "                </ns2:Point>\n" +
-                "            </ns2:Placemark>\n" +
-                "        </ns2:Folder>\n" +
-                "    </ns2:Document>\n" +
-                "</ns2:kml>' > /var/www/html/kmls.kml";
+                "</kml>"
+               + "' > /var/www/html/kmls.kml";
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
         sendMessageError(lgCommand, dialog);

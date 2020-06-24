@@ -24,7 +24,7 @@ import com.example.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.movement.Movement;
-import com.example.simple_cms.create.utility.model.placemark.PlaceMark;
+import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
@@ -45,6 +45,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     ArrayList<Action> actions = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
     private POI currentPoi;
+    private int currentPoiPosition;
 
     private Button buttCreate, buttLocation, buttMovements, buttBallon, buttShapes, buttTest, buttDelete, buttSave;
     private TextView connectionStatus, imageAvailable;
@@ -70,6 +71,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttLocation.setOnClickListener( (view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
+            intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
             startActivityForResult(intent, ActionIdentifier.LOCATION_ACTIVITY.getId());
         });
 
@@ -85,7 +87,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         });
 
         buttBallon.setOnClickListener( (view) -> {
-            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBallonActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
             if(currentPoi == null){
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_placemark));
@@ -120,6 +122,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         ok.setOnClickListener(v1 -> {
             actions = new ArrayList<>();
             currentPoi = null;
+            currentPoiPosition = 0;
             initRecyclerView();
             dialog.dismiss();
         });
@@ -177,14 +180,14 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
                     actions.remove(position);
                 }
             }else{
-                PlaceMark placeMark = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
+                Balloon balloon = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
                 if(isSave){
                     if(position != -1 ){
-                        actions.set(position, placeMark);
+                        actions.set(position, balloon);
                     }
                 }else {
-                    actions.add(placeMark);
+                    actions.add(balloon);
                 }
             }
         }
@@ -239,18 +242,21 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         Action action;
         ArrayList<Action> newActions = new ArrayList<>();
         POI newCurrent = null;
+        int newPosition = 0;
         int startNewPoi = -1;
         for (int i = 0; i < position; i++){
             action = actions.get(i);
             newActions.add(action);
             if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
                 newCurrent = (POI) action;
+                newPosition = i;
             }
         }
         for(int i = position + 1; i < actions.size(); i++ ){
             if(actions.get(i).getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
                 startNewPoi = i;
                 newCurrent = (POI) actions.get(i);
+                newPosition = i;
                 newActions.add(actions.get(i));
                 break;
             }
@@ -261,9 +267,11 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             newActions.add(action);
             if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
                 newCurrent = (POI) action;
+                newPosition = i;
             }
         }
         currentPoi = newCurrent;
+        currentPoiPosition = newPosition;
         actions.clear();
         actions.addAll(newActions);
     }
@@ -279,6 +287,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         if(isSave){
             if(position != -1 ){
                 actions.set(position, poi);
+                if(currentPoiPosition == position) currentPoi = poi;
                 Action action;
                 for(int i = position + 1; i < actions.size(); i++ ){
                     action = actions.get(i);
@@ -293,6 +302,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         }else{
             actions.add(poi);
             currentPoi = poi;
+            currentPoiPosition = position;
         }
     }
 
@@ -316,9 +326,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             intent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), (Movement) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
-        }else if(selected instanceof PlaceMark){
-           Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBallonActivity.class);
-            intent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), (PlaceMark) selected);
+        }else if(selected instanceof Balloon){
+           Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
+            intent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), (Balloon) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
         }else {

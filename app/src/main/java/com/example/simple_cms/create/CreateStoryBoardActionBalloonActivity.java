@@ -23,16 +23,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.simple_cms.R;
+import com.example.simple_cms.create.utility.connection.LGConnectionTest;
+import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
-import com.example.simple_cms.create.utility.model.placemark.PlaceMark;
+import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.utility.ConstantPrefs;
 
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * This class is in charge of getting the information of placemark action
  */
-public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
+public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
     private static final String TAG_DEBUG = "CreateStoryBoardActionPlaceMarkActivity";
 
@@ -47,7 +52,6 @@ public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
     private EditText description;
     private ImageView imageView;
     private VideoView videoView;
-    private Button buttonAddImage, buttonAddVideo;
 
     private Handler handler = new Handler();
     private POI poi;
@@ -68,13 +72,13 @@ public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
         imageView = findViewById(R.id.image_view);
         videoView = findViewById(R.id.video_view);
-        buttonAddImage = findViewById(R.id.butt_add_image);
-        buttonAddVideo = findViewById(R.id.butt_add_video);
 
         Button buttTest = findViewById(R.id.butt_test);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);
+        Button buttonAddImage = findViewById(R.id.butt_add_image);
+        Button buttonAddVideo = findViewById(R.id.butt_add_video);
 
 
         Intent intent = getIntent();
@@ -83,18 +87,18 @@ public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
             setTextView();
         }
 
-        PlaceMark placeMark = intent.getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
-        if (placeMark != null) {
+        Balloon balloon = intent.getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
+        if (balloon != null) {
             position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
             buttDelete.setVisibility(View.VISIBLE);
-            poi = placeMark.getPoi();
+            poi = balloon.getPoi();
             setTextView();
-            description.setText(placeMark.getDescription());
-            imageUri = placeMark.getImageUri();
+            description.setText(balloon.getDescription());
+            imageUri = balloon.getImageUri();
             imageView.setImageURI(imageUri);
-            videoUri = placeMark.getVideoUri();
+            videoUri = balloon.getVideoUri();
             if(videoUri != null){
                 setVideoView();
             }
@@ -124,9 +128,9 @@ public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
                 finish()
         );
 
-        buttTest.setOnClickListener((view) -> {
-
-        });
+        buttTest.setOnClickListener((view) ->
+            testConnection()
+        );
 
         buttAdd.setOnClickListener((view) ->
                 addPlaceMark()
@@ -137,11 +141,30 @@ public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
         );
     }
 
+    private void testConnection() {
+        AtomicBoolean isConnected = new AtomicBoolean(false);
+        LGConnectionTest.testPriorConnection(this, isConnected);
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        handler.postDelayed(() -> {
+            if(isConnected.get()){
+                Balloon balloon = new Balloon();
+                balloon.setPoi(poi).setDescription(description.getText().toString())
+                        .setImageUri(imageUri).setVideoUri(videoUri);
+                ActionController.getInstance().sendBalloon(balloon, null);
+            }else{
+                connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
+            }
+            loadConnectionStatus(sharedPreferences);
+            LGConnectionTest.cleanKML();
+            LGConnectionTest.cleanQuery();
+        }, 1200);
+    }
+
 
     private void addPlaceMark() {
-        PlaceMark placeMark = new PlaceMark().setPoi(poi).setDescription(description.getText().toString()).setImageUri(imageUri).setVideoUri(videoUri);
+        Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString()).setImageUri(imageUri).setVideoUri(videoUri);
         Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), placeMark);
+        returnInfoIntent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), balloon);
         returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
         returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
         setResult(Activity.RESULT_OK, returnInfoIntent);
@@ -190,10 +213,10 @@ public class CreateStoryBoardActionBallonActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            imageUri = data.getData();
+            imageUri = Objects.requireNonNull(data).getData();
             imageView.setImageURI(imageUri);
         } else if (resultCode == RESULT_OK && requestCode == VIDEO_PICK_CODE) {
-            videoUri = data.getData();
+            videoUri = Objects.requireNonNull(data).getData();
             setVideoView();
         } else {
             Log.w(TAG_DEBUG, "ERROR there is no other request code type");

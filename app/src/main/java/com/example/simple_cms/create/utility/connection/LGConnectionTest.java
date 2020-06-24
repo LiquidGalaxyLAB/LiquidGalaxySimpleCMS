@@ -38,11 +38,12 @@ public class LGConnectionTest {
                 dialog.dismiss();
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
                 CustomDialogUtility.showDialog(activity, activity.getResources().getString(R.string.activity_connection_error));
+                atomicBoolean.set(false);
             }else{
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), true);
+                atomicBoolean.set(true);
             }
             editor.apply();
-            atomicBoolean.set(true);
         }, 1000);
     }
 

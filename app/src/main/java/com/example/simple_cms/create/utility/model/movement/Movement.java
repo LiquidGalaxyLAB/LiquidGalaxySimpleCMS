@@ -1,10 +1,12 @@
 package com.example.simple_cms.create.utility.model.movement;
 
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.simple_cms.create.utility.IJsonPacker;
 import com.example.simple_cms.create.utility.model.Action;
@@ -35,6 +37,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     private POI poi;
     private double newHeading;
     private double newTilt;
+    private boolean isOrbitMode;
 
     /**
      * Empty Constructor
@@ -43,12 +46,13 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         super(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
     }
 
-    public Movement(long id, POI poi, double newHeading, double newTilt){
+    public Movement(long id, POI poi, double newHeading, double newTilt, boolean isOrbitMode){
         super(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         this.id = id;
         this.poi = poi;
         this.newHeading = newHeading;
         this.newTilt = newTilt;
+        this.isOrbitMode = isOrbitMode;
     }
 
     public Movement(Parcel in) {
@@ -57,6 +61,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.poi = in.readParcelable(POI.class.getClassLoader());
         this.newHeading = in.readDouble();
         this.newTilt = in.readDouble();
+        this.isOrbitMode = in.readInt() != 0;
     }
 
     public Movement(Movement movement) {
@@ -65,6 +70,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.poi = movement.poi;
         this.newHeading = movement.newHeading;
         this.newTilt = movement.newTilt;
+        this.isOrbitMode = movement.isOrbitMode;
     }
 
     public long getId() {
@@ -102,6 +108,15 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         return this;
     }
 
+    public boolean isOrbitMode() {
+        return isOrbitMode;
+    }
+
+    public Movement setOrbitMode(boolean orbitMode) {
+        isOrbitMode = orbitMode;
+        return this;
+    }
+
     @Override
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
@@ -110,6 +125,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         obj.put("movement_poi", poi);
         obj.put("movement_new_heading", newHeading);
         obj.put("movement_new_tilt", newTilt);
+        obj.put("movement_orbit_mode", isOrbitMode);
 
         return obj;
     }
@@ -120,7 +136,8 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         id = obj.getLong("id");
         poi = (POI) obj.get("movement_poi");
         newHeading = obj.getDouble("movement_new_heading");
-        newHeading = obj.getDouble("movement_new_tilt");
+        newTilt = obj.getDouble("movement_new_tilt");
+        isOrbitMode = obj.getBoolean("movement_orbit_mode");
 
         return this;
     }
@@ -143,5 +160,6 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         parcel.writeParcelable(poi, flags);
         parcel.writeDouble(newHeading);
         parcel.writeDouble(newTilt);
+        parcel.writeInt(isOrbitMode ? 1 : 0);
     }
 }

@@ -21,7 +21,7 @@ import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.movement.Movement;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
-import com.example.simple_cms.create.utility.model.poi.POIController;
+import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.utility.ConstantPrefs;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -178,7 +178,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             if(isConnected.get()){
                 if(switchCompatOrbitMode.isChecked()){
-                    POIController.getInstance().orbit();
+                    ActionController.getInstance().orbit();
                 } else{
                     POI poiSend = new POI(poi);
                     POICamera poiCamera = poiSend.getPoiCamera();
@@ -186,7 +186,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
                             seekBarTilt.getProgress(), poiCamera.getRange(),
                             poiCamera.getAltitudeMode(), poiCamera.getDuration());
                     poiSend.setPoiCamera(poiCameraSend);
-                    POIController.getInstance().moveToPOI(poiSend, null);
+                    ActionController.getInstance().moveToPOI(poiSend, null);
                 }
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));

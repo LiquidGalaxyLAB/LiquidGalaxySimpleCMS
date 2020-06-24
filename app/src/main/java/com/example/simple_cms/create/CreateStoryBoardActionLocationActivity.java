@@ -22,7 +22,7 @@ import com.example.simple_cms.create.utility.connection.LGConnectionTest;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
-import com.example.simple_cms.create.utility.model.poi.POIController;
+import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.create.utility.model.poi.POILocation;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -67,8 +67,8 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         POI poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
         if(poi != null){
-            position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
             buttDelete.setVisibility(View.VISIBLE);
@@ -161,7 +161,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
                     POILocation poiLocation = new POILocation("Test", Double.parseDouble(longitudeText), Double.parseDouble(latitudeText), Double.parseDouble(altitudeText));
                     POICamera poiCamera = new POICamera(Double.parseDouble(headingText), Double.parseDouble(tiltText), Double.parseDouble(rangeText), altitudeModeText, Integer.parseInt(durationText));
                     POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
-                    POIController.getInstance().moveToPOI(poi, null);
+                    ActionController.getInstance().moveToPOI(poi, null);
                 }else{
                     connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
@@ -214,6 +214,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
                 tiltText, rangeText, altitudeModeText)){
             String fileNameText = file_name.getText().toString();
             if(!fileNameText.equals("")){
+                saveData(latitudeText, longitudeText, altitudeText, durationText, headingText, tiltText, rangeText, altitudeModeText);
                     POILocation poiLocation = new POILocation(fileNameText, Double.parseDouble(longitudeText),
                             Double.parseDouble(latitudeText), Double.parseDouble(altitudeText));
                     POICamera poiCamera = new POICamera(Double.parseDouble(headingText), Double.parseDouble(tiltText),
