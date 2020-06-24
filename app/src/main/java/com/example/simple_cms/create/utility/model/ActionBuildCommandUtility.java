@@ -55,8 +55,8 @@ class ActionBuildCommandUtility {
                 "\n" +
                 "        <h5>" + balloon.getDescription() + "</h3>\n" +
                 "        <br>\n" +
-               /* "        <img src=" +  balloon.getImageUri() + " width=\"40\" height=\"40\">"  +
-                "        <video src=" + balloon.getVideoUri() + "width=\"60\" height=\"40\" autoplay muted loop></video>" +*/
+                "        <img src=\"/var/www/html/img/" +  balloon.getImageUri() + /*" width=\"40\" height=\"40\*/"\">"  +
+                /*"        <video src=" + balloon.getVideoUri() + "width=\"60\" height=\"40\" autoplay muted loop></video>" +*/
                 "\n" +
                 "    </div>\n" +
                 "\n" +
