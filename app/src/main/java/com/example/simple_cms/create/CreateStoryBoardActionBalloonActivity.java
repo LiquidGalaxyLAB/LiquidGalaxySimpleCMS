@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,8 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.simple_cms.R;
-import com.example.simple_cms.connection.LGCommand;
-import com.example.simple_cms.connection.LGConnectionManager;
 import com.example.simple_cms.create.utility.connection.LGConnectionTest;
 import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
@@ -155,15 +151,23 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
                 Log.w(TAG_DEBUG, "image uri: " + imageUri);
                 balloon.setPoi(poi).setDescription(description.getText().toString())
                         .setImageUri(imageUri).setVideoUri(videoUri);
-                ActionController.getInstance().sendBalloon(balloon, null);
+                ActionController.getInstance().sendCreateImageFolder(null);
+                ActionController.getInstance().sendBalloonImage(sharedPreferences, imageUri, null);
 
-                String username = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "lg");
+
+
+                /*ActionController.getInstance().sendBalloon(balloon, null);
+                ActionController.getInstance().sendNetworkLink(null);*/
+                ActionController.getInstance().sendChangeBallon(balloon, null);
+                /*ActionController.getInstance().sendNetworkLinkUpdate(null);*/
+
+/*                String username = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "lg");
                 String hostPort = sharedPreferences.getString(ConstantPrefs.URI_TEXT.name(), "192.168.0.17");
                 String[] hostNPort = hostPort.split(":");
                 String hostname = hostNPort[0];
                 String command = "echo ' scp " + imageUri + " " + username + "@" + hostname + ":/var/www/html/img/" + "' > /";
                 LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> {});
-                LGConnectionManager.getInstance().addCommandToLG(lgCommand);
+                LGConnectionManager.getInstance().addCommandToLG(lgCommand);*/
 
                 /*String command = "echo 'google-earth-pro  /var/www/html/kmls.kml' > /";
                 LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> {});
@@ -172,8 +176,6 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
             loadConnectionStatus(sharedPreferences);
-            LGConnectionTest.cleanKML();
-            LGConnectionTest.cleanQuery();
         }, 1200);
     }
 

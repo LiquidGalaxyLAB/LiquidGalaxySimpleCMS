@@ -1,6 +1,7 @@
 package com.example.simple_cms.create.utility.model;
 
-import android.util.Log;
+import android.content.SharedPreferences;
+import android.net.Uri;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
@@ -49,7 +50,7 @@ public class ActionController {
      * @return LGCommand
      */
     private LGCommand sendPoiToLG(POI poi, LGCommand.Listener listener) {
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandPOI(poi), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandPOITest(poi), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
                 listener.onResponse(result);
             }
@@ -92,10 +93,8 @@ public class ActionController {
         newPoi.getPoiCamera().setHeading(initHeading);
     }
 
-
-    public void sendBalloon(Balloon balloon, LGCommand.Listener listener){
-        currentPOI = balloon.getPoi();
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloon(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+    public void sendNetworkLink(LGCommand.Listener listener){
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonNetworkLink(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
                 listener.onResponse(result);
             }
@@ -105,4 +104,60 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
+    public void sendBalloon(Balloon balloon, LGCommand.Listener listener){
+        currentPOI = balloon.getPoi();
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
+    public void sendNetworkLinkUpdate(LGCommand.Listener listener){
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonUpdateNetworkLink(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
+    public void sendChangeBallon(Balloon balloon, LGCommand.Listener listener){
+        currentPOI = balloon.getPoi();
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandChangeBalloon(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
+    public void sendCreateImageFolder(LGCommand.Listener listener) {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
+    public void sendBalloonImage(SharedPreferences sharedPreferences, Uri imageUri, LGCommand.Listener listener) {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonImage(sharedPreferences, imageUri), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
 }
