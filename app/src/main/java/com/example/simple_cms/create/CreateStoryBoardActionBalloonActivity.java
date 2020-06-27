@@ -25,9 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.simple_cms.R;
-import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.connection.LGConnectionSendFile;
 import com.example.simple_cms.create.utility.connection.LGConnectionTest;
-import com.example.simple_cms.create.utility.model.ActionBuildCommandUtility;
 import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
@@ -35,24 +34,20 @@ import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.utility.ConstantPrefs;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * This class is in charge of getting the information of placemark action
+ * This class is in charge of getting the information of balloon action
  */
 public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
-    private static final String TAG_DEBUG = "CreateStoryBoardActionPlaceMarkActivity";
+    private static final String TAG_DEBUG = "CreateStoryBoardActionBalloonActivity";
 
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE_IMAGE = 1001;
     private static final int VIDEO_PICK_CODE = 1002;
     private static final int PERMISSION_CODE_VIDEO = 1003;
-    private static final int PERMISSION_CODE_SEND_IMAGE = 1004;
 
     private TextView connectionStatus, imageAvailable,
             locationName, locationNameTitle;
@@ -66,7 +61,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private boolean isSave = false;
     private int position = -1;
     private Uri imageUri;
+    private String imagePath;
     private Uri videoUri;
+    private String videoPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +92,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             setTextView();
         }
 
-        Balloon balloon = intent.getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
+        Balloon balloon = intent.getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
         if (balloon != null) {
             position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
@@ -105,13 +102,12 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             setTextView();
             description.setText(balloon.getDescription());
             imageUri = balloon.getImageUri();
-            imageView.setImageURI(imageUri);
+            if(imageUri != null) imageView.setImageURI(imageUri);
+            imagePath = balloon.getImagePath();
             videoUri = balloon.getVideoUri();
-            if(videoUri != null){
-                setVideoView();
-            }
+            if(videoUri != null) setVideoView();
+            videoPath = balloon.getVideoPath();
         }
-
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         loadConnectionStatus(sharedPreferences);
@@ -141,11 +137,11 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         );
 
         buttAdd.setOnClickListener((view) ->
-                addPlaceMark()
+                addBalloon()
         );
 
         buttDelete.setOnClickListener((view) ->
-            deletePlaceMark()
+            deleteBalloon()
         );
     }
 
@@ -156,37 +152,28 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             if(isConnected.get()){
                 Balloon balloon = new Balloon();
-                Log.w(TAG_DEBUG, "image uri: " + imageUri);
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_CODE_SEND_IMAGE);
-
-
+                if(imageUri != null || videoUri != null) ActionController.getInstance().createResourcesFolder(null);
+                if(imageUri != null){
+                    imagePath = getFilePath(imageUri);
+                    LGConnectionSendFile lgConnectionSendFile = LGConnectionSendFile.getInstance();
+                    lgConnectionSendFile.addPath(imagePath);
+                    lgConnectionSendFile.startConnection();
+                }
+                if(videoUri != null){
+                    videoPath = getFilePath(videoUri);
+                    LGConnectionSendFile lgConnectionSendFile = LGConnectionSendFile.getInstance();
+                    lgConnectionSendFile.addPath(videoPath);
+                    lgConnectionSendFile.startConnection();
+                }
                 balloon.setPoi(poi).setDescription(description.getText().toString())
-                        .setImageUri(imageUri).setVideoUri(videoUri);
-                ActionController.getInstance().sendCreateImageFolder(null);
-/*
-                ActionController.getInstance().sendBalloonImage(sharedPreferences, path, null);
-*/
-
-
-
-                /*ActionController.getInstance().sendBalloon(balloon, null);
-                ActionController.getInstance().sendNetworkLink(null);*/
+                        .setImageUri(imageUri).setImagePath(imagePath).setVideoUri(videoUri).setVideoPath(videoPath);
+                ActionController.getInstance().sendBalloon(balloon, null);
+                /*ActionController.getInstance().sendNetworkLink(null);*/
 /*
                 ActionController.getInstance().sendChangeBallon(balloon, null);
 */
                 /*ActionController.getInstance().sendNetworkLinkUpdate(null);*/
 
-/*                String username = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "lg");
-                String hostPort = sharedPreferences.getString(ConstantPrefs.URI_TEXT.name(), "192.168.0.17");
-                String[] hostNPort = hostPort.split(":");
-                String hostname = hostNPort[0];
-                String command = "echo ' scp " + imageUri + " " + username + "@" + hostname + ":/var/www/html/img/" + "' > /";
-                LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> {});
-                LGConnectionManager.getInstance().addCommandToLG(lgCommand);*/
-
-                /*String command = "echo 'google-earth-pro  /var/www/html/kmls.kml' > /";
-                LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> {});
-                LGConnectionManager.getInstance().addCommandToLG(lgCommand);*/
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
@@ -194,28 +181,28 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         }, 1200);
     }
 
-    private void sendImageLG() {
-        Cursor cursor = getContentResolver().query(imageUri, null, null, null, null);
+    private String getFilePath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         Objects.requireNonNull(cursor).moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         String imagePath = cursor.getString(idx);
         cursor.close();
-        Log.w(TAG_DEBUG, "Path: " + imagePath);
-        LGConnectionManager.getInstance().sendImage(imagePath);
+        return imagePath;
     }
 
 
-    private void addPlaceMark() {
-        Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString()).setImageUri(imageUri).setVideoUri(videoUri);
+    private void addBalloon() {
+        Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString())
+                .setImageUri(imageUri).setImagePath(imagePath).setVideoUri(videoUri).setVideoPath(videoPath);
         Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), balloon);
+        returnInfoIntent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), balloon);
         returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
         returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
         setResult(Activity.RESULT_OK, returnInfoIntent);
         finish();
     }
 
-    private void deletePlaceMark() {
+    private void deleteBalloon() {
         Intent returnInfoIntent = new Intent();
         returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
         returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
@@ -235,16 +222,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             }
             case PERMISSION_CODE_VIDEO: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    pickImageFromGallery();
+                    pickVideoFromGallery();
                 } else {
                     CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permision_denied_image));
-                }
-            }
-            case PERMISSION_CODE_SEND_IMAGE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendImageLG();
-                } else {
-                    CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permision_denied_test_image));
                 }
             }
         }
@@ -266,9 +246,13 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             imageUri = Objects.requireNonNull(data).getData();
             imageView.setImageURI(imageUri);
+            imagePath = getFilePath(imageUri);
+            Log.w(TAG_DEBUG, "imagePath: " + imagePath);
         } else if (resultCode == RESULT_OK && requestCode == VIDEO_PICK_CODE) {
             videoUri = Objects.requireNonNull(data).getData();
             setVideoView();
+            videoPath = getFilePath(videoUri);
+            Log.w(TAG_DEBUG, "videoPath: " + videoPath);
         } else {
             Log.w(TAG_DEBUG, "ERROR there is no other request code type");
         }

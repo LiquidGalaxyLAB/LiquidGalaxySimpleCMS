@@ -1,10 +1,6 @@
 package com.example.simple_cms.create.utility.model;
 
 
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.util.Log;
-
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
@@ -14,8 +10,7 @@ public class ActionBuildCommandUtility {
 
     private static String TEST_PLACE_MARK_ID = "testPlaceMark12345";
     private static String BASE_PATH = "/var/www/html/";
-    private static String IMAGE_FOLDER_NAME = "image/";
-    public static String IMAGE_PATH = BASE_PATH + IMAGE_FOLDER_NAME;
+    public static String RESOURCES_FOLDER_PATH = BASE_PATH + "resources/";
 
 
     static String buildCommandPOITest(POI poi) {
@@ -80,8 +75,17 @@ public class ActionBuildCommandUtility {
                 "\n" +
                 "        <h5>" + balloon.getDescription() + "</h3>\n" +
                 "        <br>\n" +
-                /*"        <img src=\"/var/www/html/img/" +  balloon.getImageUri() + *//*" width=\"40\" height=\"40\*//*"\">"  +*/
-                /*"        <video src=" + balloon.getVideoUri() + "width=\"60\" height=\"40\" autoplay muted loop></video>" +*/
+                "        <img src=\"" +  ActionBuildCommandUtility.RESOURCES_FOLDER_PATH +  getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
+                "        <br>\n"  +
+                "<div style=\"margin-left: auto; margin-right:auto;\">\n" +
+                "              <object height=\"175\" width=\"212\">\n" +
+                "                <param value=\"" + ActionBuildCommandUtility.RESOURCES_FOLDER_PATH + getFileName(balloon.getVideoPath()) +  "\" name=\"video\">\n" +
+                "                <param value=\"transparent\" name=\"wmode\">\n" +
+                "                <embed wmode=\"transparent\" type=\"application/x-shockwave-flash\"\n" +
+                "                   src=\"" + ActionBuildCommandUtility.RESOURCES_FOLDER_PATH + getFileName(balloon.getVideoPath()) + "\" height=\"175\"\n" +
+                "                   width=\"212\">\n" +
+                "               </object>\n" +
+                "             </div>\n" +
                 "\n" +
                 "    </div>\n" +
                 "\n" +
@@ -91,7 +95,7 @@ public class ActionBuildCommandUtility {
                 "  </body>\n" +
                 "]]>" +
                 "    </description>\n" +
-                "    <gx:balloonVisibility>0</gx:balloonVisibility>\n" +
+                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
                 "    <Point>\n" +
                 "      <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
                 "    </Point>\n" +
@@ -101,6 +105,11 @@ public class ActionBuildCommandUtility {
                 "' > " +
                 BASE_PATH +
                 "balloon.kml";
+    }
+
+    private static String getFileName(String imagePath) {
+        String[] route = imagePath.split("/");
+        return route[route.length - 1];
     }
 
     static String buildCommandBalloonUpdateNetworkLink() {
@@ -173,7 +182,7 @@ public class ActionBuildCommandUtility {
                 "balloonUpdate.kml";
     }
 
-    static String buildCommandCreateFolder() {
-        return "mkdir -p " + IMAGE_PATH;
+    static String buildCommandCreateResourcesFolder() {
+        return "mkdir -p " + RESOURCES_FOLDER_PATH;
     }
 }

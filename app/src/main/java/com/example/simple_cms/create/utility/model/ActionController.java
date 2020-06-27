@@ -1,8 +1,5 @@
 package com.example.simple_cms.create.utility.model;
 
-import android.content.SharedPreferences;
-import android.net.Uri;
-
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
@@ -139,8 +136,8 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
-    public void sendCreateImageFolder(LGCommand.Listener listener) {
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+    public void createResourcesFolder(LGCommand.Listener listener) {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateResourcesFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
                 listener.onResponse(result);
             }

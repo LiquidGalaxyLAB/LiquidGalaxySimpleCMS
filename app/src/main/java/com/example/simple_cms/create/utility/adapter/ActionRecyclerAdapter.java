@@ -48,7 +48,7 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_location));
         }else if(type == ActionIdentifier.MOVEMENT_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_movements));
-        }else if(type == ActionIdentifier.PLACE_MARK_ACTIVITY.getId()){
+        }else if(type == ActionIdentifier.BALLOON_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_graphic));
         }else if(type == ActionIdentifier.SHAPES_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_shape));

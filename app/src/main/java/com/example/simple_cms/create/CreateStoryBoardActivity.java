@@ -26,6 +26,7 @@ import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.movement.Movement;
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
+import com.example.simple_cms.create.utility.model.shape.Shape;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -37,7 +38,7 @@ import java.util.Objects;
  * This activity is in charge of creating the storyboards with the respective different actions
  */
 public class CreateStoryBoardActivity extends TobBarActivity implements
-        ActionRecyclerAdapter.OnNoteListener{
+        ActionRecyclerAdapter.OnNoteListener {
 
     private static final String TAG_DEBUG = "CreateStoryBoardActivity";
 
@@ -69,15 +70,15 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
 
-        buttLocation.setOnClickListener( (view) -> {
+        buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
             intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
             startActivityForResult(intent, ActionIdentifier.LOCATION_ACTIVITY.getId());
         });
 
-        buttMovements.setOnClickListener( (view) -> {
+        buttMovements.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionMovementActivity.class);
-            if(currentPoi == null){
+            if (currentPoi == null) {
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_movement));
             } else {
@@ -86,20 +87,23 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             }
         });
 
-        buttBallon.setOnClickListener( (view) -> {
+        buttBallon.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
-            if(currentPoi == null){
+            if (currentPoi == null) {
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
-                        getResources().getString(R.string.You_need_a_location_to_create_a_placemark));
+                        getResources().getString(R.string.You_need_a_location_to_create_a_balloon));
             } else {
                 intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), currentPoi);
-                startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
+                startActivityForResult(intent, ActionIdentifier.BALLOON_ACTIVITY.getId());
             }
         });
 
-        buttDelete.setOnClickListener( (view) -> {
-            deleteStoryboard();
+        buttShapes.setOnClickListener((view) -> {
+            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionShapeActivity.class);
+            startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
         });
+
+        buttDelete.setOnClickListener((view) -> deleteStoryboard());
 
         changeButtonClickableBackgroundColor();
     }
@@ -126,7 +130,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             initRecyclerView();
             dialog.dismiss();
         });
-        cancel.setOnClickListener( v1 ->
+        cancel.setOnClickListener(v1 ->
                 dialog.dismiss());
     }
 
@@ -144,7 +148,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
-        if(isConnected){
+        if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
             imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         }
@@ -168,74 +172,106 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ActionIdentifier.LOCATION_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
+        if (requestCode == ActionIdentifier.LOCATION_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
             resolvePOIAction(data);
-        } else if(requestCode == ActionIdentifier.MOVEMENT_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == ActionIdentifier.MOVEMENT_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
             resolveMovementAction(data);
-        } else if(requestCode == ActionIdentifier.PLACE_MARK_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == ActionIdentifier.BALLOON_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
+            resolveBalloonAction(data);
+        } else if (requestCode == ActionIdentifier.SHAPES_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
             boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
             int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
-            if(isDelete){
-                if(position != -1 ){
+            if (isDelete) {
+                if (position != -1) {
                     actions.remove(position);
                 }
-            }else{
-                Balloon balloon = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name());
+            } else {
+                Shape shape = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-                if(isSave){
-                    if(position != -1 ){
-                        actions.set(position, balloon);
+                if (isSave) {
+                    if (position != -1) {
+                        actions.set(position, shape);
                     }
-                }else {
-                    actions.add(balloon);
+                } else {
+                    actions.add(shape);
                 }
             }
+        } else{
+            Log.w(TAG_DEBUG, "ERROR Result");
         }
     }
 
 
     /**
-     * Resolve if the poi is going to be deleted or saved
+     * Resolve if the poi action is going to be deleted or saved
+     *
      * @param data Intent with the info
      */
     private void resolvePOIAction(@Nullable Intent data) {
         boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
         int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
-        if(isDelete){
-            if(position != -1 ){
+        if (isDelete) {
+            if (position != -1) {
                 deletePOI(position);
             }
-        }else{
+        } else {
             savePOI(data, position);
         }
     }
 
     /**
-     * Resolve if the movement is going to be deleted or saved
+     * Resolve if the movement action is going to be deleted or saved
+     *
      * @param data Intent with the info
      */
     private void resolveMovementAction(@Nullable Intent data) {
         boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
         int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
-        if(isDelete){
-            if(position != -1 ){
+        if (isDelete) {
+            if (position != -1) {
                 actions.remove(position);
             }
-        }else{
+        } else {
             Movement movement = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
             boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            if(isSave){
-                if(position != -1 ){
+            if (isSave) {
+                if (position != -1) {
                     actions.set(position, movement);
                 }
-            }else {
+            } else {
                 actions.add(movement);
             }
         }
     }
 
     /**
+     * Resolve if the balloon action is going to be deleted or saved
+     *
+     * @param data Intent with the info
+     */
+    private void resolveBalloonAction(@Nullable Intent data) {
+        boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
+        int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        if (isDelete) {
+            if (position != -1) {
+                actions.remove(position);
+            }
+        } else {
+            Balloon balloon = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            if (isSave) {
+                if (position != -1) {
+                    actions.set(position, balloon);
+                }
+            } else {
+                actions.add(balloon);
+            }
+        }
+    }
+
+    /**
      * Delete the poi
+     *
      * @param position the position of the poi
      */
     private void deletePOI(int position) {
@@ -244,16 +280,17 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         POI newCurrent = null;
         int newPosition = 0;
         int startNewPoi = -1;
-        for (int i = 0; i < position; i++){
+        for (int i = 0; i < position; i++) {
             action = actions.get(i);
             newActions.add(action);
-            if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
+            if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
                 newCurrent = (POI) action;
                 newPosition = i;
             }
         }
-        for(int i = position + 1; i < actions.size(); i++ ){
-            if(actions.get(i).getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
+        for (int i = position + 1; i < actions.size(); i++) {
+            if(actions.get(i).getType()  == ActionIdentifier.SHAPES_ACTIVITY.getId()) newActions.add(actions.get(i));
+            if (actions.get(i).getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
                 startNewPoi = i;
                 newCurrent = (POI) actions.get(i);
                 newPosition = i;
@@ -261,11 +298,11 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
                 break;
             }
         }
-        if(startNewPoi == -1 ) startNewPoi = actions.size();
-        for(int i = startNewPoi + 1; i < actions.size(); i++ ){
+        if (startNewPoi == -1) startNewPoi = actions.size();
+        for (int i = startNewPoi + 1; i < actions.size(); i++) {
             action = actions.get(i);
             newActions.add(action);
-            if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
+            if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
                 newCurrent = (POI) action;
                 newPosition = i;
             }
@@ -278,28 +315,29 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
     /**
      * Save or add the poi
-     * @param data the intent with the data
+     *
+     * @param data     the intent with the data
      * @param position the position of the poi
      */
     private void savePOI(@NonNull Intent data, int position) {
         POI poi = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-        if(isSave){
-            if(position != -1 ){
+        if (isSave) {
+            if (position != -1) {
                 actions.set(position, poi);
-                if(currentPoiPosition == position) currentPoi = poi;
+                if (currentPoiPosition == position) currentPoi = poi;
                 Action action;
-                for(int i = position + 1; i < actions.size(); i++ ){
+                for (int i = position + 1; i < actions.size(); i++) {
                     action = actions.get(i);
-                    if(action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId() ) break;
-                    if(action.getType() == ActionIdentifier.MOVEMENT_ACTIVITY.getId()){
+                    if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
+                    if (action.getType() == ActionIdentifier.MOVEMENT_ACTIVITY.getId()) {
                         Movement movement = (Movement) action;
                         movement.setPoi(poi);
                         actions.set(i, movement);
                     }
                 }
             }
-        }else{
+        } else {
             actions.add(poi);
             currentPoi = poi;
             currentPoiPosition = position;
@@ -316,23 +354,28 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     @Override
     public void onNoteClick(int position) {
         Action selected = actions.get(position);
-        if(selected instanceof POI){
+        if (selected instanceof POI) {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
             intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), (POI) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.LOCATION_ACTIVITY.getId());
-        }else if(selected instanceof Movement){
+        } else if (selected instanceof Movement) {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionMovementActivity.class);
             intent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), (Movement) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
-        }else if(selected instanceof Balloon){
-           Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
-            intent.putExtra(ActionIdentifier.PLACE_MARK_ACTIVITY.name(), (Balloon) selected);
+        } else if (selected instanceof Balloon) {
+            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
+            intent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), (Balloon) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
-            startActivityForResult(intent, ActionIdentifier.PLACE_MARK_ACTIVITY.getId());
+            startActivityForResult(intent, ActionIdentifier.BALLOON_ACTIVITY.getId());
+        } else if (selected instanceof Shape){
+            Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionShapeActivity.class);
+            intent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), (Shape) selected);
+            intent.putExtra(ActionIdentifier.POSITION.name(), position);
+            startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
         }else {
-            Log.w(TAG_DEBUG, "ERROR");
+            Log.w(TAG_DEBUG, "ERROR EDIT");
         }
     }
 }
