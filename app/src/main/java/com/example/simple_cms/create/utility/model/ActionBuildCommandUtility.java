@@ -9,14 +9,13 @@ import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
 import com.example.simple_cms.create.utility.model.poi.POILocation;
-import com.example.simple_cms.utility.ConstantPrefs;
 
-class ActionBuildCommandUtility {
+public class ActionBuildCommandUtility {
 
     private static String TEST_PLACE_MARK_ID = "testPlaceMark12345";
     private static String BASE_PATH = "/var/www/html/";
     private static String IMAGE_FOLDER_NAME = "image/";
-    private static String IMAGE_PATH = BASE_PATH + IMAGE_FOLDER_NAME;
+    public static String IMAGE_PATH = BASE_PATH + IMAGE_FOLDER_NAME;
 
 
     static String buildCommandPOITest(POI poi) {
@@ -176,16 +175,5 @@ class ActionBuildCommandUtility {
 
     static String buildCommandCreateFolder() {
         return "mkdir -p " + IMAGE_PATH;
-    }
-
-    static String buildCommandBalloonImage(SharedPreferences  sharedPreferences, Uri imageUri) {
-        String username = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "lg");
-        String password = sharedPreferences.getString(ConstantPrefs.USER_PASSWORD.name(), "1234");
-        String hostPort = sharedPreferences.getString(ConstantPrefs.URI_TEXT.name(), "192.168.0.17");
-        String[] hostNPort = hostPort.split(":");
-        String hostname = hostNPort[0];
-        String test =  "sshpass -p " + password + " scp " + imageUri + " " + username + "@" + hostname + ":" + IMAGE_PATH;
-        Log.w("CreateStoryBoardActionPlaceMarkActivity", test);
-        return  test;
     }
 }

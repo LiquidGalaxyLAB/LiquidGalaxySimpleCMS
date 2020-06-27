@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.simple_cms.R;
+import com.example.simple_cms.connection.LGConnectionManager;
 import com.example.simple_cms.create.utility.connection.LGConnectionTest;
+import com.example.simple_cms.create.utility.model.ActionBuildCommandUtility;
 import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
@@ -31,6 +35,9 @@ import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.utility.ConstantPrefs;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -45,6 +52,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private static final int PERMISSION_CODE_IMAGE = 1001;
     private static final int VIDEO_PICK_CODE = 1002;
     private static final int PERMISSION_CODE_VIDEO = 1003;
+    private static final int PERMISSION_CODE_SEND_IMAGE = 1004;
 
     private TextView connectionStatus, imageAvailable,
             locationName, locationNameTitle;
@@ -149,16 +157,23 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             if(isConnected.get()){
                 Balloon balloon = new Balloon();
                 Log.w(TAG_DEBUG, "image uri: " + imageUri);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_CODE_SEND_IMAGE);
+
+
                 balloon.setPoi(poi).setDescription(description.getText().toString())
                         .setImageUri(imageUri).setVideoUri(videoUri);
                 ActionController.getInstance().sendCreateImageFolder(null);
-                ActionController.getInstance().sendBalloonImage(sharedPreferences, imageUri, null);
+/*
+                ActionController.getInstance().sendBalloonImage(sharedPreferences, path, null);
+*/
 
 
 
                 /*ActionController.getInstance().sendBalloon(balloon, null);
                 ActionController.getInstance().sendNetworkLink(null);*/
+/*
                 ActionController.getInstance().sendChangeBallon(balloon, null);
+*/
                 /*ActionController.getInstance().sendNetworkLinkUpdate(null);*/
 
 /*                String username = sharedPreferences.getString(ConstantPrefs.USER_NAME.name(), "lg");
@@ -177,6 +192,16 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             }
             loadConnectionStatus(sharedPreferences);
         }, 1200);
+    }
+
+    private void sendImageLG() {
+        Cursor cursor = getContentResolver().query(imageUri, null, null, null, null);
+        Objects.requireNonNull(cursor).moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        String imagePath = cursor.getString(idx);
+        cursor.close();
+        Log.w(TAG_DEBUG, "Path: " + imagePath);
+        LGConnectionManager.getInstance().sendImage(imagePath);
     }
 
 
@@ -213,6 +238,13 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
                     pickImageFromGallery();
                 } else {
                     CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permision_denied_image));
+                }
+            }
+            case PERMISSION_CODE_SEND_IMAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendImageLG();
+                } else {
+                    CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permision_denied_test_image));
                 }
             }
         }

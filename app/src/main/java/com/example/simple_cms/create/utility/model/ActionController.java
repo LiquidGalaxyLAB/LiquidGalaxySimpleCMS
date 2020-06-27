@@ -150,14 +150,4 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
-    public void sendBalloonImage(SharedPreferences sharedPreferences, Uri imageUri, LGCommand.Listener listener) {
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonImage(sharedPreferences, imageUri), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if (listener != null) {
-                listener.onResponse(result);
-            }
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
-    }
 }
