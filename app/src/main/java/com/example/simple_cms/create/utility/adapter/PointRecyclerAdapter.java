@@ -1,4 +1,4 @@
-package com.example.simple_cms.create.utility.adapter;
+package com.example.simple_cms.create.utility.adapter.point;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,101 +10,129 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.simple_cms.R;
-import com.example.simple_cms.create.utility.model.shape.Shape;
+import com.example.simple_cms.create.utility.model.shape.Point;
 
 import java.util.ArrayList;
 
-public class ShapeRecyclerAdapter extends RecyclerView.Adapter<ShapeRecyclerAdapter.ViewHolder> {
+public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdapter.ViewHolder> {
 
     private static final String TAG_DEBUG = "BalloonRecyclerAdapter";
 
+    private ArrayList<Point> points;
 
-    private AppCompatActivity activity;
-    private ArrayList<Shape> shapes;
-    private OnNoteListener mOnNoteListener;
-
-    public ShapeRecyclerAdapter(AppCompatActivity activity, ArrayList<Shape> shapes, OnNoteListener onNoteListener) {
-        this.activity = activity;
-        this.shapes = shapes;
-        this.mOnNoteListener = onNoteListener;
+    public PointRecyclerAdapter(ArrayList<Point> points) {
+        this.points = points;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_create_storyboard_action_balloon_point, parent, false);
-        return new ViewHolder(view, mOnNoteListener, new ViewHolder.MyTextListener());
+        return new ViewHolder(view, new MyLongitudeTextListener(), new MyLatitudeTextListener(), new MyAltitudeTextListener());
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.w(TAG_DEBUG, "onBindViewHolder called");
-        holder.textView.setTag(position);
-        holder.textView.setText("Point " + position);
-        /*holder.longitude.setText(String.valueOf(shapes.get(position).getPoints().get(position).getLongitude()));
-        holder.latitude.setText(String.valueOf(shapes.get(position).getPoints().get(position).getLatitude()));
-        holder.altitude.setText(String.valueOf(shapes.get(position).getPoints().get(position).getAltitude()));*/
+        String pointPosition = "Point " + position;
+        holder.textView.setText(pointPosition);
+        Point point = points.get(position);
+
+        holder.myLongitudeTextListener.updatePosition(holder.getAdapterPosition());
+        holder.longitude.setText(String.valueOf(point.getLongitude()));
+
+        holder.myLatitudeTextListener.updatePosition(holder.getAdapterPosition());
+        holder.latitude.setText(String.valueOf(point.getLatitude()));
+
+        holder.myAltitudeTextListener.updatePosition(holder.getAdapterPosition());
+        holder.altitude.setText(String.valueOf(point.getAltitude()));
     }
 
     @Override
     public int getItemCount() {
-        return shapes.size();
+        return points.size();
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textView;
         EditText longitude, latitude, altitude;
 
-        OnNoteListener mOnNoteListener;
+        MyLongitudeTextListener myLongitudeTextListener;
+        MyLatitudeTextListener myLatitudeTextListener;
+        MyAltitudeTextListener myAltitudeTextListener;
 
-        ViewHolder(View itemView, OnNoteListener onNoteListener, MyTextListener myTextListener) {
+        ViewHolder(View itemView, MyLongitudeTextListener myLongitudeTextListener,
+                   MyLatitudeTextListener myLatitudeTextListener, MyAltitudeTextListener myAltitudeTextListener) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.textView);
             this.longitude = itemView.findViewById(R.id.longitude);
             this.latitude = itemView.findViewById(R.id.latitude);
             this.altitude = itemView.findViewById(R.id.altitude);
-            this.mOnNoteListener = onNoteListener;
-            itemView.setOnClickListener(this);
-            textView.addTextChangedListener(myTextListener);
-            longitude.addTextChangedListener(myTextListener);
-            latitude.addTextChangedListener(myTextListener);
-            altitude.addTextChangedListener(myTextListener);
+
+            this.myLongitudeTextListener = myLongitudeTextListener;
+            this.myLatitudeTextListener = myLatitudeTextListener;
+            this.myAltitudeTextListener = myAltitudeTextListener;
+
+            longitude.addTextChangedListener(myLongitudeTextListener);
+            latitude.addTextChangedListener(myLatitudeTextListener);
+            altitude.addTextChangedListener(myAltitudeTextListener);
         }
+    }
 
-        private static class MyTextListener implements TextWatcher {
-            private int position;
 
-            public void updatePosition(int position) {
-                this.position = position;
-            }
+    public class MyLatitudeTextListener implements TextWatcher {
+        private int position;
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mDataset[position] = charSequence.toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
+        void updatePosition(int position) {
+            this.position = position;
         }
 
         @Override
-        public void onClick(View view) {
-            Log.w(TAG_DEBUG, "onClick: " + getAdapterPosition());
-            mOnNoteListener.onNoteClick(getAdapterPosition());
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            try{
+                Point point = points.get(position);
+                point.setLatitude(Double.parseDouble(charSequence.toString()));
+                points.set(position, point);
+            } catch (Exception e){
+                Log.w(TAG_DEBUG, "Empty String");
+            }
         }
+
+        @Override
+        public void afterTextChanged(Editable editable) {}
     }
 
+    public class MyAltitudeTextListener implements TextWatcher {
+        private int position;
 
-    public interface OnNoteListener{
-        void onNoteClick(int position);
+        void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            try {
+                Point point = points.get(position);
+                point.setAltitude(Double.parseDouble(charSequence.toString()));
+                points.set(position, point);
+            } catch (Exception e){
+                Log.w(TAG_DEBUG, "Empty String");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {}
     }
+
 }
