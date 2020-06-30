@@ -6,72 +6,79 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.example.simple_cms.create.utility.IJsonPacker;
-import com.example.simple_cms.create.utility.model.Action;
-import com.example.simple_cms.create.utility.model.ActionIdentifier;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class Shape extends Action implements IJsonPacker, Parcelable {
+import java.util.ArrayList;
 
-    private long id;
-    private String shapeType;
+public class Shape implements IJsonPacker, Parcelable{
 
-    /**
-     * Empty Constructor
-     */
-    public Shape() {
-        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Shape createFromParcel(Parcel in) {
+            return new Shape(in);
+        }
+
+        public Shape[] newArray(int size) {
+            return new Shape[size];
+        }
+    };
+
+    private ArrayList<Point> points;
+    private boolean isExtrude;
+
+    public Shape(){
+        points = new ArrayList<>();
+        isExtrude = false;
     }
 
-    public Shape(long id, String shapeType) {
-        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
-        this.id = id;
-        this.shapeType = shapeType;
+
+    public Shape(ArrayList<Point> points, boolean isExtrude) {
+       this.points = points;
+       this.isExtrude = isExtrude;
     }
 
     public Shape(Parcel in) {
-        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
-        this.id = in.readLong();
-        this.shapeType =  in.readString();
+        this.points = in.readArrayList(Point.class.getClassLoader());
+        isExtrude = in.readInt() != 0;
     }
 
-    public Shape(Shape shape) {
-        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
-        this.id = shape.id;
-        this.shapeType = shape.shapeType;
+    public Shape(Shape shape){
+        this.points = shape.points;
+        this.isExtrude = shape.isExtrude;
     }
 
-    public long getId() {
-        return id;
+    public ArrayList<Point> getPoints() {
+        return points;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPoints(ArrayList<Point> points) {
+        this.points = points;
     }
 
-    public String getShapeType() {
-        return shapeType;
+    public boolean isExtrude() {
+        return isExtrude;
     }
 
-    public void setType(String shapeType) {
-        this.shapeType = shapeType;
+    public void setExtrude(boolean extrude) {
+        isExtrude = extrude;
     }
 
     @Override
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", id);
-        obj.put("shapeType", shapeType);
+        obj.put("point", points);
+        obj.put("isExtrude", isExtrude);
 
         return obj;
     }
 
     @Override
     public Object unpack(JSONObject obj) throws JSONException {
-        id = obj.getLong("id");
-        shapeType = obj.getString("shapeType");
+
+        this.points = (ArrayList<Point>) obj.get("points");
+        this.isExtrude = obj.getBoolean("isExtrude");
 
         return this;
     }
@@ -79,7 +86,11 @@ public abstract class Shape extends Action implements IJsonPacker, Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "Shape Type: " + shapeType;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < points.size(); i++){
+            stringBuilder.append("Point ").append(i).append(": ").append(points.get(i).toString()).append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     @Override
@@ -89,7 +100,7 @@ public abstract class Shape extends Action implements IJsonPacker, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(id);
-        parcel.writeString(shapeType);
+        parcel.writeList(points);
+        parcel.writeInt(isExtrude ? 1 : 0);
     }
 }
