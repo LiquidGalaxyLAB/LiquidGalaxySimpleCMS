@@ -1,6 +1,6 @@
 # LiquidGalaxySimpleCMS 
 
-##Deploy
+## Deploy
 
 The first step is to download the project. (Remember you need to install the USB of OEM controllers of your tablet (windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb) )
 
