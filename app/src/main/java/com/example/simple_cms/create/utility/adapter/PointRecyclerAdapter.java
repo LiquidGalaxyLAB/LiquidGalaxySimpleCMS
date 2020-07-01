@@ -1,8 +1,9 @@
-package com.example.simple_cms.create.utility.adapter.point;
+package com.example.simple_cms.create.utility.adapter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 
 public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdapter.ViewHolder> {
 
-    private static final String TAG_DEBUG = "BalloonRecyclerAdapter";
+    private static final String TAG_DEBUG = "PointRecyclerAdapter";
 
     private ArrayList<Point> points;
 
@@ -36,10 +37,11 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.w(TAG_DEBUG, "onBindViewHolder called");
-        String pointPosition = "Point " + position;
+        String pointPosition = "Point " + (position + 1);
         holder.textView.setText(pointPosition);
-        Point point = points.get(position);
+
+
+        Point point = points.get(holder.getAdapterPosition());
 
         holder.myLongitudeTextListener.updatePosition(holder.getAdapterPosition());
         holder.longitude.setText(String.valueOf(point.getLongitude()));
@@ -49,6 +51,7 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
 
         holder.myAltitudeTextListener.updatePosition(holder.getAdapterPosition());
         holder.altitude.setText(String.valueOf(point.getAltitude()));
+
     }
 
     @Override
@@ -57,7 +60,7 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
 
         TextView textView;
         EditText longitude, latitude, altitude;
@@ -82,8 +85,39 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
             latitude.addTextChangedListener(myLatitudeTextListener);
             altitude.addTextChangedListener(myAltitudeTextListener);
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            Log.w(TAG_DEBUG, "onCreateContextMenu");
+            menu.setHeaderTitle("Send to:");
+            menu.add(0, v.getId(), 0, "all");
+        }
     }
 
+    public class MyLongitudeTextListener implements TextWatcher {
+        private int position;
+
+        void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            try {
+                Point point = points.get(position);
+                point.setLongitude(Double.parseDouble(charSequence.toString()));
+                points.set(position, point);
+            } catch (Exception e){
+                Log.w(TAG_DEBUG, "Empty String");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {}
+    }
 
     public class MyLatitudeTextListener implements TextWatcher {
         private int position;

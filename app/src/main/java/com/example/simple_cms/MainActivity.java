@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.connection.LGConnectionSendFile;
 import com.example.simple_cms.create.utility.connection.LGConnectionTest;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
@@ -145,7 +146,7 @@ public class MainActivity extends TobBarActivity {
                 "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
 
-        final String command4 = "echo '" +
+        final String command2 = "echo '" +
                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
@@ -187,7 +188,49 @@ public class MainActivity extends TobBarActivity {
                 "\n" +
                 "</kml>"
                + "' > /var/www/html/kmls.kml";
-        LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
+
+        final String command3 = "echo '" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2\"> <Placemark>\n" +
+                " <name>El pentágono</name>\n" +
+                " <LineString>\n" +
+                "<tessellate>1</tessellate>\n" +
+                " <altitudeMode>absolute</altitudeMode>\n" +
+                " <coordinates>\n" +
+                " -77.05788457660967,38.87253259892824,200 \n" +
+                " -77.05465973756702,38.87291016281703,200 \n" +
+                "-77.05315536854791,38.87053267794386,200 \n" +
+                " -77.05552622493516,38.868757801256,200 \n" +
+                " -77.05844056290393,38.86996206506943,200 \n" +
+                " -77.05788457660967,38.87253259892824,200 \n" +
+
+                " -77.05788457660967,38.87253259892824,150 \n" +
+                " -77.05465973756702,38.87291016281703,150 \n" +
+                "-77.05315536854791,38.87053267794386,150 \n" +
+                " -77.05552622493516,38.868757801256,150 \n" +
+                " -77.05844056290393,38.86996206506943,150 \n" +
+                " -77.05788457660967,38.87253259892824,150 \n" +
+
+                " -77.05788457660967,38.87253259892824,100 \n" +
+                " -77.05465973756702,38.87291016281703,100 \n" +
+                "-77.05315536854791,38.87053267794386,100 \n" +
+                " -77.05552622493516,38.868757801256,100 \n" +
+                " -77.05844056290393,38.86996206506943,100 \n" +
+                " -77.05788457660967,38.87253259892824,100 \n" +
+
+                " -77.05788457660967,38.87253259892824,50 \n" +
+                " -77.05465973756702,38.87291016281703,50 \n" +
+                "-77.05315536854791,38.87053267794386,50 \n" +
+                " -77.05552622493516,38.868757801256,50 \n" +
+                " -77.05844056290393,38.86996206506943,50 \n" +
+                " -77.05788457660967,38.87253259892824,50 \n" +
+                " </coordinates>\n" +
+                " </LineString>\n" +
+                " </Placemark> </kml> " +
+                "' > /var/www/html/shape.kml";
+
+
+        LGCommand lgCommand = new LGCommand(command3, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
         sendMessageError(lgCommand, dialog);
     }
@@ -207,6 +250,7 @@ public class MainActivity extends TobBarActivity {
         lgConnectionManager.setData(username, password, hostname, port);
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
+        LGConnectionSendFile.getInstance().setData(username, password, hostname, port);
     }
 
     /**

@@ -1,6 +1,281 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".create.CreateStoryBoardActionShapeActivity"
+    android:id="@+id/linearLayout3">
+
+
+    <TextView
+        android:id="@+id/image_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="320dp"
+        android:fontFamily="@font/roboto"
+        android:minWidth="635dp"
+        android:text="@string/image_not_available_on_screen"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/simple_cms"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <TextView
+        android:id="@+id/connection_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="300dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/ic_status_connection_red"
+        android:fontFamily="@font/roboto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048" />
+
+    <TextView
+        android:id="@+id/location_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="80dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/location_name"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/primary_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/butt_add_point"
+        app:layout_constraintEnd_toEndOf="@+id/location_name_title"
+        app:layout_constraintTop_toBottomOf="@+id/image_available"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/location_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="536dp"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/primary_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/location_name"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="500dp"
+        android:thumb="@drawable/custom_switch_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/extrude"
+        app:track="@drawable/custom_switch_button_track" />
+
+    <TextView
+        android:id="@+id/extrude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="500dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/extrude"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/butt_add_point" />
+
+    <Button
+        android:id="@+id/butt_add_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:text="@string/button_add_point"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/butt_delete_point"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_delete_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:text="@string/button_clear_points"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_delete_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:text="@string/button_clear_point"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/butt_delete_points"
+        tools:ignore="ButtonStyle" />
+
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="8dp"
+        android:minWidth="150dp"
+        android:text="@string/longitude"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/button_main_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/latitude"
+        app:layout_constraintEnd_toStartOf="@+id/my_recycler_view" />
+
+    <TextView
+        android:id="@+id/latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="12dp"
+        android:minWidth="150dp"
+        android:text="@string/latitude"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/button_main_text_font_size"
+        app:layout_constraintBottom_toTopOf="@id/altitude"
+        app:layout_constraintEnd_toStartOf="@+id/my_recycler_view" />
+
+    <TextView
+        android:id="@+id/altitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="220dp"
+        android:minWidth="150dp"
+        android:text="@string/altitude"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/button_main_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/my_recycler_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="831dp"
+        android:layout_height="256dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="68dp"
+        android:background="@color/background"
+        android:minHeight="578dp"
+        android:padding="20dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/textColorClick"
+        app:layout_constraintBottom_toTopOf="@+id/butt_cancel"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/butt_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="260dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_test"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/button_test"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/butt_delete"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/button_delete"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/butt_cancel"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/button_cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/butt_add"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/button_add"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ButtonStyle" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

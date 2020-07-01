@@ -44,11 +44,10 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
     private RecyclerView mRecyclerView;
     ArrayList<Action> actions = new ArrayList<>();
-    private RecyclerView.Adapter mAdapter;
     private POI currentPoi;
     private int currentPoiPosition;
 
-    private Button buttCreate, buttLocation, buttMovements, buttBallon, buttShapes, buttTest, buttDelete, buttSave;
+    private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes, buttTest, buttDelete, buttSave;
     private TextView connectionStatus, imageAvailable;
 
     @Override
@@ -63,7 +62,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttLocation = findViewById(R.id.butt_location);
         buttMovements = findViewById(R.id.butt_movements);
-        buttBallon = findViewById(R.id.butt_balloon);
+        buttBalloon = findViewById(R.id.butt_balloon);
         buttShapes = findViewById(R.id.butt_shapes);
         buttDelete = findViewById(R.id.butt_delete);
         buttSave = findViewById(R.id.butt_save);
@@ -87,7 +86,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             }
         });
 
-        buttBallon.setOnClickListener((view) -> {
+        buttBalloon.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
             if (currentPoi == null) {
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
@@ -100,7 +99,13 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttShapes.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionShapeActivity.class);
-            startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
+            if (currentPoi == null) {
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.You_need_a_location_to_create_a_shape));
+            } else {
+                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), currentPoi);
+                startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
+            }
         });
 
         buttDelete.setOnClickListener((view) -> deleteStoryboard());
@@ -165,7 +170,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new ActionRecyclerAdapter(this, actions, this);
+        RecyclerView.Adapter mAdapter = new ActionRecyclerAdapter(this, actions, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -289,7 +294,6 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             }
         }
         for (int i = position + 1; i < actions.size(); i++) {
-            if(actions.get(i).getType()  == ActionIdentifier.SHAPES_ACTIVITY.getId()) newActions.add(actions.get(i));
             if (actions.get(i).getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
                 startNewPoi = i;
                 newCurrent = (POI) actions.get(i);
