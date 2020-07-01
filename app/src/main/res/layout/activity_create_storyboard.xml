@@ -29,7 +29,7 @@
         android:background="@color/background"
         android:minHeight="578dp"
         android:padding="20dp"
-        android:scrollbars="vertical"
+        android:scrollbars="horizontal"
         android:textColor="@color/textColorClick"
         app:layout_constraintBottom_toBottomOf="@+id/file_name"
         app:layout_constraintEnd_toStartOf="@+id/image_available" />

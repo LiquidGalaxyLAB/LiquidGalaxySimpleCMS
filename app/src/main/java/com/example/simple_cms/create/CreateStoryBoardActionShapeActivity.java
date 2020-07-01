@@ -3,9 +3,12 @@ package com.example.simple_cms.create;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -176,13 +179,25 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
     private void rePaintRecyclerView(){
         RecyclerView.Adapter mAdapter = new PointRecyclerAdapter(points);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.scrollToPosition(points.size() - 1);
     }
 
     /**
      * Initiate the recycleview
      */
     private void initRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false) {
+            @Override
+            public boolean requestChildRectangleOnScreen(RecyclerView parent, View child, Rect rect, boolean immediate, boolean focusedChildVisible) {
+
+                if (((ViewGroup) child).getFocusedChild() instanceof EditText) {
+                    return false;
+                }
+
+                return super.requestChildRectangleOnScreen(parent, child, rect, immediate, focusedChildVisible);
+            }
+        };
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),

@@ -60,7 +60,7 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textView;
         EditText longitude, latitude, altitude;
@@ -84,14 +84,9 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
             longitude.addTextChangedListener(myLongitudeTextListener);
             latitude.addTextChangedListener(myLatitudeTextListener);
             altitude.addTextChangedListener(myAltitudeTextListener);
+
         }
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            Log.w(TAG_DEBUG, "onCreateContextMenu");
-            menu.setHeaderTitle("Send to:");
-            menu.add(0, v.getId(), 0, "all");
-        }
     }
 
     public class MyLongitudeTextListener implements TextWatcher {
