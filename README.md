@@ -1,5 +1,8 @@
 # LiquidGalaxySimpleCMS 
 
+<table><tr><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSAndroid.gif" width="350" height="250"/></td><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSLiquidGalaxy.gif" width="350" height="250"/></td></tr></table>
+
+
 ## Deploy
 
 The first step is to download the project. (Remember you need to install the USB of OEM controllers of your tablet (windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb) )
