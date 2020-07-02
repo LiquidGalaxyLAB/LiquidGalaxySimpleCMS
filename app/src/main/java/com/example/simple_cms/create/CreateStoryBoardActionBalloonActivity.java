@@ -145,6 +145,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Test the balloon action and the connection to the Liquid Galaxy
+     */
     private void testConnection() {
         AtomicBoolean isConnected = new AtomicBoolean(false);
         LGConnectionTest.testPriorConnection(this, isConnected);
@@ -181,6 +184,11 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         }, 1200);
     }
 
+    /**
+     * It return the absolute path of the file
+     * @param uri uri of the file
+     * @return the absolute path of the file
+     */
     private String getFilePath(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         Objects.requireNonNull(cursor).moveToFirst();
@@ -191,6 +199,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Send the action to add a balloon
+     */
     private void addBalloon() {
         Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString())
                 .setImageUri(imageUri).setImagePath(imagePath).setVideoUri(videoUri).setVideoPath(videoPath);
@@ -202,6 +213,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Send the action to delete the balloon of the recyclerview in the CreateStoryBoardActivity
+     */
     private void deleteBalloon() {
         Intent returnInfoIntent = new Intent();
         returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
@@ -230,11 +244,17 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Start the activity to pick a image of the gallery
+     */
     private void pickImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, IMAGE_PICK_CODE);
     }
 
+    /**
+     * Start the activity to pick a video of the gallery
+     */
     private void pickVideoFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, VIDEO_PICK_CODE);
@@ -258,6 +278,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Set the videoView
+     */
     private void setVideoView() {
         videoView.setVisibility(View.VISIBLE);
         videoView.setVideoURI(videoUri);

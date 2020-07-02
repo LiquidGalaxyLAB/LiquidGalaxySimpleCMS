@@ -1,12 +1,20 @@
 package com.example.simple_cms.create.utility.model;
 
 
+import android.util.Log;
+
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
 import com.example.simple_cms.create.utility.model.poi.POILocation;
+import com.example.simple_cms.create.utility.model.shape.Point;
+import com.example.simple_cms.create.utility.model.shape.Shape;
+
+import java.util.ArrayList;
 
 public class ActionBuildCommandUtility {
+
+    private static final String TAG_DEBUG = "ActionBuildCommandUtility";
 
     private static String TEST_PLACE_MARK_ID = "testPlaceMark12345";
     private static String BASE_PATH = "/var/www/html/";
@@ -184,5 +192,27 @@ public class ActionBuildCommandUtility {
 
     static String buildCommandCreateResourcesFolder() {
         return "mkdir -p " + RESOURCES_FOLDER_PATH;
+    }
+
+    static String buildCommandSendShape(Shape shape) {
+        StringBuilder command = new StringBuilder();
+        command.append("echo '").append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+                .append("<kml xmlns=\"http://www.opengis.net/kml/2.2\"> <Placemark>\n")
+                .append("<name>").append(shape.getPoi().getPoiLocation().getName()).append("</name>\n").append("<LineString>\n");
+        if(shape.isExtrude()) command.append("<extrude>1</extrude>\n");
+        command.append("<tessellate>1</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
+                .append("<coordinates>\n");
+        ArrayList<Point> points =shape.getPoints();
+        int pointsLength = points.size();
+        Point point;
+        for(int i = 0; i < pointsLength; i++){
+            point = points.get(i);
+            command.append("    ").append(point.getLongitude()).append(",").append(point.getLatitude())
+                    .append(",").append(point.getAltitude()).append("\n");
+        }
+        command.append("</coordinates>\n").append("</LineString>\n").append("</Placemark>\n</kml> " + "' > ")
+                .append(BASE_PATH).append("shape.kml");
+        Log.w(TAG_DEBUG, "Command: " + command.toString());
+        return  command.toString();
     }
 }

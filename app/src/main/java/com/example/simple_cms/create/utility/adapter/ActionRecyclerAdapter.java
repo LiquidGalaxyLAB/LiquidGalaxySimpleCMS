@@ -17,6 +17,9 @@ import com.example.simple_cms.create.utility.model.ActionIdentifier;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class in charge of the adapter of the action recyclerview of the class CreateStoryBoardActivity
+ */
 public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAdapter.ViewHolder> {
 
     private static final String TAG_DEBUG = "ActionRecyclerAdapter";
@@ -63,6 +66,9 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
     }
 
 
+    /**
+     * This is the most efficient way to have the view holder and the click listener
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;

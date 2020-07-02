@@ -17,6 +17,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * This class is in charge of the action shape that you can send to LG
+ */
 public class Shape extends Action implements IJsonPacker, Parcelable{
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

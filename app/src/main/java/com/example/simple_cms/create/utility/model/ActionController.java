@@ -6,10 +6,11 @@ import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
 import com.example.simple_cms.create.utility.model.poi.POILocation;
+import com.example.simple_cms.create.utility.model.shape.Shape;
 
 public class ActionController {
 
-    private static final String TAG_DEBUG = "POIController";
+    private static final String TAG_DEBUG = "ActionController";
 
     private static ActionController instance = null;
     private POI currentPOI;
@@ -138,6 +139,17 @@ public class ActionController {
 
     public void createResourcesFolder(LGCommand.Listener listener) {
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateResourcesFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
+    public void sendShape(Shape shape, LGCommand.Listener listener) {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandSendShape(shape), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
                 listener.onResponse(result);
             }

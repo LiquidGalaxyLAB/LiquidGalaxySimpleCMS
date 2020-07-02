@@ -92,7 +92,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             seekBarTilt.setMax(90);
             seekBarTilt.setProgress((int) movement.getNewTilt());
             boolean isOrbitMode = movement.isOrbitMode();
-            switchCompatOrbitMode.setChecked(movement.isOrbitMode());
+            switchCompatOrbitMode.setChecked(isOrbitMode);
             setSwitchAndSeekBar(isOrbitMode);
         }
 

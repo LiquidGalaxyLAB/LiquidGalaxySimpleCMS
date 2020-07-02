@@ -66,6 +66,8 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         buttShapes = findViewById(R.id.butt_shapes);
         buttDelete = findViewById(R.id.butt_delete);
         buttSave = findViewById(R.id.butt_save);
+        buttTest = findViewById(R.id.butt_test);
+
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
 
@@ -113,8 +115,11 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         changeButtonClickableBackgroundColor();
     }
 
+
+    /**
+     * Clean the actions of the recyclerview
+     */
     private void deleteStoryboard() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
         v.getBackground().setAlpha(220);
         Button ok = v.findViewById(R.id.ok);
@@ -124,6 +129,17 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
         Button cancel = v.findViewById(R.id.cancel);
         cancel.setVisibility(View.VISIBLE);
+        createAlertDialog(v, ok, cancel);
+    }
+
+    /**
+     * Create a alert dialog for the user
+     * @param v view
+     * @param ok button ok
+     * @param cancel button cancel
+     */
+    private void createAlertDialog(View v, Button ok, Button cancel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(v);
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
@@ -135,8 +151,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             initRecyclerView();
             dialog.dismiss();
         });
-        cancel.setOnClickListener(v1 ->
-                dialog.dismiss());
+        cancel.setOnClickListener(v1 -> dialog.dismiss());
     }
 
 
@@ -184,25 +199,33 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         } else if (requestCode == ActionIdentifier.BALLOON_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
             resolveBalloonAction(data);
         } else if (requestCode == ActionIdentifier.SHAPES_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
-            boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
-            int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
-            if (isDelete) {
-                if (position != -1) {
-                    actions.remove(position);
-                }
-            } else {
-                Shape shape = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
-                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-                if (isSave) {
-                    if (position != -1) {
-                        actions.set(position, shape);
-                    }
-                } else {
-                    actions.add(shape);
-                }
-            }
+            resolveShapeAction(data);
         } else{
             Log.w(TAG_DEBUG, "ERROR Result");
+        }
+    }
+    /**
+     * Resolve if the shape action is going to be deleted or saved
+     *
+     * @param data Intent with the info
+     */
+    private void resolveShapeAction(@Nullable Intent data) {
+        boolean isDelete = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_DELETE.name(), false);
+        int position = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        if (isDelete) {
+            if (position != -1) {
+                actions.remove(position);
+            }
+        } else {
+            Shape shape = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            if (isSave) {
+                if (position != -1) {
+                    actions.set(position, shape);
+                }
+            } else {
+                actions.add(shape);
+            }
         }
     }
 

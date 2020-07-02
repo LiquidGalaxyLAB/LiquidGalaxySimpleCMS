@@ -1,5 +1,8 @@
 package com.example.simple_cms.create.utility.model;
 
+/**
+ * It is the class base of the action
+ */
 public class Action {
 
     private int type;

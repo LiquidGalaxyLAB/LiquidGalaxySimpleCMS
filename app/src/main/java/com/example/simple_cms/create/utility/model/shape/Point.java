@@ -10,6 +10,9 @@ import com.example.simple_cms.create.utility.IJsonPacker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * This class is in charge of the points that you can send to LG to create shapes
+ */
 public class Point implements IJsonPacker, Parcelable {
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

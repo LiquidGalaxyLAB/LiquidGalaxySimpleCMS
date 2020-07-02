@@ -3,7 +3,6 @@ package com.example.simple_cms.create.utility.adapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,9 @@ import com.example.simple_cms.create.utility.model.shape.Point;
 
 import java.util.ArrayList;
 
+/**
+ * This is the class in charge of the adapter of the point recyclerview of the class CreateStoryBoardShapeActivity
+ */
 public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdapter.ViewHolder> {
 
     private static final String TAG_DEBUG = "PointRecyclerAdapter";
@@ -60,6 +62,9 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
     }
 
 
+    /**
+     * This is the most efficient way to have the view holder
+     */
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textView;
@@ -89,6 +94,9 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
 
     }
 
+    /**
+     * This embedded class is in charge of the knowing the changes in longitude editText of a point
+     */
     public class MyLongitudeTextListener implements TextWatcher {
         private int position;
 
@@ -114,6 +122,9 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
         public void afterTextChanged(Editable editable) {}
     }
 
+    /**
+     * This embedded class is in charge of the knowing the changes in latitude editText of a point
+     */
     public class MyLatitudeTextListener implements TextWatcher {
         private int position;
 
@@ -139,6 +150,9 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
         public void afterTextChanged(Editable editable) {}
     }
 
+    /**
+     * This embedded class is in charge of the knowing the changes in altitude editText of a point
+     */
     public class MyAltitudeTextListener implements TextWatcher {
         private int position;
 
