@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".create.CreateStoryBoardSave">
+
+    <include
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/activity_top_bar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/file_name"
+            android:layout_width="300dp"
+            android:layout_height="46dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="248dp"
+            android:layout_marginTop="119dp"
+            android:gravity="top"
+            android:text="@string/file_name"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/simple_cms"
+            />
+
+        <EditText
+            android:id="@+id/insert_file_name"
+            android:layout_width="740dp"
+            android:layout_height="56dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="245dp"
+            android:layout_marginTop="222dp"
+            android:autofillHints="@string/example_name"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/example_name"
+            android:inputType="text"
+            android:maxLength="50"
+            android:textAlignment="center"
+            android:textColorHint="@color/textColorClick"
+            android:textSize="@dimen/hint_text_font_size" />
+
+        <Button
+            android:id="@+id/save_locally"
+            android:layout_width="346dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="349dp"
+            android:background="@drawable/button_primary"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/save_locally"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size"/>
+
+        <Button
+            android:id="@+id/save_google_drive"
+            android:layout_width="322dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="656dp"
+            android:layout_marginTop="351dp"
+            android:layout_marginEnd="656dp"
+            android:layout_marginBottom="656dp"
+            android:background="@drawable/button_primary"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/save_google_drive"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size"/>
+
+        <Button
+            android:id="@+id/butt_delete"
+            android:layout_width="202dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="772dp"
+            android:layout_marginTop="468dp"
+            android:background="@drawable/button_secondary"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/button_cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

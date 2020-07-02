@@ -1,4 +1,6 @@
-# LiquidGalaxySimpleCMS 
+# Liquid Galaxy Simple CMS
+
+<table><tr><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSAndroid.gif" width="350" height="250"/></td><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSLiquidGalaxy.gif" width="350" height="250"/></td></tr></table>
 
 ## Deploy
 
@@ -23,7 +25,7 @@ You can read more in the following link: [Install the project in your tablet]( h
 Open the project in Android Studio. Then, click on the tab build on the top of android studio, and click make the project. 
 Finally, click on the tab Run on the top of android studio, and click on run.  You can follow the step in the following GIF: 
 
-![]()
+![](https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/RunSimpleCMS.gif)
 
 ### Third 
 

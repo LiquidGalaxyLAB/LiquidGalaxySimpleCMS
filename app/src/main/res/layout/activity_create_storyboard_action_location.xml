@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".create.CreateStoryBoardActionLocationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/image_available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="635dp"
+            android:layout_marginStart="300dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/image_not_available_on_screen"
+            android:textAlignment="center"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/simple_cms" />
+
+        <TextView
+            android:id="@+id/connection_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:layout_marginStart="-50dp"
+            android:background="@drawable/ic_status_connection_red"
+            android:fontFamily="@font/roboto" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="350dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/location_name"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/file_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="500dp"
+            android:minHeight="46dp"
+            android:layout_marginStart="50dp"
+            android:autofillHints="@string/example_latitude_longitude_altitude"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/example_location_name"
+            android:inputType="text"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="80dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="250dp"
+            android:text="@string/latitude"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            />
+
+        <EditText
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:background="@drawable/rectangle_insert_url"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:autofillHints="@string/example_latitude_longitude_altitude"
+            android:hint="@string/example_latitude_longitude_altitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:fontFamily="@font/roboto_thin"
+            android:textColorHint="@color/hintColor"
+            android:textAlignment="center"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="37.8120"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="100dp"
+            android:text="@string/longitude"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:fontFamily="@font/roboto"
+            />
+
+
+
+        <EditText
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:autofillHints="@string/example_latitude_longitude_altitude"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/example_latitude_longitude_altitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textColorHint="@color/hintColor"
+            android:textAlignment="center"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="-122.4783"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="250dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/altitude"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/altitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:autofillHints="@string/example_latitude_longitude_altitude"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/example_latitude_longitude_altitude"
+            android:inputType="numberDecimal"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="2.0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="100dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/duration"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/example_latitude_longitude_altitude"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/duration_example"
+            android:inputType="number"
+            android:maxLength="30"
+            android:minWidth="244dp"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="4"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="250dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/heading"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:autofillHints="@string/heading_example"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/example_latitude_longitude_altitude"
+            android:inputType="numberDecimal"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="100dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/tilt"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/tilt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:autofillHints="@string/tilt_example"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/duration_example"
+            android:inputType="numberDecimal"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="90.0"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="250dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/range"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:autofillHints="@string/range_example"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/range_example"
+            android:inputType="numberDecimal"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="10"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:layout_marginStart="100dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/altitude_mode"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size" />
+
+        <EditText
+            android:id="@+id/altitude_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="244dp"
+            android:autofillHints="@string/heading_example"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/altitude_mode_example"
+            android:inputType="text"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            android:textColor="@color/textColorClick"
+            android:imeOptions="actionDone"
+            android:text="clampToGround"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="120dp">
+
+        <Button
+            android:id="@+id/butt_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:layout_marginStart="80dp"
+            android:background="@drawable/button_test"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/button_test"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size" />
+
+        <Button
+            android:id="@+id/butt_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:layout_marginStart="250dp"
+            android:background="@drawable/button_primary"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/button_delete"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/butt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/button_primary"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/button_cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size" />
+
+        <Button
+            android:id="@+id/butt_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200dp"
+            android:minHeight="80dp"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/button_primary"
+            android:elevation="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/button_add"
+            android:textAllCaps="false"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/button_text_font_size" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
