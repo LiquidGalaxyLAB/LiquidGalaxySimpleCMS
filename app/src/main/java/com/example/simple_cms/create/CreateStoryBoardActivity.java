@@ -112,7 +112,16 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttDelete.setOnClickListener((view) -> deleteStoryboard());
 
+        buttSave.setOnClickListener((view) -> saveStoryboard());
+
         changeButtonClickableBackgroundColor();
+    }
+
+    /**
+     * Save the storyboard
+     */
+    private void saveStoryboard() {
+
     }
 
 

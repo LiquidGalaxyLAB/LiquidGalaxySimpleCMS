@@ -3,9 +3,11 @@ package com.example.simple_cms.connection;
 import android.util.Log;
 
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -157,7 +159,7 @@ public class LGConnectionManager implements Runnable {
             lgCommand.doAction(response);
             return true;
         } catch (JSchException jSchException) {
-            Log.w(TAG_DEBUG, Objects.requireNonNull(jSchException.getMessage()));
+            Log.w(TAG_DEBUG, "response: " + jSchException.getMessage());
             return false;
         } catch(IOException iOException){
             Log.w(TAG_DEBUG, "couldn't get InputStream or read from it: " + iOException.getMessage());
@@ -166,7 +168,7 @@ public class LGConnectionManager implements Runnable {
     }
 
     /**
-     * Create a session if the old session is nul
+     * Create a session if the old session is null
      *
      * @return Session
      */
@@ -184,7 +186,7 @@ public class LGConnectionManager implements Runnable {
                 this.session = session;
                 return session;
             } catch (JSchException e) {
-                Log.w(TAG_DEBUG, Objects.requireNonNull(e.getMessage()));
+                Log.w(TAG_DEBUG, "response create new session: " + e.getMessage());
                 return null;
             }
         }
@@ -192,7 +194,7 @@ public class LGConnectionManager implements Runnable {
             oldSession.sendKeepAliveMsg();
             return oldSession;
         } catch (Exception e) {
-            Log.w(TAG_DEBUG, Objects.requireNonNull(e.getMessage()));
+            Log.w(TAG_DEBUG, "response old session: " + e.getMessage());
             return null;
         }
     }
@@ -210,6 +212,7 @@ public class LGConnectionManager implements Runnable {
             }
         }
     }
+
 
     public void removeActivity(ILGConnection activity) {
         if (this.activity == activity)

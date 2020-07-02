@@ -26,7 +26,7 @@
     <string name="button_next">Next</string>
     <string name="button_location">Location</string>
     <string name="button_movements">Movements</string>
-    <string name="button_graphics">Graphics</string>
+    <string name="button_balloon">Balloon</string>
     <string name="button_shapes">Shapes</string>
     <string name="button_description">Description</string>
     <string name="button_add">Add</string>
@@ -56,7 +56,7 @@
     <string name="account_liquid_galaxy">liquid galaxy</string>
 
     //String for create storyboard location activity
-    <string name="location_name">Location name</string>
+    <string name="location_name">Location name: </string>
     <string name="example_location_name">Insert the name of your Location</string>
     <string name="latitude">Latitude</string>
     <string name="latitude_results">-0,000000</string>
@@ -78,13 +78,30 @@
     //String for create storyboard movements activity
     <string name="old_heading">Old Heading</string>
     <string name="old_tilt">Old Tilt</string>
-    <string name="seekbar_hint">0°</string>
+    <string name="orbit_mode">Orbit Mode</string>
+    <string name="seek_bar_hint">0°</string>
+
+    //String for create storyboard place balloon activity
+    <string name="hint_insert_text">Insert text here</string>
+    <string name="button_add_image">Add Image</string>
+    <string name="button_add_video">Add Video</string>
+    <string name="description_image">Image selected</string>
+
+    //String for create storyboard place shape activity
+    <string name="point">Point</string>
+    <string name="button_add_point">Add a Point</string>
+    <string name="button_clear_points">Delete All Points</string>
+    <string name="button_clear_point">Delete Last Point</string>
+    <string name="delete_point">You need minimum two points</string>
+    <string name="extrude">Extrude</string>
+
+
 
     //Labels of Activities
     <string name="tittle_create">Create</string>
     <string name="tittle_create_action_location">Location</string>
     <string name="tittle_create_action_movement">Movement</string>
-    <string name="tittle_create_action_place_mark">PlaceMark</string>
+    <string name="tittle_create_action_balloon">Balloon</string>
     <string name="tittle_create_save">Save</string>
     <string name="tittle_create_action_graphic">Graphic</string>
     <string name="tittle_create_action_shape">Shape</string>
@@ -116,12 +133,14 @@
     <string name="activity_create_location_missing_range_field_error">Please, fill the range field</string>
     <string name="activity_create_location_missing_altitude_mode_field_error">Please, fill the altitude mode field</string>
     <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
-    <string name="alert_message_delete">The actions related to the location will be deleted</string>
-
-
-
-
-
+    <string name="You_need_a_location_to_create_a_balloon">You need a location to create a balloon</string>
+    <string name="You_need_a_location_to_create_a_shape">You need a location to create a shape</string>
+    <string name="alert_message_delete_action_location">The actions related to the location will be deleted</string>
+    <string name="alert_message_delete_storyboard">The storyboard will be deleted</string>
+    <string name="alert_permision_denied_image">Permission denied, you cannot select an image</string>
+    <string name="alert_permision_denied_test_image">Permission denied, you cannot test the balloon in liquid galaxy</string>
+    <string name="alert_permision_denied_video">Permission denied, you cannot select an video</string>
+    <string name="icon_action">Icon Action</string>
 
 
     <string-array name="actions">
