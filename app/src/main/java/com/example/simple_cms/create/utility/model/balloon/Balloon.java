@@ -37,7 +37,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     private String description;
     private Uri imageUri;
     private String imagePath;
-    private Uri videoUri;
     private String videoPath;
 
     /**
@@ -47,14 +46,13 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         super(ActionIdentifier.BALLOON_ACTIVITY.getId());
     }
 
-    public Balloon(long id, POI poi, String description, Uri imageUri, String imagePath, Uri videoUri, String videoPath) {
+    public Balloon(long id, POI poi, String description, Uri imageUri, String imagePath, String videoPath) {
         super(ActionIdentifier.BALLOON_ACTIVITY.getId());
         this.id = id;
         this.poi = poi;
         this.description = description;
         this.imageUri = imageUri;
         this.imagePath = imagePath;
-        this.videoUri = videoUri;
         this.videoPath = videoPath;
     }
 
@@ -65,7 +63,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.description = in.readString();
         this.imageUri = in.readParcelable(Uri.class.getClassLoader());
         this.imagePath = in.readString();
-        this.videoUri = in.readParcelable(Uri.class.getClassLoader());
         this.videoPath = in.readString();
     }
 
@@ -76,7 +73,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.description = balloon.description;
         this.imageUri = balloon.imageUri;
         this.imagePath = balloon.imagePath;
-        this.videoUri = balloon.videoUri;
         this.videoPath = balloon.videoPath;
     }
 
@@ -117,14 +113,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         return this;
     }
 
-    public Uri getVideoUri() {
-        return videoUri;
-    }
-
-    public Balloon setVideoUri(Uri videoUri) {
-        this.videoUri = videoUri;
-        return this;
-    }
 
     public String getImagePath() {
         return imagePath;
@@ -153,7 +141,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         obj.put("description", description);
         obj.put("image_uri", imageUri);
         obj.put("image_path", imagePath);
-        obj.put("video_uri", videoUri);
         obj.put("video_path", videoPath);
 
         return obj;
@@ -167,7 +154,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         description = obj.getString("description");
         imageUri = (Uri) obj.get("image_uri");
         imagePath = obj.getString("image_path");
-        videoUri = (Uri) obj.get("video_uri");
         videoPath = obj.getString("video_path");
 
         return this;
@@ -176,7 +162,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "Location Name: " + this.poi.getPoiLocation().getName() + " Image Uri: " + this.imageUri.toString()  + " Video Uri: " +  this.videoUri.toString();
+        return "Location Name: " + this.poi.getPoiLocation().getName() + " Image Uri: " + this.imageUri.toString()  + " Video URL: " +  this.videoPath;
     }
 
 
@@ -192,7 +178,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         parcel.writeString(description);
         parcel.writeParcelable(imageUri, flags);
         parcel.writeString(imagePath);
-        parcel.writeParcelable(videoUri, flags);
         parcel.writeString(videoPath);
     }
 }

@@ -157,11 +157,11 @@
         android:text="@string/longitude"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/button_main_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/latitude"
+        app:layout_constraintBottom_toTopOf="@+id/video_url"
         app:layout_constraintEnd_toStartOf="@+id/my_recycler_view" />
 
     <TextView
-        android:id="@+id/latitude"
+        android:id="@+id/video_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"

@@ -79,7 +79,7 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
             super(itemView);
             this.textView = itemView.findViewById(R.id.textView);
             this.longitude = itemView.findViewById(R.id.longitude);
-            this.latitude = itemView.findViewById(R.id.latitude);
+            this.latitude = itemView.findViewById(R.id.video_url);
             this.altitude = itemView.findViewById(R.id.altitude);
 
             this.myLongitudeTextListener = myLongitudeTextListener;

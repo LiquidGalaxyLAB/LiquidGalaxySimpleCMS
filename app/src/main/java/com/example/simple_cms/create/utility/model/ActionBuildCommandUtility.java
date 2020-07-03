@@ -59,7 +59,7 @@ public class ActionBuildCommandUtility {
 
         POI poi = balloon.getPoi();
 
-        return "echo '" +
+        String startCommand =  "echo '" +
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
@@ -80,30 +80,32 @@ public class ActionBuildCommandUtility {
                 "  </head>\n" +
                 "  <body>\n" +
                 "    <div class=\"p-lg-5\" align=\"center\">\n" +
-                "\n" +
-                "        <h5>" + balloon.getDescription() + "</h3>\n" +
-                "        <br>\n" +
-                "        <img src=\"" +  ActionBuildCommandUtility.RESOURCES_FOLDER_PATH +  getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
-                "        <br>\n"  +
-                "<div style=\"margin-left: auto; margin-right:auto;\">\n" +
-                "              <object height=\"175\" width=\"212\">\n" +
-                "                <param value=\"" + ActionBuildCommandUtility.RESOURCES_FOLDER_PATH + getFileName(balloon.getVideoPath()) +  "\" name=\"video\">\n" +
-                "                <param value=\"transparent\" name=\"wmode\">\n" +
-                "                <embed wmode=\"transparent\" type=\"application/x-shockwave-flash\"\n" +
-                "                   src=\"" + ActionBuildCommandUtility.RESOURCES_FOLDER_PATH + getFileName(balloon.getVideoPath()) + "\" height=\"175\"\n" +
-                "                   width=\"212\">\n" +
-                "               </object>\n" +
-                "             </div>\n" +
-                "\n" +
-                "    </div>\n" +
-                "\n" +
-                "    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
+                "\n";
+                String description = "";
+                if(!balloon.getDescription().equals("")) {
+                    description = "        <h5>" + balloon.getDescription() + "</h5>\n" +
+                            "        <br>\n";
+                }
+                String imageCommand = "";
+
+                if(balloon.getImagePath() != null && !balloon.getImagePath().equals("")) {
+                    imageCommand =  "        <img src=\"" +  ActionBuildCommandUtility.RESOURCES_FOLDER_PATH +  getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
+                            "        <br>\n";
+                }
+                String videoCommand = "";
+                if(balloon.getVideoPath() != null && !balloon.getVideoPath().equals("")) {
+                    videoCommand = "<iframe width=\"80\" height=\"60\"" +
+                            " src=\""+ balloon.getVideoPath() + "\" frameborder=\"0\"" +
+                            " allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen>" +
+                            "</iframe>";
+                }
+                String endCommand = "    </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
                 "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
                 "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
                 "  </body>\n" +
                 "]]>" +
                 "    </description>\n" +
-                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
+                "    <gx:balloonVisibility>0</gx:balloonVisibility>\n" +
                 "    <Point>\n" +
                 "      <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
                 "    </Point>\n" +
@@ -113,6 +115,16 @@ public class ActionBuildCommandUtility {
                 "' > " +
                 BASE_PATH +
                 "balloon.kml";
+                Log.w(TAG_DEBUG, startCommand + description +  imageCommand + videoCommand + endCommand);
+                return startCommand + description + imageCommand + videoCommand + endCommand;
+    }
+
+    static String buildWriteBalloonFile() {
+        String command = "echo \"http://localhost/var/www/html/balloon.kml\"  > " +
+                BASE_PATH +
+                "kmls.txt";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
     }
 
     private static String getFileName(String imagePath) {
@@ -138,16 +150,13 @@ public class ActionBuildCommandUtility {
 
         POI poi = balloon.getPoi();
 
-        return "echo '" +
+        String startCommand =  "echo '" +
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
                 "\n" +
-                " <NetworkLinkControl>\n" +
-                " <Update>\n" +
-                " <targetHref>/var/www/html/balloon.kml</targetHref>\n" +
-                " <Change>\n" +
-                "  <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
+                " <Document>\n" +
+                " <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
                 "    <name>" + balloon.getPoi().getPoiLocation().getName() + "</name>\n" +
                 "    <description>\n" +
                 "<![CDATA[\n" +
@@ -162,15 +171,32 @@ public class ActionBuildCommandUtility {
                 "  </head>\n" +
                 "  <body>\n" +
                 "    <div class=\"p-lg-5\" align=\"center\">\n" +
-                "\n" +
-                "        <h5>" + balloon.getDescription() + "</h3>\n" +
-                "        <br>\n" +
-                /*"        <img src=\"/var/www/html/img/" +  balloon.getImageUri() + *//*" width=\"40\" height=\"40\*//*"\">"  +*/
-                /*"        <video src=" + balloon.getVideoUri() + "width=\"60\" height=\"40\" autoplay muted loop></video>" +*/
-                "\n" +
-                "    </div>\n" +
-                "\n" +
-                "    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
+                "\n";
+        String description = "";
+        if(!balloon.getDescription().equals("")) {
+            description = "        <h5>" + balloon.getDescription() + "</h5>\n" +
+                    "        <br>\n";
+        }
+        String imageCommand = "";
+
+        if(balloon.getImagePath() != null && !balloon.getImagePath().equals("")) {
+            imageCommand =  "        <img src=\"" +  ActionBuildCommandUtility.RESOURCES_FOLDER_PATH +  getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
+                    "        <br>\n";
+        }
+        String videoCommand = "";
+        if(balloon.getVideoPath() != null && !balloon.getVideoPath().equals("")) {
+        /*            videoCommand = "<iframe class=\"iframe\">" +
+                            " <video width=\"80\" height=\"60\" controls>" +
+                            " <source  src=\"" + ActionBuildCommandUtility.RESOURCES_FOLDER_PATH + getFileName(balloon.getVideoPath()) + "\" type=\"video/mp4\" />" +
+                            "   Liquid Galaxy does not support the video tag." +
+                            "</video>" +
+                            "</iframe>\n"; */
+            videoCommand = "        <video width=\"200\" height=\"120\" controls autoplay> \n" +
+                    "           <source  src=\"" + ActionBuildCommandUtility.RESOURCES_FOLDER_PATH + getFileName(balloon.getVideoPath()) + "\" type=\"video/mp4\"> \n" +
+                    "       Liquid Galaxy does not support the video tag. \n" +
+                    "       </video> \n";
+        }
+        String endCommand = "    </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
                 "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
                 "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
                 "  </body>\n" +
@@ -181,13 +207,13 @@ public class ActionBuildCommandUtility {
                 "      <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
                 "    </Point>\n" +
                 "  </Placemark>\n" +
-                "\n" +
-                "</Change> </Update>\n" +
-                "</NetworkLinkControl>" +
+                "</Document>\n" +
                 "</kml>" +
                 "' > " +
                 BASE_PATH +
-                "balloonUpdate.kml";
+                "balloon.kml";
+        Log.w(TAG_DEBUG, startCommand + description +  imageCommand + videoCommand + endCommand);
+        return startCommand + description + imageCommand + videoCommand + endCommand;
     }
 
     static String buildCommandCreateResourcesFolder() {

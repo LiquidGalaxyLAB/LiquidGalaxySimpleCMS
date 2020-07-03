@@ -114,6 +114,17 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
+    public void writeFileBalloonFile(LGCommand.Listener listener){
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildWriteBalloonFile(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
     public void sendNetworkLinkUpdate(LGCommand.Listener listener){
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonUpdateNetworkLink(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {

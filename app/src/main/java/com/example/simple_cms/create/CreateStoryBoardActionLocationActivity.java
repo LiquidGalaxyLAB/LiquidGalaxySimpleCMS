@@ -49,7 +49,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_location);
 
         file_name = findViewById(R.id.file_name);
-        latitude = findViewById(R.id.latitude);
+        latitude = findViewById(R.id.video_url);
         longitude = findViewById(R.id.longitude);
         altitude = findViewById(R.id.altitude);
         duration = findViewById(R.id.duration);

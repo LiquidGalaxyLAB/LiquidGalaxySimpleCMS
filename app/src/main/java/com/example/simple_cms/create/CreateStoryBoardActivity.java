@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     private POI currentPoi;
     private int currentPoiPosition;
 
-    private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes, buttTest, buttDelete, buttSave;
+    private EditText storyBoardName;
+    private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes,
+            buttTest, buttDelete, buttSaveLocally, buttSaveGoogleDrive;
     private TextView connectionStatus, imageAvailable;
 
     @Override
@@ -65,8 +68,10 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         buttBalloon = findViewById(R.id.butt_balloon);
         buttShapes = findViewById(R.id.butt_shapes);
         buttDelete = findViewById(R.id.butt_delete);
-        buttSave = findViewById(R.id.butt_save);
+        buttSaveLocally = findViewById(R.id.butt_save_locally);
+        buttSaveGoogleDrive = findViewById(R.id.butt_save_on_google_drive);
         buttTest = findViewById(R.id.butt_test);
+        storyBoardName = findViewById(R.id.story_board_name);
 
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
@@ -112,16 +117,22 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttDelete.setOnClickListener((view) -> deleteStoryboard());
 
-        buttSave.setOnClickListener((view) -> saveStoryboard());
+        buttSaveLocally.setOnClickListener((view) -> saveStoryboardLocally());
 
         changeButtonClickableBackgroundColor();
     }
 
     /**
-     * Save the storyboard
+     * Save the storyboard locally
      */
-    private void saveStoryboard() {
+    private void saveStoryboardLocally() {
+        String name = storyBoardName.getText().toString();
+        if(name.equals("")){
+            CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                    getResources().getString(R.string.You_need_a_name_to_create_a_story_board));
+        }else{
 
+        }
     }
 
 
