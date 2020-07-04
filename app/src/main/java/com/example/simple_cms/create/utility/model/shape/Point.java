@@ -25,20 +25,34 @@ public class Point implements IJsonPacker, Parcelable {
         }
     };
 
+    private long id;
     private double longitude;
     private double latitude;
     private double altitude;
 
-    public Point(double longitude, double latitude, double altitude) {
+    public Point(){}
+
+    public Point(long id, double longitude, double latitude, double altitude) {
+        this.id = id;
         this.longitude = longitude;
         this.latitude = latitude;
         this.altitude = altitude;
     }
 
     public Point(Parcel in){
+        this.id = in.readLong();
+        this.longitude = in.readDouble();
         this.longitude = in.readDouble();
         this.latitude = in.readDouble();
         this.altitude = in.readDouble();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public double getLatitude() {
@@ -69,6 +83,7 @@ public class Point implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
+        obj.put("id", id);
         obj.put("longitude", longitude);
         obj.put("latitude", latitude);
         obj.put("altitude", altitude);
@@ -79,6 +94,7 @@ public class Point implements IJsonPacker, Parcelable {
     @Override
     public Object unpack(JSONObject obj) throws JSONException {
 
+        id = obj.getLong("id");
         longitude = obj.getDouble("longitude");
         latitude = obj.getDouble("latitude");
         altitude = obj.getDouble("altitude");
@@ -99,6 +115,7 @@ public class Point implements IJsonPacker, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeLong(id);
         parcel.writeDouble(longitude);
         parcel.writeDouble(latitude);
         parcel.writeDouble(altitude);

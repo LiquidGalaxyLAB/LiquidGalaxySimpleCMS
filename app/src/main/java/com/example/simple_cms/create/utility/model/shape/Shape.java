@@ -32,9 +32,11 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         }
     };
 
+    private long id;
     private POI poi;
     private ArrayList points;
     private boolean isExtrude;
+
 
     public Shape(){
         super(ActionIdentifier.SHAPES_ACTIVITY.getId());
@@ -44,8 +46,9 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     }
 
 
-    public Shape(ArrayList<Point> points, boolean isExtrude, POI poi) {
+    public Shape(long id, ArrayList<Point> points, boolean isExtrude, POI poi) {
        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
+       this.id = id;
        this.poi = poi;
        this.points = points;
        this.isExtrude = isExtrude;
@@ -53,6 +56,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
 
     public Shape(Parcel in) {
         super(ActionIdentifier.SHAPES_ACTIVITY.getId());
+        this.id = in.readLong();
         this.poi = in.readParcelable(POI.class.getClassLoader());
         this.points = in.readArrayList(Point.class.getClassLoader());
         this.isExtrude = in.readInt() != 0;
@@ -60,9 +64,18 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
 
     public Shape(Shape shape){
         super(ActionIdentifier.SHAPES_ACTIVITY.getId());
+        this.id = shape.id;
         this.poi = shape.poi;
         this.points = shape.points;
         this.isExtrude = shape.isExtrude;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public ArrayList<Point> getPoints() {
@@ -96,6 +109,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
+        obj.put("id", id);
         obj.put("shape_poi", poi);
         JSONArray jsonPoints = new JSONArray(points);
         obj.put("jsonPoints: ", jsonPoints);
@@ -107,6 +121,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     @Override
     public Object unpack(JSONObject obj) throws JSONException {
 
+        id = obj.getLong("id");
         poi = (POI) obj.get("shape_poi");
         JSONArray jsonPoints =  obj.getJSONArray("jsonPoints");
         ArrayList<Point> arrayPoint = new ArrayList<>();
@@ -137,6 +152,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeLong(id);
         parcel.writeParcelable(poi, flags);
         parcel.writeList(points);
         parcel.writeInt(isExtrude ? 1 : 0);
