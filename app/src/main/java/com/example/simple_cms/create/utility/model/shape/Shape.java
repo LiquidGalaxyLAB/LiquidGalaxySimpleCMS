@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import com.example.simple_cms.create.utility.IJsonPacker;
 import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
-import com.example.simple_cms.create.utility.model.movement.Movement;
 import com.example.simple_cms.create.utility.model.poi.POI;
 
 import org.json.JSONArray;
@@ -32,7 +31,6 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         }
     };
 
-    private long id;
     private POI poi;
     private ArrayList points;
     private boolean isExtrude;
@@ -47,38 +45,28 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
 
 
     public Shape(long id, ArrayList<Point> points, boolean isExtrude, POI poi) {
-       super(ActionIdentifier.SHAPES_ACTIVITY.getId());
-       this.id = id;
+       super(id, ActionIdentifier.SHAPES_ACTIVITY.getId());
        this.poi = poi;
        this.points = points;
        this.isExtrude = isExtrude;
     }
 
     public Shape(Parcel in) {
-        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
-        this.id = in.readLong();
+        super(in.readLong(), ActionIdentifier.SHAPES_ACTIVITY.getId());
         this.poi = in.readParcelable(POI.class.getClassLoader());
         this.points = in.readArrayList(Point.class.getClassLoader());
         this.isExtrude = in.readInt() != 0;
     }
 
     public Shape(Shape shape){
-        super(ActionIdentifier.SHAPES_ACTIVITY.getId());
-        this.id = shape.id;
+        super(shape.getId(), ActionIdentifier.SHAPES_ACTIVITY.getId());
         this.poi = shape.poi;
         this.points = shape.points;
         this.isExtrude = shape.isExtrude;
     }
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public ArrayList<Point> getPoints() {
+    public ArrayList getPoints() {
         return points;
     }
 
@@ -109,7 +97,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", id);
+        obj.put("id", this.getId());
         obj.put("shape_poi", poi);
         JSONArray jsonPoints = new JSONArray(points);
         obj.put("jsonPoints: ", jsonPoints);
@@ -121,7 +109,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     @Override
     public Object unpack(JSONObject obj) throws JSONException {
 
-        id = obj.getLong("id");
+        this.setId(obj.getLong("id"));
         poi = (POI) obj.get("shape_poi");
         JSONArray jsonPoints =  obj.getJSONArray("jsonPoints");
         ArrayList<Point> arrayPoint = new ArrayList<>();
@@ -152,7 +140,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(id);
+        parcel.writeLong(this.getId());
         parcel.writeParcelable(poi, flags);
         parcel.writeList(points);
         parcel.writeInt(isExtrude ? 1 : 0);

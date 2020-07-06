@@ -94,8 +94,13 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             boolean isExtrude = shape.isExtrude();
             switchCompatExtrude.setChecked(isExtrude);
         }else {
-            points.add(new Point(0.0, 0.0, 0.0));
-            points.add(new Point(0.0, 0.0, 0.0));
+            Point point = new Point();
+            double temp = 0.0;
+            point.setLongitude(temp);
+            point.setLatitude(temp);
+            point.setAltitude(temp);
+            points.add(point);
+            points.add(point);
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
@@ -120,7 +125,12 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         );
 
         buttAddPoint.setOnClickListener((view) -> {
-            points.add(new Point(0.0, 0.0, 0.0));
+            Point point = new Point();
+            double temp = 0.0;
+            point.setLongitude(temp);
+            point.setLatitude(temp);
+            point.setAltitude(temp);
+            points.add(point);
             rePaintRecyclerView();
         });
 

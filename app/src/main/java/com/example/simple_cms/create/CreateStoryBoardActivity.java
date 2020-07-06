@@ -28,11 +28,14 @@ import com.example.simple_cms.create.utility.model.movement.Movement;
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.shape.Shape;
+import com.example.simple_cms.db.AppDatabase;
+import com.example.simple_cms.db.entity.StoryBoard;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -131,7 +134,48 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                     getResources().getString(R.string.You_need_a_name_to_create_a_story_board));
         }else{
+            try{
+                AppDatabase db = AppDatabase.getAppDatabase(this);
+                StoryBoard storyBoard = new StoryBoard();
+                storyBoard.nameStoryBoard = name;
+                List<com.example.simple_cms.db.entity.Action> actionsDB = new ArrayList<>();
+                for(int i = 0; i < actions.size(); i++){
+                    Action action = actions.get(i);
+                    if(action instanceof POI){
+                        com.example.simple_cms.db.entity.poi.POI poi = com.example.simple_cms.db.entity.poi.POI.getPOIDBMODEL((POI) action);
+                        actionsDB.add(poi);
+                    } else if(action instanceof Movement){
+                        com.example.simple_cms.db.entity.Movement movement = com.example.simple_cms.db.entity.Movement.getMovementDBMODEL((Movement) action);
+                        actionsDB.add(movement);
+                    } else if(action instanceof Balloon){
+                        com.example.simple_cms.db.entity.Balloon balloon = com.example.simple_cms.db.entity.Balloon.getBalloonDBMODEL((Balloon) action);
+                        actionsDB.add(balloon);
+                    }else if(action instanceof Shape){
+                        com.example.simple_cms.db.entity.shape.Shape shape = com.example.simple_cms.db.entity.shape.Shape.getShapeDBMODEL((Shape) action);
+                        actionsDB.add(shape);
+                    }
+                }
+                Log.w(TAG_DEBUG, "Inserting");
+                long id = db.storyBoardDao().insertStoryBoardWithAction(storyBoard, actionsDB);
+                Log.w(TAG_DEBUG, "SUPPOSEDLY INSERTED with id: "+ id);
 
+
+
+                List<com.example.simple_cms.db.entity.Action> actionsDBObtain = db.storyBoardDao().getActionsOFStoryBoard(id);
+                Log.w(TAG_DEBUG, "Actions Size: " + actionsDBObtain.size());
+                for(int i = 0; i < actionsDBObtain.size(); i++){
+                    com.example.simple_cms.db.entity.Action action = actionsDBObtain.get(i);
+                    Log.w(TAG_DEBUG, "Action Type: " + action.type);
+                    if(action.type == 1){
+                        com.example.simple_cms.db.entity.poi.POI poiDB = (com.example.simple_cms.db.entity.poi.POI) action;
+                        POI poi = POI.getPOI(poiDB);
+                    }
+                }
+
+
+            } catch (Exception e){
+                Log.w("CreateStoryBoardActivity", "ERROR DB: " + e.getMessage());
+            }
         }
     }
 

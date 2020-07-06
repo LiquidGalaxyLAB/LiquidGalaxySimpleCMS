@@ -1,12 +1,10 @@
 package com.example.simple_cms.create.utility.model.movement;
 
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.example.simple_cms.create.utility.IJsonPacker;
 import com.example.simple_cms.create.utility.model.Action;
@@ -33,7 +31,6 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         }
     };
 
-    private long id;
     private POI poi;
     private double newHeading;
     private double newTilt;
@@ -47,8 +44,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     }
 
     public Movement(long id, POI poi, double newHeading, double newTilt, boolean isOrbitMode){
-        super(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
-        this.id = id;
+        super(id, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         this.poi = poi;
         this.newHeading = newHeading;
         this.newTilt = newTilt;
@@ -56,8 +52,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     }
 
     public Movement(Parcel in) {
-        super(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
-        this.id = in.readLong();
+        super(in.readLong(), ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         this.poi = in.readParcelable(POI.class.getClassLoader());
         this.newHeading = in.readDouble();
         this.newTilt = in.readDouble();
@@ -65,21 +60,13 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     }
 
     public Movement(Movement movement) {
-        super(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
-        this.id = movement.id;
+        super(movement.getId(), ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         this.poi = movement.poi;
         this.newHeading = movement.newHeading;
         this.newTilt = movement.newTilt;
         this.isOrbitMode = movement.isOrbitMode;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public POI getPoi() {
         return poi;
@@ -121,7 +108,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", id);
+        obj.put("id", this.getId());
         obj.put("movement_poi", poi);
         obj.put("movement_new_heading", newHeading);
         obj.put("movement_new_tilt", newTilt);
@@ -133,7 +120,9 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     @Override
     public Object unpack(JSONObject obj) throws JSONException {
 
-        id = obj.getLong("id");
+        this.setId(obj.getLong("id"));
+        this.setType(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
+
         poi = (POI) obj.get("movement_poi");
         newHeading = obj.getDouble("movement_new_heading");
         newTilt = obj.getDouble("movement_new_tilt");
@@ -156,7 +145,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(id);
+        parcel.writeLong(this.getId());
         parcel.writeParcelable(poi, flags);
         parcel.writeDouble(newHeading);
         parcel.writeDouble(newTilt);

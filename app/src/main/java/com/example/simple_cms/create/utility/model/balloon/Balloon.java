@@ -32,7 +32,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         }
     };
 
-    private long id;
     private POI poi;
     private String description;
     private Uri imageUri;
@@ -47,8 +46,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     }
 
     public Balloon(long id, POI poi, String description, Uri imageUri, String imagePath, String videoPath) {
-        super(ActionIdentifier.BALLOON_ACTIVITY.getId());
-        this.id = id;
+        super(id, ActionIdentifier.BALLOON_ACTIVITY.getId());
         this.poi = poi;
         this.description = description;
         this.imageUri = imageUri;
@@ -57,8 +55,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     }
 
     public Balloon(Parcel in) {
-        super(ActionIdentifier.BALLOON_ACTIVITY.getId());
-        this.id = in.readLong();
+        super(in.readLong(), ActionIdentifier.BALLOON_ACTIVITY.getId());
         this.poi = in.readParcelable(POI.class.getClassLoader());
         this.description = in.readString();
         this.imageUri = in.readParcelable(Uri.class.getClassLoader());
@@ -67,23 +64,12 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     }
 
     public Balloon(Balloon balloon) {
-        super(ActionIdentifier.BALLOON_ACTIVITY.getId());
-        this.id = balloon.id;
+        super(balloon.getId(), ActionIdentifier.BALLOON_ACTIVITY.getId());
         this.poi = balloon.poi;
         this.description = balloon.description;
         this.imageUri = balloon.imageUri;
         this.imagePath = balloon.imagePath;
         this.videoPath = balloon.videoPath;
-    }
-
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public POI getPoi() {
@@ -136,7 +122,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", id);
+        obj.put("id", this.getId());
         obj.put("place_mark_poi", poi);
         obj.put("description", description);
         obj.put("image_uri", imageUri);
@@ -149,7 +135,9 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     @Override
     public Object unpack(JSONObject obj) throws JSONException {
 
-        id = obj.getLong("id");
+        this.setId(obj.getLong("id"));
+        this.setType(ActionIdentifier.BALLOON_ACTIVITY.getId());
+
         poi = (POI) obj.get("place_mark_poi");
         description = obj.getString("description");
         imageUri = (Uri) obj.get("image_uri");
@@ -173,7 +161,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(id);
+        parcel.writeLong(this.getId());
         parcel.writeParcelable(poi, flags);
         parcel.writeString(description);
         parcel.writeParcelable(imageUri, flags);

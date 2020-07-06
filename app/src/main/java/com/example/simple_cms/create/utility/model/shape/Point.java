@@ -42,7 +42,6 @@ public class Point implements IJsonPacker, Parcelable {
     public Point(Parcel in){
         this.id = in.readLong();
         this.longitude = in.readDouble();
-        this.longitude = in.readDouble();
         this.latitude = in.readDouble();
         this.altitude = in.readDouble();
     }

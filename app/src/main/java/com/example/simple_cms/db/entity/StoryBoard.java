@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class StoryBoard {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public long storyBoardId;
     public String nameStoryBoard;
 

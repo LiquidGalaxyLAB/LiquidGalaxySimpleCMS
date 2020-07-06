@@ -1,7 +1,6 @@
 package com.example.simple_cms.db.entity.poi;
 
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.simple_cms.db.entity.Action;
 
@@ -17,4 +16,23 @@ public class POI extends Action {
     public double rangePOI;
     public String altitudeModePOI;
     public int durationPOI;
+
+
+    public static POI getPOIDBMODEL(com.example.simple_cms.create.utility.model.poi.POI action) {
+        POI poi = new POI();
+
+        poi.actionId = action.getId();
+        poi.type = action.getType();
+        poi.namePOI = action.getPoiLocation().getName();
+        poi.latitudePOI = action.getPoiLocation().getLatitude();
+        poi.longitudePOI = action.getPoiLocation().getLongitude();
+        poi.altitudePOI = action.getPoiLocation().getAltitude();
+        poi.headingPOI = action.getPoiCamera().getHeading();
+        poi.tiltPOI = action.getPoiCamera().getTilt();
+        poi.rangePOI = action.getPoiCamera().getRange();
+        poi.altitudeModePOI = action.getPoiCamera().getAltitudeMode();
+        poi.durationPOI = action.getPoiCamera().getDuration();
+
+        return poi;
+    }
 }

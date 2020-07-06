@@ -11,7 +11,7 @@ public class ShapeAndPoints {
     public Shape shape;
 
     @Relation(
-            parentColumn = "shapeId",
+            parentColumn = "actionId",
             entityColumn = "shapeCreatorId"
     )
     public List<Point> points;

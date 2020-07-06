@@ -8,6 +8,7 @@ public class Action {
 
     @PrimaryKey(autoGenerate = true)
     public long actionId;
-    public long storyBoardCreatorID;
+    public long actionStoryBoardID;
     public int type;
+
 }
