@@ -16,6 +16,7 @@ import com.example.simple_cms.R;
 import com.example.simple_cms.create.utility.model.shape.Point;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the class in charge of the adapter of the point recyclerview of the class CreateStoryBoardShapeActivity
@@ -24,9 +25,9 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
 
     private static final String TAG_DEBUG = "PointRecyclerAdapter";
 
-    private ArrayList<Point> points;
+    private List<Point> points;
 
-    public PointRecyclerAdapter(ArrayList<Point> points) {
+    public PointRecyclerAdapter(List<Point> points) {
         this.points = points;
     }
 

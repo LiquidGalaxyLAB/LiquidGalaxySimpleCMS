@@ -10,6 +10,9 @@ import com.example.simple_cms.create.utility.IJsonPacker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class is in charge of the points that you can send to LG to create shapes
  */
@@ -44,6 +47,22 @@ public class Point implements IJsonPacker, Parcelable {
         this.longitude = in.readDouble();
         this.latitude = in.readDouble();
         this.altitude = in.readDouble();
+    }
+
+    public static List<Point> getPoints(List pointsDB) {
+        List<Point> points = new ArrayList<>();
+
+        com.example.simple_cms.db.entity.shape.Point pointDB;
+        for(int i = 0; i < pointsDB.size(); i++){
+            pointDB = (com.example.simple_cms.db.entity.shape.Point) pointsDB.get(i);
+            Point point = new Point();
+            point.setLongitude(pointDB.pointLongitude);
+            point.setLatitude(pointDB.pointLatitude);
+            point.setAltitude(pointDB.pointAltitude);
+            points.add(point);
+        }
+
+        return points;
     }
 
     public long getId() {

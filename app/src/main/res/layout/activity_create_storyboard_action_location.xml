@@ -70,6 +70,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
+            android:text="Prueba"
             />
 
 

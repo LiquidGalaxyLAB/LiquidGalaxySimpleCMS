@@ -18,7 +18,7 @@ public class Point {
     public double pointLatitude;
     public double pointAltitude;
 
-    public static List getPointsDBMODEL(ArrayList points) {
+    public static List getPointsDBMODEL(List points) {
         List pointsDBMODEL = new ArrayList();
 
         for(int i = 0; i < points.size(); i++){

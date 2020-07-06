@@ -47,7 +47,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             locationName, locationNameTitle;
 
     private RecyclerView mRecyclerView;
-    ArrayList<Point> points = new ArrayList<>();
+    List<Point> points = new ArrayList<>();
 
     private Handler handler = new Handler();
     private POI poi;

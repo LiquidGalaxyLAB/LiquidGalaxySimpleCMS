@@ -10,6 +10,7 @@ import com.example.simple_cms.create.utility.IJsonPacker;
 import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.poi.POI;
+import com.example.simple_cms.db.entity.poi.SimplePOI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +68,10 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.isOrbitMode = movement.isOrbitMode;
     }
 
+    public static Movement getMovement(com.example.simple_cms.db.entity.Movement actionDB) {
+        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
+        return new Movement(actionDB.actionId, poi, actionDB.newHeading, actionDB.newTilt, actionDB.isOrbitMode);
+    }
 
     public POI getPoi() {
         return poi;

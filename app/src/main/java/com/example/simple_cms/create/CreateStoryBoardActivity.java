@@ -31,6 +31,7 @@ import com.example.simple_cms.create.utility.model.shape.Shape;
 import com.example.simple_cms.db.AppDatabase;
 import com.example.simple_cms.db.entity.StoryBoard;
 import com.example.simple_cms.dialog.CustomDialogUtility;
+import com.example.simple_cms.my_storyboards.Constans;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
 
@@ -47,7 +48,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     private static final String TAG_DEBUG = "CreateStoryBoardActivity";
 
     private RecyclerView mRecyclerView;
-    ArrayList<Action> actions = new ArrayList<>();
+    List<Action> actions = new ArrayList<>();
     private POI currentPoi;
     private int currentPoiPosition;
 
@@ -78,6 +79,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
+
+        long storyBoardID = getIntent().getLongExtra(Constans.STORY_BOARD_ID.name(), Long.MAX_VALUE);
+        if(storyBoardID != Long.MAX_VALUE) chargeStoryBoard(storyBoardID);
 
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
@@ -125,6 +129,15 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         changeButtonClickableBackgroundColor();
     }
 
+    private void chargeStoryBoard(long storyBoardID) {
+        try{
+            AppDatabase db = AppDatabase.getAppDatabase(this);
+            actions = Action.getAction(db.storyBoardDao().getActionsOFStoryBoard(storyBoardID));
+        }catch (Exception e){
+            Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
+        }
+    }
+
     /**
      * Save the storyboard locally
      */
@@ -155,26 +168,13 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
                         actionsDB.add(shape);
                     }
                 }
-                Log.w(TAG_DEBUG, "Inserting");
-                long id = db.storyBoardDao().insertStoryBoardWithAction(storyBoard, actionsDB);
-                Log.w(TAG_DEBUG, "SUPPOSEDLY INSERTED with id: "+ id);
+                db.storyBoardDao().insertStoryBoardWithAction(storyBoard, actionsDB);
 
-
-
-                List<com.example.simple_cms.db.entity.Action> actionsDBObtain = db.storyBoardDao().getActionsOFStoryBoard(id);
-                Log.w(TAG_DEBUG, "Actions Size: " + actionsDBObtain.size());
-                for(int i = 0; i < actionsDBObtain.size(); i++){
-                    com.example.simple_cms.db.entity.Action action = actionsDBObtain.get(i);
-                    Log.w(TAG_DEBUG, "Action Type: " + action.type);
-                    if(action.type == 1){
-                        com.example.simple_cms.db.entity.poi.POI poiDB = (com.example.simple_cms.db.entity.poi.POI) action;
-                        POI poi = POI.getPOI(poiDB);
-                    }
-                }
-
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.alert_save_story_board));
 
             } catch (Exception e){
-                Log.w("CreateStoryBoardActivity", "ERROR DB: " + e.getMessage());
+                Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
             }
         }
     }

@@ -31,6 +31,10 @@ public abstract class StoryBoardDao {
     public abstract long insertStoryBoard(StoryBoard storyBoard);
 
     @Transaction
+    @Query("SELECT * FROM `StoryBoard`")
+    public abstract List<StoryBoard> getStoryBoardsWithOutActions();
+
+    @Transaction
     @Query("SELECT * FROM `StoryBoard` WHERE storyBoardId = :id")
     public abstract StoryBoardWithActions getStoryBoardWithActions(long id);
 
@@ -89,11 +93,10 @@ public abstract class StoryBoardDao {
      *
      * @param storyBoard StoryBoard to insert
      * @param actions    List of actions of the Storyboard
-     * @return StoryBoard id
      */
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public long insertStoryBoardWithAction(StoryBoard storyBoard, List<Action> actions) {
+    public void insertStoryBoardWithAction(StoryBoard storyBoard, List<Action> actions) {
 
         final long storyBoardId = insertStoryBoard(storyBoard);
 
@@ -136,9 +139,6 @@ public abstract class StoryBoardDao {
                 Log.w(TAG_DEBUG, "ERROR TYPE ACTION");
             }
         }
-
-        return storyBoardId;
-
     }
 
     /**

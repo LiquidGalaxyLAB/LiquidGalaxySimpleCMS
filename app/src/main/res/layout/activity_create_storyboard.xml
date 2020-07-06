@@ -99,6 +99,7 @@
         android:textColorHint="@color/hintColor"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
+        android:text="Prueba"
         app:layout_constraintBottom_toTopOf="@+id/butt_save_locally"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connection_status" />

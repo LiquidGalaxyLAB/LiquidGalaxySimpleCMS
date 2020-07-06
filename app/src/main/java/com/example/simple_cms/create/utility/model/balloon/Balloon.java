@@ -72,6 +72,12 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.videoPath = balloon.videoPath;
     }
 
+    public static Balloon getBalloon(com.example.simple_cms.db.entity.Balloon actionDB) {
+        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
+        Uri imageUri = actionDB.imageUriBalloon != null ? Uri.parse(actionDB.imageUriBalloon) : null;
+        return  new Balloon(actionDB.actionId, poi, actionDB.descriptionBalloon, imageUri, actionDB.imagePathBalloon, actionDB.videoPathBalloon);
+    }
+
     public POI getPoi() {
         return poi;
     }

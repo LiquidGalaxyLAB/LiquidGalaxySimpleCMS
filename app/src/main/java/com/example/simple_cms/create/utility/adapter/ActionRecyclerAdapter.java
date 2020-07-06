@@ -16,6 +16,7 @@ import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the class in charge of the adapter of the action recyclerview of the class CreateStoryBoardActivity
@@ -26,10 +27,10 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
 
 
     private AppCompatActivity activity;
-    private ArrayList<Action> actions;
+    private List<Action> actions;
     private OnNoteListener mOnNoteListener;
 
-    public ActionRecyclerAdapter(AppCompatActivity activity, ArrayList<Action> actions, OnNoteListener onNoteListener) {
+    public ActionRecyclerAdapter(AppCompatActivity activity, List<Action> actions, OnNoteListener onNoteListener) {
         this.activity = activity;
         this.actions = actions;
         this.mOnNoteListener = onNoteListener;

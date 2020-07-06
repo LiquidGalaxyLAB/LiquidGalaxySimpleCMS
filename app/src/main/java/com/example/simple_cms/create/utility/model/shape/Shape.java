@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is in charge of the action shape that you can send to LG
@@ -32,7 +33,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     };
 
     private POI poi;
-    private ArrayList points;
+    private List points;
     private boolean isExtrude;
 
 
@@ -44,7 +45,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     }
 
 
-    public Shape(long id, ArrayList<Point> points, boolean isExtrude, POI poi) {
+    public Shape(long id, List<Point> points, boolean isExtrude, POI poi) {
        super(id, ActionIdentifier.SHAPES_ACTIVITY.getId());
        this.poi = poi;
        this.points = points;
@@ -65,12 +66,18 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         this.isExtrude = shape.isExtrude;
     }
 
+    public static Shape getShape(com.example.simple_cms.db.entity.shape.Shape actionDB) {
+        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
+        List<Point> points = Point.getPoints(actionDB.points);
+        return new Shape(actionDB.actionId, points, actionDB.isExtrude, poi);
+    }
 
-    public ArrayList getPoints() {
+
+    public List getPoints() {
         return points;
     }
 
-    public Shape setPoints(ArrayList<Point> points) {
+    public Shape setPoints(List<Point> points) {
         this.points = points;
         return this;
     }

@@ -11,6 +11,7 @@ import com.example.simple_cms.create.utility.model.shape.Point;
 import com.example.simple_cms.create.utility.model.shape.Shape;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionBuildCommandUtility {
 
@@ -228,7 +229,7 @@ public class ActionBuildCommandUtility {
         if(shape.isExtrude()) command.append("<extrude>1</extrude>\n");
         command.append("<tessellate>1</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
                 .append("<coordinates>\n");
-        ArrayList<Point> points =shape.getPoints();
+        List<Point> points = shape.getPoints();
         int pointsLength = points.size();
         Point point;
         for(int i = 0; i < pointsLength; i++){
