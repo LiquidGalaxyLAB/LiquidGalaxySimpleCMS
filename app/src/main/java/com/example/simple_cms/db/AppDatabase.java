@@ -12,10 +12,12 @@ import com.example.simple_cms.db.entity.Balloon;
 import com.example.simple_cms.db.entity.Movement;
 import com.example.simple_cms.db.entity.poi.POI;
 import com.example.simple_cms.db.entity.StoryBoard;
-import com.example.simple_cms.db.entity.poi.SimplePOI;
 import com.example.simple_cms.db.entity.shape.Point;
 import com.example.simple_cms.db.entity.shape.Shape;
 
+/**
+ * Singleton of connection to the database
+ */
 @Database(entities = {StoryBoard.class, Action.class, POI.class, Movement.class, Balloon.class, Shape.class, Point.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 

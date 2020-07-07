@@ -51,6 +51,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
     List<Action> actions = new ArrayList<>();
     private POI currentPoi;
     private int currentPoiPosition;
+    private long currentStoryBoardId = Long.MIN_VALUE;
 
     private EditText storyBoardName;
     private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes,
@@ -80,8 +81,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
 
-        long storyBoardID = getIntent().getLongExtra(Constans.STORY_BOARD_ID.name(), Long.MAX_VALUE);
-        if(storyBoardID != Long.MAX_VALUE) chargeStoryBoard(storyBoardID);
+        currentStoryBoardId = getIntent().getLongExtra(Constans.STORY_BOARD_ID.name(), Long.MIN_VALUE);
+        String name = getIntent().getStringExtra(Constans.STORY_BOARD_NAME.name());
+        if(currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
 
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
@@ -129,17 +131,20 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         changeButtonClickableBackgroundColor();
     }
 
-    private void chargeStoryBoard(long storyBoardID) {
+    private void chargeStoryBoard(String name) {
         try{
             AppDatabase db = AppDatabase.getAppDatabase(this);
-            actions = Action.getAction(db.storyBoardDao().getActionsOFStoryBoard(storyBoardID));
+            actions = Action.getAction(db.storyBoardDao().getActionsOFStoryBoard(currentStoryBoardId));
+            storyBoardName.setText(name);
+            currentPoi = (POI) actions.get(0);
+            currentPoiPosition = 0;
         }catch (Exception e){
             Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
         }
     }
 
     /**
-     * Save the storyboard locally
+     * Save or update the storyboard locally
      */
     private void saveStoryboardLocally() {
         String name = storyBoardName.getText().toString();
@@ -149,34 +154,55 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         }else{
             try{
                 AppDatabase db = AppDatabase.getAppDatabase(this);
-                StoryBoard storyBoard = new StoryBoard();
-                storyBoard.nameStoryBoard = name;
-                List<com.example.simple_cms.db.entity.Action> actionsDB = new ArrayList<>();
-                for(int i = 0; i < actions.size(); i++){
-                    Action action = actions.get(i);
-                    if(action instanceof POI){
-                        com.example.simple_cms.db.entity.poi.POI poi = com.example.simple_cms.db.entity.poi.POI.getPOIDBMODEL((POI) action);
-                        actionsDB.add(poi);
-                    } else if(action instanceof Movement){
-                        com.example.simple_cms.db.entity.Movement movement = com.example.simple_cms.db.entity.Movement.getMovementDBMODEL((Movement) action);
-                        actionsDB.add(movement);
-                    } else if(action instanceof Balloon){
-                        com.example.simple_cms.db.entity.Balloon balloon = com.example.simple_cms.db.entity.Balloon.getBalloonDBMODEL((Balloon) action);
-                        actionsDB.add(balloon);
-                    }else if(action instanceof Shape){
-                        com.example.simple_cms.db.entity.shape.Shape shape = com.example.simple_cms.db.entity.shape.Shape.getShapeDBMODEL((Shape) action);
-                        actionsDB.add(shape);
-                    }
+                if(currentStoryBoardId != Long.MIN_VALUE){
+                    db.storyBoardDao().updateStoryBoardWithActions(currentStoryBoardId, getActionsDB());
+                    CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                            getResources().getString(R.string.alert_update_story_board));
+                }else{
+                    saveStoryBoardRoom(name, db);
+                    CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                            getResources().getString(R.string.alert_save_story_board));
                 }
-                db.storyBoardDao().insertStoryBoardWithAction(storyBoard, actionsDB);
-
-                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
-                        getResources().getString(R.string.alert_save_story_board));
-
             } catch (Exception e){
                 Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
             }
         }
+    }
+
+    /**
+     * This is in charge of saving a new storyboard to the db
+     * @param name Name of the storyBoard
+     * @param db Connection to db
+     */
+    private void saveStoryBoardRoom(String name, AppDatabase db) {
+        StoryBoard storyBoard = new StoryBoard();
+        storyBoard.nameStoryBoard = name;
+        db.storyBoardDao().insertStoryBoardWithAction(storyBoard, getActionsDB());
+    }
+
+    /**
+     * Convert the actions to actionsDBModel
+     * @return The list of actionsDBModel
+     */
+    private List<com.example.simple_cms.db.entity.Action> getActionsDB() {
+        List<com.example.simple_cms.db.entity.Action> actionsDB = new ArrayList<>();
+        for(int i = 0; i < actions.size(); i++){
+            Action action = actions.get(i);
+            if(action instanceof POI){
+                com.example.simple_cms.db.entity.poi.POI poi = com.example.simple_cms.db.entity.poi.POI.getPOIDBMODEL((POI) action);
+                actionsDB.add(poi);
+            } else if(action instanceof Movement){
+                com.example.simple_cms.db.entity.Movement movement = com.example.simple_cms.db.entity.Movement.getMovementDBMODEL((Movement) action);
+                actionsDB.add(movement);
+            } else if(action instanceof Balloon){
+                com.example.simple_cms.db.entity.Balloon balloon = com.example.simple_cms.db.entity.Balloon.getBalloonDBMODEL((Balloon) action);
+                actionsDB.add(balloon);
+            }else if(action instanceof Shape){
+                com.example.simple_cms.db.entity.shape.Shape shape = com.example.simple_cms.db.entity.shape.Shape.getShapeDBMODEL((Shape) action);
+                actionsDB.add(shape);
+            }
+        }
+        return actionsDB;
     }
 
 
@@ -212,6 +238,8 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             actions = new ArrayList<>();
             currentPoi = null;
             currentPoiPosition = 0;
+            currentStoryBoardId = Long.MIN_VALUE;
+            storyBoardName.setText("");
             initRecyclerView();
             dialog.dismiss();
         });
@@ -224,6 +252,12 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         loadData();
         initRecyclerView();
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 
     /**

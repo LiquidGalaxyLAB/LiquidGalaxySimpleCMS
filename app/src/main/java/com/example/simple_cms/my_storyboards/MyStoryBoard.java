@@ -47,6 +47,9 @@ public class MyStoryBoard extends TobBarActivity implements
         super.onResume();
     }
 
+    /**
+     * Load the data for the database
+     */
     private void loadStoryBoards() {
         AppDatabase db = AppDatabase.getAppDatabase(this);
         storyBoards = StoryBoard.getStoryBoardsWithOutActions(db.storyBoardDao().getStoryBoardsWithOutActions());
@@ -63,7 +66,7 @@ public class MyStoryBoard extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.Adapter mAdapter = new StoryBoardRecyclerAdapter(storyBoards, this);
+        RecyclerView.Adapter mAdapter = new StoryBoardRecyclerAdapter(this, storyBoards, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -79,6 +82,7 @@ public class MyStoryBoard extends TobBarActivity implements
         StoryBoard selected = storyBoards.get(position);
         Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
         intent.putExtra(Constans.STORY_BOARD_ID.name(), selected.getStoryBoardId());
+        intent.putExtra(Constans.STORY_BOARD_NAME.name(), selected.getName());
         startActivity(intent);
     }
 }

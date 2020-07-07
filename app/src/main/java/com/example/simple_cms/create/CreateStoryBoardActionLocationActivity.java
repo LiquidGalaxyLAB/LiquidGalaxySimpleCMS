@@ -239,13 +239,6 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
         v.getBackground().setAlpha(220);
         Button ok = v.findViewById(R.id.ok);
-        ok.setOnClickListener( view -> {
-            Intent returnInfoIntent = new Intent();
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-            returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
-            setResult(Activity.RESULT_OK, returnInfoIntent);
-            finish();
-        });
         TextView textMessage = v.findViewById(R.id.message);
         textMessage.setText(getResources().getString(R.string.alert_message_delete_action_location));
         textMessage.setTextSize(23);
@@ -256,6 +249,14 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+        ok.setOnClickListener( view -> {
+            Intent returnInfoIntent = new Intent();
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
+            setResult(Activity.RESULT_OK, returnInfoIntent);
+            dialog.dismiss();
+            finish();
+        });
         cancel.setOnClickListener( view ->
             dialog.dismiss());
     }

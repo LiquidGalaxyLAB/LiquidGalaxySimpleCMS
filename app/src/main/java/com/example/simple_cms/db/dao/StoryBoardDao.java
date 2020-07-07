@@ -3,10 +3,12 @@ package com.example.simple_cms.db.dao;
 import android.util.Log;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.db.entity.Action;
@@ -36,10 +38,20 @@ public abstract class StoryBoardDao {
 
     @Transaction
     @Query("SELECT * FROM `StoryBoard` WHERE storyBoardId = :id")
+    public abstract StoryBoard getStoryBoard(long id);
+
+    @Transaction
+    @Query("SELECT * FROM `StoryBoard` WHERE storyBoardId = :id")
     public abstract StoryBoardWithActions getStoryBoardWithActions(long id);
+
+    @Delete
+    public abstract void deleteStoryBoard(StoryBoard storyBoard);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long insertAction(Action action);
+
+    @Delete
+    public abstract void deleteAction(Action action);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertPOI(POI poi);
@@ -47,17 +59,26 @@ public abstract class StoryBoardDao {
     @Query("SELECT * FROM `POI` WHERE actionId = :poiId")
     public abstract POI getPOI(long poiId);
 
+    @Delete
+    public abstract void deletePOI(POI poi);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertMovement(Movement movement);
 
     @Query("SELECT * FROM `Movement` WHERE actionId = :movementId")
     public abstract Movement getMovement(long movementId);
 
+    @Delete
+    public abstract void deleteMovement(Movement movement);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertBalloon(Balloon balloon);
 
     @Query("SELECT * FROM `Balloon` WHERE actionId = :balloonId")
     public abstract Balloon getBalloon(long balloonId);
+
+    @Delete
+    public abstract void deleteBalloon(Balloon balloon);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long insertShape(Shape shape);
@@ -69,6 +90,8 @@ public abstract class StoryBoardDao {
     @Query("SELECT * FROM `Shape` WHERE actionId = :ShapeId")
     public abstract ShapeAndPoints getShapeAndPoints(long ShapeId);
 
+    @Delete
+    public abstract void deleteShapeWithPoints(Shape shape, List<Point> points);
 
     /**
      * Insert the shape and its points
@@ -177,7 +200,63 @@ public abstract class StoryBoardDao {
         return newActions;
     }
 
+    /**
+     * Update the storyboard
+     * @param currentStoryBoardId Id of the current storyboard
+     * @param updateActions update the actions
+     */
+    @Transaction
+    @Update
+    public void updateStoryBoardWithActions(long currentStoryBoardId, List<Action> updateActions){
 
-/*    @Delete
-    public abstract void delete(StoryBoard StoryBoard);*/
+        //Clean old entity
+        StoryBoard oldStoryBoard = getStoryBoard(currentStoryBoardId);
+        List<Action> oldActions = getActionsOFStoryBoard(currentStoryBoardId);
+        deleteStoryBoardWithActions(oldStoryBoard, oldActions);
+
+        insertStoryBoardWithAction(oldStoryBoard, updateActions);
+
+    }
+
+
+    /**
+     * Delete the storyboard with its actions
+     * @param storyBoard The storyboard that is going to be deleted
+     * @param actions The actions of the storyboard
+     */
+    @Transaction
+    @Delete
+    private void deleteStoryBoardWithActions(StoryBoard storyBoard, List<Action> actions){
+
+        Action action;
+        for (int i = 0; i < actions.size(); i++) {
+            action = actions.get(i);
+            deleteAction(action);
+            if (action instanceof POI) {
+                POI poi = (POI) action;
+                deletePOI(poi);
+            } else if (action instanceof Movement) {
+                Movement movement = (Movement) action;
+                deleteMovement(movement);
+            } else if (action instanceof Balloon) {
+                Balloon balloon = (Balloon) action;
+                deleteBalloon(balloon);
+            } else if (action instanceof Shape) {
+                Shape shape = (Shape) action;
+                List<Point> points = shape.points;
+                deleteShapeWithPoints(shape, points);
+            } else {
+                Log.w(TAG_DEBUG, "ERROR TYPE ACTION");
+            }
+        }
+
+        deleteStoryBoard(storyBoard);
+    }
+
+
+    @Transaction
+    @Delete
+    public void deleteStoryBoardFormRecyclerView(StoryBoard storyBoard) {
+        deleteStoryBoardWithActions(storyBoard, getActionsOFStoryBoard(storyBoard.storyBoardId));
+    }
 }

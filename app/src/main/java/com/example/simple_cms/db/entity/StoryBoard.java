@@ -11,4 +11,12 @@ public class StoryBoard {
     public long storyBoardId;
     public String nameStoryBoard;
 
+    public static StoryBoard getStoryBoardDBModel(com.example.simple_cms.create.utility.model.StoryBoard storyBoard) {
+        StoryBoard storyBoardDBModel = new StoryBoard();
+
+        storyBoardDBModel.storyBoardId = storyBoard.getStoryBoardId();
+        storyBoardDBModel.nameStoryBoard = storyBoard.getName();
+
+        return  storyBoardDBModel;
+    }
 }

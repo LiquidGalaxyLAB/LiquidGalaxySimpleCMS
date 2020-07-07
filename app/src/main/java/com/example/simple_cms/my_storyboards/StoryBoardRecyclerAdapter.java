@@ -1,16 +1,22 @@
 package com.example.simple_cms.my_storyboards;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.simple_cms.R;
 import com.example.simple_cms.create.utility.model.StoryBoard;
+import com.example.simple_cms.db.AppDatabase;
 
 import java.util.List;
 
@@ -19,10 +25,12 @@ public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRe
     private static final String TAG_DEBUG = "StoryBoardRecyclerAdapter";
 
 
+    private AppCompatActivity activity;
     private List<StoryBoard> storyBoards;
     private StoryBoardRecyclerAdapter.OnNoteListener mOnNoteListener;
 
-    public StoryBoardRecyclerAdapter(List<StoryBoard> storyBoards, StoryBoardRecyclerAdapter.OnNoteListener onNoteListener) {
+    StoryBoardRecyclerAdapter(AppCompatActivity activity, List<StoryBoard> storyBoards, StoryBoardRecyclerAdapter.OnNoteListener onNoteListener) {
+        this.activity = activity;
         this.storyBoards = storyBoards;
         this.mOnNoteListener = onNoteListener;
     }
@@ -50,9 +58,10 @@ public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRe
     /**
      * This is the most efficient way to have the view holder and the click listener
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView fileName, fileNameText;
+        Button butt_delete;
         StoryBoardRecyclerAdapter.OnNoteListener mOnNoteListener;
 
         ViewHolder(View itemView, StoryBoardRecyclerAdapter.OnNoteListener onNoteListener) {
@@ -60,9 +69,49 @@ public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRe
 
             this.fileName = itemView.findViewById(R.id.file_name);
             this.fileNameText = itemView.findViewById(R.id.file_name_text);
+            butt_delete = itemView.findViewById(R.id.butt_delete);
+            butt_delete.setOnClickListener((view) -> deleteStoryboard(activity));
             this.mOnNoteListener = onNoteListener;
-
             itemView.setOnClickListener(this);
+        }
+
+        /**
+         * Clean the actions of the recyclerview
+         */
+        private void deleteStoryboard(AppCompatActivity activity) {
+            @SuppressLint("InflateParams") View v = activity.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
+            v.getBackground().setAlpha(220);
+            Button ok = v.findViewById(R.id.ok);
+            TextView textMessage = v.findViewById(R.id.message);
+            textMessage.setText(activity.getResources().getString(R.string.alert_message_delete_storyboard));
+            textMessage.setTextSize(23);
+            textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            Button cancel = v.findViewById(R.id.cancel);
+            cancel.setVisibility(View.VISIBLE);
+            createAlertDialog(activity, v, ok, cancel);
+        }
+
+        /**
+         * Create a alert dialog for the user
+         * @param v view
+         * @param ok button ok
+         * @param cancel button cancel
+         */
+        private void createAlertDialog(AppCompatActivity activity, View v, Button ok, Button cancel) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setView(v);
+            Dialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            ok.setOnClickListener(v1 -> {
+                AppDatabase db = AppDatabase.getAppDatabase(itemView.getContext());
+                StoryBoard storyBoard = storyBoards.get(getAdapterPosition());
+                db.storyBoardDao().deleteStoryBoardFormRecyclerView(com.example.simple_cms.db.entity.StoryBoard.getStoryBoardDBModel(storyBoard));
+                storyBoards.remove(getAdapterPosition());
+                notifyItemRemoved(getAdapterPosition());
+                dialog.dismiss();
+            });
+            cancel.setOnClickListener(v1 -> dialog.dismiss());
         }
 
         @Override

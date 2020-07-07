@@ -18,11 +18,14 @@
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_delete">Delete</string>
+    <string name="button_clean_story_board">Clean Storyboard</string>
     <string name="button_test">Test</string>
     <string name="button_open">Open</string>
     <string name="button_back">Back</string>
     <string name="button_previous">Previous</string>
     <string name="button_save">Save</string>
+    <string name="button_save_locally">Save locally</string>
+    <string name="button_save_on_google_driver">Save on Google Drive</string>
     <string name="button_next">Next</string>
     <string name="button_location">Location</string>
     <string name="button_movements">Movements</string>
@@ -57,6 +60,7 @@
 
     //String for create storyboard location activity
     <string name="location_name">Location name: </string>
+    <string name="example_storyboard_name">Storyboard name </string>
     <string name="example_location_name">Insert the name of your Location</string>
     <string name="latitude">Latitude</string>
     <string name="latitude_results">-0,000000</string>
@@ -84,8 +88,9 @@
     //String for create storyboard place balloon activity
     <string name="hint_insert_text">Insert text here</string>
     <string name="button_add_image">Add Image</string>
-    <string name="button_add_video">Add Video</string>
     <string name="description_image">Image selected</string>
+    <string name="video_url">Video URL</string>
+    <string name="example_video_url">https://www.youtube.com/embed/xp9qHGNCcjA</string>
 
     //String for create storyboard place shape activity
     <string name="point">Point</string>
@@ -132,6 +137,7 @@
     <string name="activity_create_location_missing_tilt_field_error">Please, fill the tilt field</string>
     <string name="activity_create_location_missing_range_field_error">Please, fill the range field</string>
     <string name="activity_create_location_missing_altitude_mode_field_error">Please, fill the altitude mode field</string>
+    <string name="You_need_a_name_to_create_a_story_board">You need to insert a name to create a storyboard</string>
     <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
     <string name="You_need_a_location_to_create_a_balloon">You need a location to create a balloon</string>
     <string name="You_need_a_location_to_create_a_shape">You need a location to create a shape</string>
@@ -140,6 +146,8 @@
     <string name="alert_permision_denied_image">Permission denied, you cannot select an image</string>
     <string name="alert_permision_denied_test_image">Permission denied, you cannot test the balloon in liquid galaxy</string>
     <string name="alert_permision_denied_video">Permission denied, you cannot select an video</string>
+    <string name="alert_save_story_board">The storyboard has been successfully saved</string>
+    <string name="alert_update_story_board">The storyboard has been updated</string>
     <string name="icon_action">Icon Action</string>
 
 

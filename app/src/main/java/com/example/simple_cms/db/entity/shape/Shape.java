@@ -3,12 +3,10 @@ package com.example.simple_cms.db.entity.shape;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import com.example.simple_cms.db.entity.Action;
 import com.example.simple_cms.db.entity.poi.SimplePOI;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
