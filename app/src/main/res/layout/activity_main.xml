@@ -130,14 +130,14 @@
         android:textColor="@color/textColorClick"
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/hint_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/connect_liquid_galaxy"
+        app:layout_constraintBottom_toTopOf="@+id/butt_connect_liquid_galaxy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="RtlCompat" />
 
     <Button
-        android:id="@+id/connect_liquid_galaxy"
+        android:id="@+id/butt_connect_liquid_galaxy"
         android:layout_width="0dp"
         android:layout_height="63dp"
         android:layout_marginStart="370dp"
@@ -168,7 +168,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/connect_liquid_galaxy" />
+        app:layout_constraintTop_toTopOf="@+id/butt_connect_liquid_galaxy" />
 
     <ImageView
         android:id="@+id/logo"
