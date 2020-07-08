@@ -128,25 +128,29 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", this.getId());
-        obj.put("place_mark_poi", poi);
+        obj.put("balloon_id", this.getId());
+        obj.put("type", this.getType());
+        obj.put("place_mark_poi", poi.pack());
         obj.put("description", description);
-        obj.put("image_uri", imageUri);
-        obj.put("image_path", imagePath);
-        obj.put("video_path", videoPath);
+        obj.put("image_uri", imageUri != null ? imageUri.toString(): "");
+        obj.put("image_path", imagePath != null ? imagePath: "");
+        obj.put("video_path", videoPath != null ? videoPath: "");
 
         return obj;
     }
 
     @Override
-    public Object unpack(JSONObject obj) throws JSONException {
+    public Balloon unpack(JSONObject obj) throws JSONException {
 
-        this.setId(obj.getLong("id"));
-        this.setType(ActionIdentifier.BALLOON_ACTIVITY.getId());
+        this.setId(obj.getLong("balloon_id"));
+        this.setType(obj.getInt("type"));
 
-        poi = (POI) obj.get("place_mark_poi");
+        POI newPoi = new POI();
+        poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+
         description = obj.getString("description");
-        imageUri = (Uri) obj.get("image_uri");
+        String uri = obj.getString("image_uri");
+        imageUri = !uri.equals("") ?  Uri.parse(obj.getString("image_uri")):null;
         imagePath = obj.getString("image_path");
         videoPath = obj.getString("video_path");
 

@@ -101,7 +101,7 @@ public class Point implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", id);
+        obj.put("point_id", id);
         obj.put("longitude", longitude);
         obj.put("latitude", latitude);
         obj.put("altitude", altitude);
@@ -110,9 +110,9 @@ public class Point implements IJsonPacker, Parcelable {
     }
 
     @Override
-    public Object unpack(JSONObject obj) throws JSONException {
+    public Point unpack(JSONObject obj) throws JSONException {
 
-        id = obj.getLong("id");
+        id = obj.getLong("point_id");
         longitude = obj.getDouble("longitude");
         latitude = obj.getDouble("latitude");
         altitude = obj.getDouble("altitude");

@@ -109,7 +109,8 @@ public class POI extends Action implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", this.getId());
+        obj.put("poi_id", this.getId());
+        obj.put("type", this.getType());
         obj.put("poi_location_name", poiLocation.getName());
         obj.put("poi_location_longitude", poiLocation.getLongitude());
         obj.put("poi_location_latitude", poiLocation.getLatitude());
@@ -124,9 +125,9 @@ public class POI extends Action implements IJsonPacker, Parcelable {
     }
 
     @Override
-    public Object unpack(JSONObject obj) throws JSONException {
-        this.setId(obj.getLong("id"));
-        this.setType(ActionIdentifier.LOCATION_ACTIVITY.getId());
+    public POI unpack(JSONObject obj) throws JSONException {
+        this.setId(obj.getLong("poi_id"));
+        this.setType(obj.getInt("type"));
 
         String name = obj.getString("poi_location_name");
         double longitude = obj.getDouble("poi_location_longitude");

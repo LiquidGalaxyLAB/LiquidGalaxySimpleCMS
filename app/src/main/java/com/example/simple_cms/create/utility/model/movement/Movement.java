@@ -113,8 +113,9 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", this.getId());
-        obj.put("movement_poi", poi);
+        obj.put("movement_id", this.getId());
+        obj.put("type", this.getType());
+        obj.put("movement_poi", poi.pack());
         obj.put("movement_new_heading", newHeading);
         obj.put("movement_new_tilt", newTilt);
         obj.put("movement_orbit_mode", isOrbitMode);
@@ -123,12 +124,13 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     }
 
     @Override
-    public Object unpack(JSONObject obj) throws JSONException {
+    public Movement unpack(JSONObject obj) throws JSONException {
 
-        this.setId(obj.getLong("id"));
-        this.setType(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
+        this.setId(obj.getLong("movement_id"));
+        this.setType(obj.getInt("type"));
 
-        poi = (POI) obj.get("movement_poi");
+        POI newPoi = new POI();
+        poi =  newPoi.unpack(obj.getJSONObject("movement_poi"));
         newHeading = obj.getDouble("movement_new_heading");
         newTilt = obj.getDouble("movement_new_tilt");
         isOrbitMode = obj.getBoolean("movement_orbit_mode");

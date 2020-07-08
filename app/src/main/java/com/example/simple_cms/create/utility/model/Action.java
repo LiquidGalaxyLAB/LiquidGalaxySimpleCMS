@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * It is the class base of the action
  */
-public class Action {
+public abstract class Action {
 
     private long id;
     private int type;

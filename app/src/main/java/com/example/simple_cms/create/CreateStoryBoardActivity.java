@@ -34,8 +34,12 @@ import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.my_storyboards.Constans;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +87,7 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         currentStoryBoardId = getIntent().getLongExtra(Constans.STORY_BOARD_ID.name(), Long.MIN_VALUE);
         String name = getIntent().getStringExtra(Constans.STORY_BOARD_NAME.name());
-        if(currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
+        if (currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
 
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
@@ -128,18 +132,45 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
         buttSaveLocally.setOnClickListener((view) -> saveStoryboardLocally());
 
+        buttSaveGoogleDrive.setOnClickListener((view) -> saveStoryboardGoogleDrive());
+
         changeButtonClickableBackgroundColor();
     }
 
+
     private void chargeStoryBoard(String name) {
-        try{
+        try {
             AppDatabase db = AppDatabase.getAppDatabase(this);
             actions = Action.getAction(db.storyBoardDao().getActionsOFStoryBoard(currentStoryBoardId));
             storyBoardName.setText(name);
             currentPoi = (POI) actions.get(0);
             currentPoiPosition = 0;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Save or update the storyboard Google Drive
+     */
+    private void saveStoryboardGoogleDrive() {
+        String name = storyBoardName.getText().toString();
+        if (name.equals("")) {
+            CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                    getResources().getString(R.string.You_need_a_name_to_create_a_story_board));
+        } else {
+            try {
+                com.example.simple_cms.create.utility.model.StoryBoard storyBoard = new com.example.simple_cms.create.utility.model.StoryBoard();
+                if(currentStoryBoardId != Long.MIN_VALUE) storyBoard.setStoryBoardId(currentStoryBoardId);
+                storyBoard.setName(name);
+                storyBoard.setActions(actions);
+                JSONObject jsonObject = storyBoard.pack();
+                Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonObject.toString());
+                com.example.simple_cms.create.utility.model.StoryBoard storyBoardUnPack = new com.example.simple_cms.create.utility.model.StoryBoard();
+                storyBoardUnPack.unpack(jsonObject);
+            } catch (Exception e) {
+                Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
+            }
         }
     }
 
@@ -148,22 +179,22 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
      */
     private void saveStoryboardLocally() {
         String name = storyBoardName.getText().toString();
-        if(name.equals("")){
+        if (name.equals("")) {
             CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                     getResources().getString(R.string.You_need_a_name_to_create_a_story_board));
-        }else{
-            try{
+        } else {
+            try {
                 AppDatabase db = AppDatabase.getAppDatabase(this);
-                if(currentStoryBoardId != Long.MIN_VALUE){
+                if (currentStoryBoardId != Long.MIN_VALUE) {
                     db.storyBoardDao().updateStoryBoardWithActions(currentStoryBoardId, getActionsDB());
                     CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                             getResources().getString(R.string.alert_update_story_board));
-                }else{
+                } else {
                     saveStoryBoardRoom(name, db);
                     CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                             getResources().getString(R.string.alert_save_story_board));
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
             }
         }
@@ -171,8 +202,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
     /**
      * This is in charge of saving a new storyboard to the db
+     *
      * @param name Name of the storyBoard
-     * @param db Connection to db
+     * @param db   Connection to db
      */
     private void saveStoryBoardRoom(String name, AppDatabase db) {
         StoryBoard storyBoard = new StoryBoard();
@@ -182,22 +214,24 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
     /**
      * Convert the actions to actionsDBModel
+     *
      * @return The list of actionsDBModel
      */
     private List<com.example.simple_cms.db.entity.Action> getActionsDB() {
         List<com.example.simple_cms.db.entity.Action> actionsDB = new ArrayList<>();
-        for(int i = 0; i < actions.size(); i++){
-            Action action = actions.get(i);
-            if(action instanceof POI){
+        Action action;
+        for (int i = 0; i < actions.size(); i++) {
+            action = actions.get(i);
+            if (action instanceof POI) {
                 com.example.simple_cms.db.entity.poi.POI poi = com.example.simple_cms.db.entity.poi.POI.getPOIDBMODEL((POI) action);
                 actionsDB.add(poi);
-            } else if(action instanceof Movement){
+            } else if (action instanceof Movement) {
                 com.example.simple_cms.db.entity.Movement movement = com.example.simple_cms.db.entity.Movement.getMovementDBMODEL((Movement) action);
                 actionsDB.add(movement);
-            } else if(action instanceof Balloon){
+            } else if (action instanceof Balloon) {
                 com.example.simple_cms.db.entity.Balloon balloon = com.example.simple_cms.db.entity.Balloon.getBalloonDBMODEL((Balloon) action);
                 actionsDB.add(balloon);
-            }else if(action instanceof Shape){
+            } else if (action instanceof Shape) {
                 com.example.simple_cms.db.entity.shape.Shape shape = com.example.simple_cms.db.entity.shape.Shape.getShapeDBMODEL((Shape) action);
                 actionsDB.add(shape);
             }
@@ -224,8 +258,9 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
 
     /**
      * Create a alert dialog for the user
-     * @param v view
-     * @param ok button ok
+     *
+     * @param v      view
+     * @param ok     button ok
      * @param cancel button cancel
      */
     private void createAlertDialog(View v, Button ok, Button cancel) {
@@ -296,12 +331,13 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             resolveMovementAction(data);
         } else if (requestCode == ActionIdentifier.BALLOON_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
             resolveBalloonAction(data);
-        } else if (requestCode == ActionIdentifier.SHAPES_ACTIVITY.getId() && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == ActionIdentifier.SHAPES_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
             resolveShapeAction(data);
-        } else{
+        } else {
             Log.w(TAG_DEBUG, "ERROR Result");
         }
     }
+
     /**
      * Resolve if the shape action is going to be deleted or saved
      *
@@ -494,12 +530,12 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             intent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), (Balloon) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.BALLOON_ACTIVITY.getId());
-        } else if (selected instanceof Shape){
+        } else if (selected instanceof Shape) {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionShapeActivity.class);
             intent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), (Shape) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
             startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
-        }else {
+        } else {
             Log.w(TAG_DEBUG, "ERROR EDIT");
         }
     }

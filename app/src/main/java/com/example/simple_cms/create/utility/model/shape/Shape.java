@@ -104,24 +104,35 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
 
-        obj.put("id", this.getId());
-        obj.put("shape_poi", poi);
-        JSONArray jsonPoints = new JSONArray(points);
-        obj.put("jsonPoints: ", jsonPoints);
+        obj.put("shape_id", this.getId());
+        obj.put("type", this.getType());
+        obj.put("shape_poi", poi.pack());
+        JSONArray jsonPoints = new JSONArray();
+        for(int i = 0; i < points.size(); i++){
+            jsonPoints.put(((Point) points.get(i)).pack());
+        }
+        obj.put("jsonPoints", jsonPoints);
         obj.put("isExtrude", isExtrude);
 
         return obj;
     }
 
     @Override
-    public Object unpack(JSONObject obj) throws JSONException {
+    public Shape unpack(JSONObject obj) throws JSONException {
 
-        this.setId(obj.getLong("id"));
-        poi = (POI) obj.get("shape_poi");
+        this.setId(obj.getLong("shape_id"));
+        this.setType(obj.getInt("type"));
+
+        POI newPoi = new POI();
+        poi =  newPoi.unpack(obj.getJSONObject("shape_poi"));
+
+
         JSONArray jsonPoints =  obj.getJSONArray("jsonPoints");
-        ArrayList<Point> arrayPoint = new ArrayList<>();
+        List<Point> arrayPoint = new ArrayList<>();
         for(int i = 0; i < jsonPoints.length(); i++){
-            arrayPoint.add(arrayPoint.get(i));
+            Point point = new Point();
+            point.unpack(jsonPoints.getJSONObject(i));
+            arrayPoint.add(point);
         }
         this.points = arrayPoint;
         this.isExtrude = obj.getBoolean("isExtrude");
