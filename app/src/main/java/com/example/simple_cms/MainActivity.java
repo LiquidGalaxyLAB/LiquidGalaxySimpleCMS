@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
 import com.example.simple_cms.connection.LGConnectionSendFile;
-import com.example.simple_cms.create.utility.connection.LGConnectionTest;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -46,7 +45,7 @@ public class MainActivity extends TobBarActivity {
 
         changeButtonClickableBackgroundColor();
 
-        buttConnectLiquidGalaxy = findViewById(R.id.connect_liquid_galaxy);
+        buttConnectLiquidGalaxy = findViewById(R.id.butt_connect_liquid_galaxy);
         URI = findViewById(R.id.uri);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
