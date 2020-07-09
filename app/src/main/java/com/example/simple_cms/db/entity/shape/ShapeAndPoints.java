@@ -5,6 +5,9 @@ import androidx.room.Relation;
 
 import java.util.List;
 
+/**
+ * This class represent a Shape with his points in the DB
+ */
 public class ShapeAndPoints {
 
     @Embedded

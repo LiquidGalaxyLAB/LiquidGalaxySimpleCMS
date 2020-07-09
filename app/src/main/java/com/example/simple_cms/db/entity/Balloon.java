@@ -1,12 +1,13 @@
 package com.example.simple_cms.db.entity;
 
-import android.net.Uri;
-
 import androidx.room.Embedded;
 import androidx.room.Entity;
 
 import com.example.simple_cms.db.entity.poi.SimplePOI;
 
+/**
+ * This class represent a Balloon in the DB
+ */
 @Entity
 public class Balloon extends Action {
 

@@ -5,6 +5,9 @@ import androidx.room.Relation;
 
 import java.util.List;
 
+/**
+ * This class represent a StoryBoard with its actions in the DB
+ */
 public class StoryBoardWithActions {
 
     @Embedded

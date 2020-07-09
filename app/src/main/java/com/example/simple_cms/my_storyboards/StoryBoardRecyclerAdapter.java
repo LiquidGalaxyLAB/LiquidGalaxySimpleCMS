@@ -20,6 +20,9 @@ import com.example.simple_cms.db.AppDatabase;
 
 import java.util.List;
 
+/**
+ * This class is the storyboard recycler view adapter of MyStoryBoard class
+ */
 public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRecyclerAdapter.ViewHolder> {
 
     private static final String TAG_DEBUG = "StoryBoardRecyclerAdapter";

@@ -24,6 +24,9 @@ import com.example.simple_cms.db.entity.shape.ShapeAndPoints;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is the dao to the storyboard
+ */
 @Dao
 public abstract class StoryBoardDao {
 

@@ -8,6 +8,9 @@ import com.example.simple_cms.create.utility.model.poi.POICamera;
 import com.example.simple_cms.create.utility.model.poi.POILocation;
 import com.example.simple_cms.create.utility.model.shape.Shape;
 
+/**
+ * This class is in charge of sending the commands to liquid galaxy
+ */
 public class ActionController {
 
     private static final String TAG_DEBUG = "ActionController";
@@ -34,7 +37,7 @@ public class ActionController {
      *
      * @param poi      The POI that is going to move
      * @param listener The listener of lgcommand
-     * @return the lgcommand
+     * @return the lgCommand
      */
     public LGCommand moveToPOI(POI poi, LGCommand.Listener listener) {
         currentPOI = new POI(poi);
@@ -102,6 +105,10 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
+    /**
+     * @param balloon Balloon with the information to build command
+     * @param listener listener
+     */
     public void sendBalloon(Balloon balloon, LGCommand.Listener listener){
         currentPOI = balloon.getPoi();
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
@@ -148,6 +155,10 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
+    /**
+     * Create the Resource folder
+     * @param listener listener
+     */
     public void createResourcesFolder(LGCommand.Listener listener) {
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateResourcesFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
@@ -159,6 +170,11 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
+    /**
+     * Send the command to liquid galaxy
+     * @param shape Shape with the information to build the command
+     * @param listener listener
+     */
     public void sendShape(Shape shape, LGCommand.Listener listener) {
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandSendShape(shape), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {

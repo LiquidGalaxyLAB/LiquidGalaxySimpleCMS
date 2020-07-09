@@ -9,7 +9,9 @@ import com.example.simple_cms.db.entity.poi.SimplePOI;
 
 import java.util.List;
 
-
+/**
+ * This class represent a Shape in the DB
+ */
 @Entity
 public class Shape extends Action {
 

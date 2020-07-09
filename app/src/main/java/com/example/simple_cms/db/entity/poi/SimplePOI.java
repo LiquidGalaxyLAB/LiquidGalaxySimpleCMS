@@ -1,5 +1,8 @@
 package com.example.simple_cms.db.entity.poi;
 
+/**
+ * This class represent a SimplePOI that will be Embedded in the database on the classes Shape, Balloon, and Movement
+ */
 public class SimplePOI {
 
     public long simplePOIId;

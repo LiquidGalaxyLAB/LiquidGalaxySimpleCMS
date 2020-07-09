@@ -4,6 +4,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 
+/**
+ * This class represent a StoryBoard in the DB
+ */
 @Entity
 public class StoryBoard {
 

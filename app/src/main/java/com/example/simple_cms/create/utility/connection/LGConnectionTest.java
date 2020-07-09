@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * This class is in charge of testing and cleaning the liquid galaxy connection
+ */
 public class LGConnectionTest {
 
     private static Handler handler = new Handler();

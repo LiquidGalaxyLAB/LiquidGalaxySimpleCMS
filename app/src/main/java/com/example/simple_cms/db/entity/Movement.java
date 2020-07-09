@@ -5,6 +5,9 @@ import androidx.room.Entity;
 
 import com.example.simple_cms.db.entity.poi.SimplePOI;
 
+/**
+ * This class represent a Movement in the DB
+ */
 @Entity
 public class Movement extends Action {
 

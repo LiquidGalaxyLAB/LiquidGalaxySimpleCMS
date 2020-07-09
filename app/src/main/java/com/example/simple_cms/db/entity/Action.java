@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represent an Action in the DB
+ */
 @Entity
 public class Action {
 

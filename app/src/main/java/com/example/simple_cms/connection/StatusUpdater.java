@@ -1,11 +1,14 @@
 package com.example.simple_cms.connection;
 
+/**
+ * This class in charge to fill the status updater
+ */
 public class StatusUpdater implements Runnable {
     private volatile boolean cancelled;
 
     private LGConnectionManager lgConnectionManager;
 
-    public StatusUpdater(LGConnectionManager lgConnectionManager) {
+    StatusUpdater(LGConnectionManager lgConnectionManager) {
         this.lgConnectionManager = lgConnectionManager;
     }
 
@@ -15,7 +18,7 @@ public class StatusUpdater implements Runnable {
                 lgConnectionManager.tick();
                 Thread.sleep(200L); //TICKS every 200ms
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
 
         }
     }

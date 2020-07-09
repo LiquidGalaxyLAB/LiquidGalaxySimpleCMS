@@ -81,8 +81,8 @@ public class MyStoryBoard extends TobBarActivity implements
     public void onNoteClick(int position) {
         StoryBoard selected = storyBoards.get(position);
         Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
-        intent.putExtra(Constans.STORY_BOARD_ID.name(), selected.getStoryBoardId());
-        intent.putExtra(Constans.STORY_BOARD_NAME.name(), selected.getName());
+        intent.putExtra(StoryBoardConstant.STORY_BOARD_ID.name(), selected.getStoryBoardId());
+        intent.putExtra(StoryBoardConstant.STORY_BOARD_NAME.name(), selected.getName());
         startActivity(intent);
     }
 }

@@ -10,9 +10,11 @@ import com.example.simple_cms.create.utility.model.poi.POILocation;
 import com.example.simple_cms.create.utility.model.shape.Point;
 import com.example.simple_cms.create.utility.model.shape.Shape;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is in charge of creating the commands that are going to be send to the liquid galaxy
+ */
 public class ActionBuildCommandUtility {
 
     private static final String TAG_DEBUG = "ActionBuildCommandUtility";
@@ -22,6 +24,11 @@ public class ActionBuildCommandUtility {
     public static String RESOURCES_FOLDER_PATH = BASE_PATH + "resources/";
 
 
+    /**
+     * Build the command to fly to the position
+     * @param poi POI with the information
+     * @return String with the command
+     */
     static String buildCommandPOITest(POI poi) {
 
         POILocation poiLocation = poi.getPoiLocation();
@@ -56,6 +63,11 @@ public class ActionBuildCommandUtility {
     }
 
 
+    /**
+     * Build the command to paint a balloon in Liquid Galaxy
+     * @param balloon Balloon with the information to be send
+     * @return String with command
+     */
     static String buildCommandBalloonTest(Balloon balloon) {
 
         POI poi = balloon.getPoi();
@@ -128,8 +140,13 @@ public class ActionBuildCommandUtility {
         return command;
     }
 
-    private static String getFileName(String imagePath) {
-        String[] route = imagePath.split("/");
+    /**
+     * Get the absolute path of the file
+     * @param filePath The path of the file
+     * @return the absolute path
+     */
+    private static String getFileName(String filePath) {
+        String[] route = filePath.split("/");
         return route[route.length - 1];
     }
 
@@ -217,10 +234,18 @@ public class ActionBuildCommandUtility {
         return startCommand + description + imageCommand + videoCommand + endCommand;
     }
 
+    /**
+     * @return Command to create the resources fule
+     */
     static String buildCommandCreateResourcesFolder() {
         return "mkdir -p " + RESOURCES_FOLDER_PATH;
     }
 
+    /**
+     * Build the command to paint the shape in liquid galaxy
+     * @param shape Shape with the information
+     * @return Command to paint the shape in Liquid Galaxy
+     */
     static String buildCommandSendShape(Shape shape) {
         StringBuilder command = new StringBuilder();
         command.append("echo '").append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")

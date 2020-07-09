@@ -10,6 +10,9 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import java.util.Properties;
 
+/**
+ * This class is in charge of the liquid galaxy connection to send a file
+ */
 public class LGConnectionSendFile implements Runnable {
 
     private static final String TAG_DEBUG = "LGConnectionSendFile";

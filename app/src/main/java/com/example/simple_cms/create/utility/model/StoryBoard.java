@@ -6,7 +6,6 @@ import com.example.simple_cms.create.utility.IJsonPacker;
 import com.example.simple_cms.create.utility.model.balloon.Balloon;
 import com.example.simple_cms.create.utility.model.movement.Movement;
 import com.example.simple_cms.create.utility.model.poi.POI;
-import com.example.simple_cms.create.utility.model.shape.Point;
 import com.example.simple_cms.create.utility.model.shape.Shape;
 
 import org.json.JSONArray;
@@ -16,6 +15,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is in charge of representing a storyboard
+ */
 public class StoryBoard implements IJsonPacker {
 
     private static final String TAG_DEBUG = "StoryBoard";

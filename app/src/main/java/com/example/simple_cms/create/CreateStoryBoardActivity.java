@@ -31,15 +31,13 @@ import com.example.simple_cms.create.utility.model.shape.Shape;
 import com.example.simple_cms.db.AppDatabase;
 import com.example.simple_cms.db.entity.StoryBoard;
 import com.example.simple_cms.dialog.CustomDialogUtility;
-import com.example.simple_cms.my_storyboards.Constans;
+import com.example.simple_cms.my_storyboards.StoryBoardConstant;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,8 +83,8 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
 
-        currentStoryBoardId = getIntent().getLongExtra(Constans.STORY_BOARD_ID.name(), Long.MIN_VALUE);
-        String name = getIntent().getStringExtra(Constans.STORY_BOARD_NAME.name());
+        currentStoryBoardId = getIntent().getLongExtra(StoryBoardConstant.STORY_BOARD_ID.name(), Long.MIN_VALUE);
+        String name = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_NAME.name());
         if (currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
 
         buttLocation.setOnClickListener((view) -> {

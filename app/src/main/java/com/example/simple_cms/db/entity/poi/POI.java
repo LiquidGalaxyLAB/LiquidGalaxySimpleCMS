@@ -4,6 +4,9 @@ import androidx.room.Entity;
 
 import com.example.simple_cms.db.entity.Action;
 
+/**
+ * This class represent a POI in the database
+ */
 @Entity
 public class POI extends Action {
 

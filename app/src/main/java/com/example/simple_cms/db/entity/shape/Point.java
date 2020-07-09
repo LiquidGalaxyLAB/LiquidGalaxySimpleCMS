@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represent a Point of a Shape in the DB
+ */
 @Entity
 public class Point {
 

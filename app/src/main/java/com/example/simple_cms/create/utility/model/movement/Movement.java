@@ -10,7 +10,6 @@ import com.example.simple_cms.create.utility.IJsonPacker;
 import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.poi.POI;
-import com.example.simple_cms.db.entity.poi.SimplePOI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
