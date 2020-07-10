@@ -94,18 +94,7 @@ public class ActionController {
         newPoi.getPoiCamera().setHeading(initHeading);
     }
 
-    public void sendNetworkLink(LGCommand.Listener listener){
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonNetworkLink(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if (listener != null) {
-                listener.onResponse(result);
-            }
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
-    }
-
-    /**
+       /**
      * @param balloon Balloon with the information to build command
      * @param listener listener
      */
@@ -132,35 +121,23 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
-    public void sendNetworkLinkUpdate(LGCommand.Listener listener){
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonUpdateNetworkLink(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if (listener != null) {
-                listener.onResponse(result);
-            }
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
-    }
-
-    public void sendChangeBallon(Balloon balloon, LGCommand.Listener listener){
-        currentPOI = balloon.getPoi();
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandChangeBalloon(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if (listener != null) {
-                listener.onResponse(result);
-            }
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
-    }
-
     /**
      * Create the Resource folder
      * @param listener listener
      */
     public void createResourcesFolder(LGCommand.Listener listener) {
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateResourcesFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    }
+
+    public void writeFileShapeFile(LGCommand.Listener listener) {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildWriteShapeFile(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
                 listener.onResponse(result);
             }
@@ -185,5 +162,4 @@ public class ActionController {
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
     }
-
 }

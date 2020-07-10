@@ -148,8 +148,6 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
                         .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString());
                 ActionController.getInstance().writeFileBalloonFile(null);
                 ActionController.getInstance().sendBalloon(balloon, null);
-                ActionController.getInstance().sendChangeBallon(balloon, null);
-
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
