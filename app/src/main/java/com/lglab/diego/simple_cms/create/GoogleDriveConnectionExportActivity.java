@@ -1,4 +1,4 @@
-package com.lglab.diego.simple_cms.create.utility.connection_google_drive;
+package com.lglab.diego.simple_cms.create;
 
 import android.content.Intent;
 import android.util.Log;
@@ -57,6 +57,12 @@ public class GoogleDriveConnectionExportActivity extends TobBarActivity {
 
     public boolean isSignedIn() {
         return GoogleDriveManager.GoogleSignInClient != null && GoogleDriveManager.DriveServiceHelper != null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disconnect();
     }
 
     public void disconnect(){
