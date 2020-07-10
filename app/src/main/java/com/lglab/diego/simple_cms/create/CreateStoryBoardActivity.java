@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.connection_google_drive.GoogleDriveConnectionExportActivity;
+import com.lglab.diego.simple_cms.create.utility.connection_google_drive.GoogleDriveConnectionExportActivity;
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;

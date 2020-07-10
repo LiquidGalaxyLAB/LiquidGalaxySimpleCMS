@@ -37,6 +37,7 @@
     <string name="button_log_out">Log Out</string>
     <string name="button_Connect_Google">Continue with Google</string>
     <string name="button_import_drive">Connect to Google Drive</string>
+    <string name="button_update_import_drive">Update files from to Google Drive</string>
 
     <string name="file_name">File Name</string>
     <string name="file_name_example">Sample File 1</string>
@@ -113,6 +114,7 @@
     <string name="tittle_create_action_description">Description</string>
 
     <string name="tittle_my_storyboard">My Storyboard</string>
+    <string name="tittle_export_google_drive">Export</string>
     <string name="tittle_import_google_drive">Import</string>
     <string name="tittle_connect">Connect</string>
     <string name="tittle_account">Account</string>
@@ -143,13 +145,18 @@
     <string name="You_need_a_location_to_create_a_shape">You need a location to create a shape</string>
     <string name="alert_message_delete_action_location">The actions related to the location will be deleted</string>
     <string name="alert_message_delete_storyboard">The storyboard will be deleted</string>
-    <string name="alert_permision_denied_image">Permission denied, you cannot select an image</string>
-    <string name="alert_permision_denied_test_image">Permission denied, you cannot test the balloon in liquid galaxy</string>
-    <string name="alert_permision_denied_video">Permission denied, you cannot select an video</string>
+    <string name="alert_permission_denied_image">Permission denied, you cannot select an image</string>
+    <string name="alert_permission_denied_test_image">Permission denied, you cannot test the balloon in liquid galaxy</string>
+    <string name="alert_permission_denied_video">Permission denied, you cannot select an video</string>
     <string name="alert_save_story_board">The storyboard has been successfully saved</string>
     <string name="alert_update_story_board">The storyboard has been updated</string>
     <string name="icon_action">Icon Action</string>
 
+    //Google Drive
+    <string name="message_google_drive_success_log_in">Searching files from Google Drive</string>
+    <string name="message_google_drive_failed_log_in">Unable to sign in. Make sure you have internet connection and try again</string>
+    <string name="message_failed_upload">Failed to upload the file to Google Drive</string>
+    <string name="message_success_upload">Uploaded file to Google Drive</string>
 
     <string-array name="actions">
         <item>Actions</item>

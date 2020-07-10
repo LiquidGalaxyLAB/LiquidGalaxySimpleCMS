@@ -203,7 +203,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 pickImageFromGallery();
             } else {
-                CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permision_denied_image));
+                CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permission_denied_image));
             }
         }
     }
