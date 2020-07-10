@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * This class is in charge of testing and cleaning the liquid galaxy connection
+ */
 public class LGConnectionTest {
 
     private static Handler handler = new Handler();
@@ -38,21 +41,35 @@ public class LGConnectionTest {
                 dialog.dismiss();
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
                 CustomDialogUtility.showDialog(activity, activity.getResources().getString(R.string.activity_connection_error));
+                atomicBoolean.set(false);
             }else{
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), true);
+                atomicBoolean.set(true);
             }
             editor.apply();
-            atomicBoolean.set(true);
         }, 1000);
     }
 
+   /* *//**
+     * Clean the query.text file
+     *//*
+    public static void cleanQuery() {
+        handler.postDelayed(() -> {
+            String cleanTempTxt = "chmod 777 /tmp/query.txt; echo '' > /tmp/query.txt";
+            LGCommand lgCommand = new LGCommand(cleanTempTxt, LGCommand.CRITICAL_MESSAGE, null);
+            sendCommand(lgCommand);
+            } , 5000);
+    }*/
+
     /**
-     * Clean the KML
+     * Clean the kml of the balloon
      */
-    public static void cleanKML() {
-        String cleanKMLCommand = "chmod 777 /var/www/html/kmls.txt; echo '' > /var/www/html/kmls.txt";
-        LGCommand lgCommand = new LGCommand("echo 'connection';", LGCommand.CRITICAL_MESSAGE, null);
-        sendCommand(lgCommand);
+    public static void cleanKMLBalloon() {
+        handler.postDelayed(() -> {
+            String cleanKMLCommand = "chmod 777 /var/www/html/kmls.txt; echo '' > /var/www/html/balloon.kml";
+            LGCommand lgCommand = new LGCommand(cleanKMLCommand, LGCommand.CRITICAL_MESSAGE, null);
+            sendCommand(lgCommand);
+            } , 5000);
     }
 
     /**

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.simple_cms.connection.LGCommand;
 import com.example.simple_cms.connection.LGConnectionManager;
+import com.example.simple_cms.connection.LGConnectionSendFile;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.top_bar.TobBarActivity;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -44,7 +45,7 @@ public class MainActivity extends TobBarActivity {
 
         changeButtonClickableBackgroundColor();
 
-        buttConnectLiquidGalaxy = findViewById(R.id.connect_liquid_galaxy);
+        buttConnectLiquidGalaxy = findViewById(R.id.butt_connect_liquid_galaxy);
         URI = findViewById(R.id.uri);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -131,18 +132,19 @@ public class MainActivity extends TobBarActivity {
      * @param dialog The dialog that is going to be shown to the user
      */
     private void createLgCommand(String hostPort, String usernameText, String passwordText, Dialog dialog) {
-        final String command = "echo 'flytoview=" +
+       final String command = "echo 'flytoview=" +
                 "<gx:duration> 3 </gx:duration>" +
                 "<gx:flyToMode>smooth</gx:flyToMode>" +
                 "<LookAt>" +
-                "<longitude>" + 10.52668d + "</longitude>" +
-                "<latitude>" + 40.085941d + "</latitude>" +
-                "<altitude>" + 0.0d + "</altitude>" +
-                "<heading>" + 0.0d + "</heading>" +
-                "<tilt>" + 0.0d + "</tilt>" +
-                "<range>" + 200000d + "</range>" +
-                "<gx:altitudeMode> relativeToSeaFloor </gx:altitudeMode>" +
+                "<longitude>" + -122.4783 + "</longitude>" +
+                "<latitude>" + 37.8120 + "</latitude>" +
+                "<altitude>" + 2.0 + "</altitude>" +
+                "<heading>" + 10 + "</heading>" +
+                "<tilt>" + 90.0 + "</tilt>" +
+                "<range>" + 10 + "</range>" +
+                "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
                 "</LookAt>' > /tmp/query.txt";
+
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
         sendMessageError(lgCommand, dialog);
@@ -163,6 +165,7 @@ public class MainActivity extends TobBarActivity {
         lgConnectionManager.setData(username, password, hostname, port);
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
+        LGConnectionSendFile.getInstance().setData(username, password, hostname, port);
     }
 
     /**

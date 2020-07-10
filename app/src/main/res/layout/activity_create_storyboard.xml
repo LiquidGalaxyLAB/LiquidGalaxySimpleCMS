@@ -29,10 +29,28 @@
         android:background="@color/background"
         android:minHeight="578dp"
         android:padding="20dp"
-        android:scrollbars="vertical"
+        android:scrollbars="horizontal"
         android:textColor="@color/textColorClick"
         app:layout_constraintBottom_toBottomOf="@+id/file_name"
         app:layout_constraintEnd_toStartOf="@+id/image_available" />
+
+    <Button
+        android:id="@+id/butt_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_test"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/button_test"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintEnd_toStartOf="@+id/butt_location"
+        app:layout_constraintTop_toBottomOf="@+id/my_recycler_view" />
 
     <TextView
         android:id="@+id/image_available"
@@ -59,30 +77,32 @@
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
-        app:layout_constraintBottom_toTopOf="@+id/file_name_title"
+        app:layout_constraintBottom_toTopOf="@+id/story_board_name"
         app:layout_constraintEnd_toEndOf="@+id/image_available"
         app:layout_constraintTop_toBottomOf="@+id/top_bar" />
 
-    <TextView
-        android:id="@+id/file_name_title"
-        android:layout_width="250dp"
+
+    <EditText
+        android:id="@+id/story_board_name"
+        android:layout_width="309dp"
         android:layout_height="28dp"
-        android:layout_marginStart="85dp"
-        android:layout_marginEnd="83dp"
+        android:layout_marginEnd="176dp"
         android:layout_marginBottom="25dp"
+        android:autofillHints="@string/example_storyboard_name"
+        android:background="@drawable/rectangle_insert_url"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
-        android:text="@string/file_name_example"
+        android:hint="@string/example_storyboard_name"
+        android:inputType="text"
+        android:singleLine="true"
         android:textAlignment="center"
+        android:textColorHint="@color/hintColor"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/butt_save"
+        android:text="Prueba"
+        app:layout_constraintBottom_toTopOf="@+id/butt_save_locally"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.392"
-        app:layout_constraintStart_toEndOf="@+id/butt_shapes"
         app:layout_constraintTop_toBottomOf="@+id/connection_status" />
-
 
     <TextView
         android:id="@+id/file_name"
@@ -96,45 +116,60 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/file_name_title"
-        app:layout_constraintEnd_toStartOf="@+id/butt_save"
+        app:layout_constraintBaseline_toBaselineOf="@+id/story_board_name"
+        app:layout_constraintEnd_toStartOf="@+id/butt_save_locally"
         app:layout_constraintHorizontal_bias="0.768"
         app:layout_constraintStart_toEndOf="@+id/butt_location" />
 
     <Button
-        android:id="@+id/butt_save"
+        android:id="@+id/butt_save_locally"
         android:layout_width="0dp"
         android:layout_height="37dp"
-        android:layout_marginEnd="131dp"
         android:layout_marginBottom="112dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/button_save"
+        android:text="@string/button_save_locally"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintBottom_toTopOf="@+id/butt_location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cancel"
-        app:layout_constraintTop_toBottomOf="@+id/file_name_title" />
+        app:layout_constraintEnd_toStartOf="@+id/butt_save_on_google_drive"
+        app:layout_constraintStart_toEndOf="@+id/butt_delete"
+        app:layout_constraintTop_toBottomOf="@+id/story_board_name" />
 
     <Button
-        android:id="@+id/cancel"
+        android:id="@+id/butt_save_on_google_drive"
+        android:layout_width="213dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="112dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/button_save_on_google_driver"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/butt_movements"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/butt_delete"
         android:layout_width="0dp"
         android:layout_height="37dp"
-        android:layout_marginStart="732dp"
+        android:layout_marginStart="600dp"
         android:layout_marginEnd="23dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/button_cancel"
+        android:text="@string/button_clean_story_board"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/butt_save"
-        app:layout_constraintEnd_toStartOf="@+id/butt_save"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_save_locally"
+        app:layout_constraintEnd_toStartOf="@+id/butt_save_locally"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -142,7 +177,7 @@
         android:layout_width="0dp"
         android:layout_height="86dp"
         android:layout_marginStart="389dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="52dp"
         android:layout_marginBottom="21dp"
         android:background="@drawable/button_location"
         android:elevation="8dp"
@@ -151,10 +186,10 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/butt_graphics"
+        app:layout_constraintBottom_toTopOf="@+id/butt_balloon"
         app:layout_constraintEnd_toStartOf="@+id/butt_movements"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/butt_save" />
+        app:layout_constraintTop_toBottomOf="@+id/butt_save_locally" />
 
     <Button
         android:id="@+id/butt_movements"
@@ -174,16 +209,16 @@
         app:layout_constraintStart_toEndOf="@+id/butt_location" />
 
     <Button
-        android:id="@+id/butt_graphics"
+        android:id="@+id/butt_balloon"
         android:layout_width="0dp"
         android:layout_height="86dp"
-        android:layout_marginStart="257dp"
+        android:layout_marginStart="389dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="52dp"
-        android:background="@drawable/button_graphic"
+        android:background="@drawable/button_balloon"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/button_graphics"
+        android:text="@string/button_balloon"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
@@ -195,7 +230,8 @@
         android:id="@+id/butt_shapes"
         android:layout_width="0dp"
         android:layout_height="86dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="341dp"
         android:background="@drawable/button_shapes"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -203,28 +239,9 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
-        app:layout_constraintBottom_toBottomOf="@+id/butt_graphics"
-        app:layout_constraintEnd_toStartOf="@+id/butt_description"
-        app:layout_constraintStart_toEndOf="@+id/butt_graphics" />
-
-    <Button
-        android:id="@+id/butt_description"
-        android:layout_width="0dp"
-        android:layout_height="86dp"
-        android:layout_marginEnd="215dp"
-        android:layout_marginBottom="124dp"
-        android:background="@drawable/button_description"
-        android:elevation="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:text="@string/button_description"
-        android:textAllCaps="false"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/button_text_font_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/butt_balloon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/butt_shapes"
-        app:layout_constraintTop_toTopOf="@+id/butt_shapes"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/butt_balloon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

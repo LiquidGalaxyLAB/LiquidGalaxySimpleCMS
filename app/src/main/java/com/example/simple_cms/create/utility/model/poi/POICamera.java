@@ -25,6 +25,10 @@ public class POICamera {
         return heading;
     }
 
+    public void setHeading(double heading) {
+        this.heading = heading;
+    }
+
     public double getTilt() {
         return tilt;
     }

@@ -3,6 +3,9 @@ package com.example.simple_cms.connection;
 import android.os.Handler;
 import android.os.Looper;
 
+/**
+ * This class is the representation of a command in the liquid galaxy
+ */
 public class LGCommand {
 
     public static final short NON_CRITICAL_MESSAGE = 0;

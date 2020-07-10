@@ -16,17 +16,21 @@ import com.example.simple_cms.create.utility.model.Action;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * This is the class in charge of the adapter of the action recyclerview of the class CreateStoryBoardActivity
+ */
 public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAdapter.ViewHolder> {
 
     private static final String TAG_DEBUG = "ActionRecyclerAdapter";
 
 
     private AppCompatActivity activity;
-    private ArrayList<Action> actions;
+    private List<Action> actions;
     private OnNoteListener mOnNoteListener;
 
-    public ActionRecyclerAdapter(AppCompatActivity activity, ArrayList<Action> actions, OnNoteListener onNoteListener) {
+    public ActionRecyclerAdapter(AppCompatActivity activity, List<Action> actions, OnNoteListener onNoteListener) {
         this.activity = activity;
         this.actions = actions;
         this.mOnNoteListener = onNoteListener;
@@ -35,7 +39,7 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.create_storyboard_action_icon, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_create_storyboard_action_icon, parent, false);
         return new ViewHolder(view, mOnNoteListener);
     }
 
@@ -48,13 +52,11 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_location));
         }else if(type == ActionIdentifier.MOVEMENT_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_movements));
-        }else if(type == ActionIdentifier.GRAPHICS_ACTIVITY.getId()){
+        }else if(type == ActionIdentifier.BALLOON_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_graphic));
         }else if(type == ActionIdentifier.SHAPES_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_shape));
-        }else if (type == ActionIdentifier.DESCRIPTION_ACTIVITY.getId()){
-            holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_description));
-        } else {
+        }else {
             Log.w(TAG_DEBUG, "ERROR IN TYPE");
         }
     }
@@ -65,6 +67,9 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
     }
 
 
+    /**
+     * This is the most efficient way to have the view holder and the click listener
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;

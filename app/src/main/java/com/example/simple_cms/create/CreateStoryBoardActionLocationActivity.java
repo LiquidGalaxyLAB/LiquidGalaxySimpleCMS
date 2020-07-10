@@ -1,6 +1,9 @@
 package com.example.simple_cms.create;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,7 +22,7 @@ import com.example.simple_cms.create.utility.connection.LGConnectionTest;
 import com.example.simple_cms.create.utility.model.ActionIdentifier;
 import com.example.simple_cms.create.utility.model.poi.POI;
 import com.example.simple_cms.create.utility.model.poi.POICamera;
-import com.example.simple_cms.create.utility.model.poi.POIController;
+import com.example.simple_cms.create.utility.model.ActionController;
 import com.example.simple_cms.create.utility.model.poi.POILocation;
 import com.example.simple_cms.dialog.CustomDialogUtility;
 import com.example.simple_cms.utility.ConstantPrefs;
@@ -46,7 +49,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_location);
 
         file_name = findViewById(R.id.file_name);
-        latitude = findViewById(R.id.latitude);
+        latitude = findViewById(R.id.video_url);
         longitude = findViewById(R.id.longitude);
         altitude = findViewById(R.id.altitude);
         duration = findViewById(R.id.duration);
@@ -57,36 +60,36 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
 
-        Button butt_test = findViewById(R.id.butt_test);
-        Button butt_cancel = findViewById(R.id.butt_cancel);
-        Button butt_add = findViewById(R.id.butt_add);
-        Button butt__delete = findViewById(R.id.butt_delete);
+        Button buttTest = findViewById(R.id.butt_test);
+        Button buttCancel = findViewById(R.id.butt_cancel);
+        Button buttAdd = findViewById(R.id.butt_add);
+        Button buttDelete = findViewById(R.id.butt_delete);
 
         Intent intent = getIntent();
         POI poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
         if(poi != null){
-            position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
-            butt_add.setText(getResources().getString(R.string.button_save));
-            butt__delete.setVisibility(View.VISIBLE);
+            buttAdd.setText(getResources().getString(R.string.button_save));
+            buttDelete.setVisibility(View.VISIBLE);
             loadPoiData(poi);
         }else{
-            loadData();
+            /*loadData();*/
         }
 
-        butt_cancel.setOnClickListener( (view) ->
+        buttCancel.setOnClickListener( (view) ->
             finish()
         );
 
-        butt_test.setOnClickListener( (view) ->
+        buttTest.setOnClickListener( (view) ->
             testConnection()
         );
 
-        butt_add.setOnClickListener((view) ->
+        buttAdd.setOnClickListener((view) ->
             addPOI()
         );
 
-        butt__delete.setOnClickListener( (view) -> deletePoi());
+        buttDelete.setOnClickListener( (view) -> deletePoi());
     }
 
     /**
@@ -124,6 +127,10 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         altitude_mode.setText(sharedPreferences.getString(ConstantPrefs.ALTITUDE_MODE.name(), ""));
     }
 
+    /**
+     * Set the conenction status on the view
+     * @param sharedPreferences sharedPreferences
+     */
     private void loadConnectionStatus(SharedPreferences sharedPreferences) {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if(isConnected){
@@ -151,16 +158,15 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
             handler.postDelayed(() -> {
                 if(isConnected.get()){
-                    POILocation poiLocation = new POILocation("Test", Double.parseDouble(latitudeText), Double.parseDouble(longitudeText), Double.parseDouble(altitudeText));
+                    POILocation poiLocation = new POILocation("Test", Double.parseDouble(longitudeText), Double.parseDouble(latitudeText), Double.parseDouble(altitudeText));
                     POICamera poiCamera = new POICamera(Double.parseDouble(headingText), Double.parseDouble(tiltText), Double.parseDouble(rangeText), altitudeModeText, Integer.parseInt(durationText));
                     POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
-                    POIController.getInstance().moveToPOI(poi, null);
+                    ActionController.getInstance().moveToPOI(poi, null);
                 }else{
                     connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
                 loadConnectionStatus(sharedPreferences);
-                LGConnectionTest.cleanKML();
-            }, 1200);
+            }, 1300);
         }
     }
 
@@ -207,6 +213,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
                 tiltText, rangeText, altitudeModeText)){
             String fileNameText = file_name.getText().toString();
             if(!fileNameText.equals("")){
+                saveData(latitudeText, longitudeText, altitudeText, durationText, headingText, tiltText, rangeText, altitudeModeText);
                     POILocation poiLocation = new POILocation(fileNameText, Double.parseDouble(longitudeText),
                             Double.parseDouble(latitudeText), Double.parseDouble(altitudeText));
                     POICamera poiCamera = new POICamera(Double.parseDouble(headingText), Double.parseDouble(tiltText),
@@ -228,11 +235,30 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
      * Send the information of deleting the POI selected
      */
     private void deletePoi() {
-        Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-        returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
-        setResult(Activity.RESULT_OK, returnInfoIntent);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
+        v.getBackground().setAlpha(220);
+        Button ok = v.findViewById(R.id.ok);
+        TextView textMessage = v.findViewById(R.id.message);
+        textMessage.setText(getResources().getString(R.string.alert_message_delete_action_location));
+        textMessage.setTextSize(23);
+        textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        Button cancel = v.findViewById(R.id.cancel);
+        cancel.setVisibility(View.VISIBLE);
+        builder.setView(v);
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        ok.setOnClickListener( view -> {
+            Intent returnInfoIntent = new Intent();
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.IS_DELETE.name(), true);
+            setResult(Activity.RESULT_OK, returnInfoIntent);
+            dialog.dismiss();
+            finish();
+        });
+        cancel.setOnClickListener( view ->
+            dialog.dismiss());
     }
 
     /**
