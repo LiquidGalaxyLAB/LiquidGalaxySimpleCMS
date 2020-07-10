@@ -23,6 +23,7 @@ public class StoryBoard implements IJsonPacker {
     private static final String TAG_DEBUG = "StoryBoard";
 
     private long storyBoardId;
+    private String storyBoardFileId;
     private String name;
     private List<Action> actions;
 
@@ -41,6 +42,18 @@ public class StoryBoard implements IJsonPacker {
 
     public void setStoryBoardId(long storyBoardId) {
         this.storyBoardId = storyBoardId;
+    }
+
+    public String getStoryBoardFileId() {
+        return storyBoardFileId;
+    }
+
+    public void setStoryBoardFileId(String storyBoardFileId) {
+        this.storyBoardFileId = storyBoardFileId;
+    }
+
+    public String getNameForExporting() {
+        return name.replaceAll("[:/*\"?|<> ]", "_") + ".json";
     }
 
     public String getName() {
@@ -144,4 +157,5 @@ public class StoryBoard implements IJsonPacker {
 
         return this;
     }
+
 }

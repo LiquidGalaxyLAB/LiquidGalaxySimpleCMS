@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.connection_google_drive.GoogleDriveConnectionExportActivity;
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
@@ -32,7 +33,6 @@ import com.lglab.diego.simple_cms.db.AppDatabase;
 import com.lglab.diego.simple_cms.db.entity.StoryBoard;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.my_storyboards.StoryBoardConstant;
-import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import org.json.JSONObject;
@@ -44,7 +44,7 @@ import java.util.Objects;
 /**
  * This activity is in charge of creating the storyboards with the respective different actions
  */
-public class CreateStoryBoardActivity extends TobBarActivity implements
+public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivity implements
         ActionRecyclerAdapter.OnNoteListener {
 
     private static final String TAG_DEBUG = "CreateStoryBoardActivity";
@@ -159,18 +159,19 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
         } else {
             try {
                 com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-                if(currentStoryBoardId != Long.MIN_VALUE) storyBoard.setStoryBoardId(currentStoryBoardId);
+                if (currentStoryBoardId != Long.MIN_VALUE)
+                    storyBoard.setStoryBoardId(currentStoryBoardId);
                 storyBoard.setName(name);
                 storyBoard.setActions(actions);
-                JSONObject jsonObject = storyBoard.pack();
-                Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonObject.toString());
-                com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoardUnPack = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-                storyBoardUnPack.unpack(jsonObject);
-            } catch (Exception e) {
-                Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
-            }
+                JSONObject jsonStoryboard = storyBoard.pack();
+                Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonStoryboard.toString());
+                requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), storyBoard.getStoryBoardFileId());
+        } catch(Exception e){
+            Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
         }
     }
+
+}
 
     /**
      * Save or update the storyboard locally
@@ -331,8 +332,6 @@ public class CreateStoryBoardActivity extends TobBarActivity implements
             resolveBalloonAction(data);
         } else if (requestCode == ActionIdentifier.SHAPES_ACTIVITY.getId() && resultCode == Activity.RESULT_OK) {
             resolveShapeAction(data);
-        } else {
-            Log.w(TAG_DEBUG, "ERROR Result");
         }
     }
 

@@ -19,7 +19,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -30,17 +32,30 @@ public class DriveServiceHelper {
     private final Executor mExecutor = Executors.newSingleThreadExecutor();
     private final Drive mDriveService;
     private String drive_app_folder;
-    public HashMap<String, String> files;
+    public Map<String, String> files;
 
     private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
     private static final String JSON_MIME_TYPE = "application/json";
 
-    DriveServiceHelper(Drive driveService) {
+    public DriveServiceHelper(Drive driveService) {
         mDriveService = driveService;
     }
 
-    public Task<String> createFile(String title) {
+        public Task<String> createFile(String title) {
         return Tasks.call(mExecutor, () -> {
+
+
+            FileList result = mDriveService.files().list()
+                    .setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'SimpleCMS'")
+                    .setSpaces("drive")
+                    .execute();
+            if (result.getFiles().size() > 0) {
+                drive_app_folder = result.getFiles().get(0).getId();
+            }else{
+                createAppFolderID();
+            }
+
+
             File metadata = new File()
                     .setParents(Collections.singletonList(drive_app_folder))
                     .setMimeType(JSON_MIME_TYPE)
@@ -51,7 +66,7 @@ public class DriveServiceHelper {
                 throw new IOException("Null result when requesting file creation.");
             }
 
-            Permission userPermission = new Permission()
+           /* Permission userPermission = new Permission()
                     .setType("user")
                     .setRole("reader")
                     .setEmailAddress("liquidgalaxylab@gmail.com");
@@ -59,7 +74,9 @@ public class DriveServiceHelper {
             Permission permission = mDriveService.permissions().create(googleFile.getId(), userPermission).setFields("id").execute();
             if (permission == null) {
                 throw new IOException("Null result when requesting file creation.");
-            }
+            }*/
+
+            Log.w(TAG_DEBUG, "FILE CREATED ID:" + googleFile.getId());
             return googleFile.getId();
         });
     }
@@ -119,13 +136,14 @@ public class DriveServiceHelper {
                 throw new IOException("Null result when requesting file creation.");
             }
 
+            drive_app_folder = googleFile.getId();
             return googleFile.getId();
         });
     }
 
 
     public void searchForAppFolderID(Runnable onSuccess, Runnable onFailure) {
-        Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'LGxEDU' and parents in 'root' ").setSpaces("drive").execute())
+        Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'SimpleCMS'").setSpaces("drive").execute())
                 .addOnSuccessListener(fileList -> {
                     List<File> files = fileList.getFiles();
                     if (files.size() > 0) {
