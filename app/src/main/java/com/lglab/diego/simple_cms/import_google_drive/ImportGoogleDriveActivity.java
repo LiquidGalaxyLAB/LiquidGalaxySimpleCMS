@@ -25,6 +25,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
 import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.my_storyboards.StoryBoardConstant;
@@ -276,10 +277,16 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
     @Override
     public void onNoteClick(int position) {
         StoryBoard selected = storyBoards.get(position);
-        GoogleDriveManager.DriveServiceHelper.readFile(selected.getStoryBoardFileId()).addOnSuccessListener((result) -> {
-            Intent intent = new Intent();
-            intent.putExtra(StoryBoardConstant.STORY_BOARD_NAME.name(), result.second);
-            startActivity(intent);
-        });
+        if(isSignedIn()){
+            GoogleDriveManager.DriveServiceHelper.readFile(selected.getStoryBoardFileId()).addOnSuccessListener((result) -> {
+                Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
+                intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name(), selected.getStoryBoardFileId());
+                intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON.name(), result.second);
+                startActivity(intent);
+            });
+        }else{
+            requestSignIn();
+        }
+
     }
 }

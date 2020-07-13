@@ -56,7 +56,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
     private POI currentPoi;
     private int currentPoiPosition;
     private long currentStoryBoardId = Long.MIN_VALUE;
-    private String currentStoryBoardGoogleDriveID = "";
+    private String currentStoryBoardGoogleDriveID = null;
 
     private EditText storyBoardName;
     private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes,
@@ -90,6 +90,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         String name = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_NAME.name());
         if (currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
 
+        currentStoryBoardGoogleDriveID = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name());
         String storyBoardJson = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON.name());
         if(storyBoardJson != null) chargeStoryBoardJson(storyBoardJson);
 
@@ -155,7 +156,6 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
             storyBoardName.setText(storyBoard.getName());
             currentPoi = (POI) actions.get(0);
             currentPoiPosition = 0;
-            currentStoryBoardGoogleDriveID = storyBoard.getStoryBoardFileId();
         }catch (JSONException jsonException) {
             Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
         }
@@ -195,7 +195,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
                 storyBoard.setActions(actions);
                 JSONObject jsonStoryboard = storyBoard.pack();
                 Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonStoryboard.toString());
-                requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), storyBoard.getStoryBoardFileId());
+                requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID);
         } catch(Exception e){
             Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
         }
