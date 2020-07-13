@@ -139,7 +139,16 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
         buttSaveGoogleDrive.setOnClickListener((view) -> saveStoryboardGoogleDrive());
 
+        buttTest.setOnClickListener((view) -> testStoryBoard());
+
         changeButtonClickableBackgroundColor();
+    }
+
+    /**
+     * Test the actions of the storyboard
+     */
+    private void testStoryBoard() {
+
     }
 
     /**
@@ -303,6 +312,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
             currentPoi = null;
             currentPoiPosition = 0;
             currentStoryBoardId = Long.MIN_VALUE;
+            currentStoryBoardGoogleDriveID = null;
             storyBoardName.setText("");
             initRecyclerView();
             dialog.dismiss();
