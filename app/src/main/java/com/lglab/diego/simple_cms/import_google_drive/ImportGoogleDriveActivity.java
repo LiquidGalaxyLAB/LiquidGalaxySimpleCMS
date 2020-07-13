@@ -27,6 +27,7 @@ import com.google.api.services.drive.DriveScopes;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
+import com.lglab.diego.simple_cms.my_storyboards.StoryBoardConstant;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is in charge of importing the information of google drive
+ */
 public class ImportGoogleDriveActivity extends TobBarActivity implements
         GoogleDriveStoryBoardRecyclerAdapter.OnNoteListener{
 
@@ -102,6 +106,9 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
         changeButtonClickableBackgroundColor(getApplicationContext(), buttImportGoogleDrive);
     }
 
+    /**
+     * Request a sign and if it is not sign it starts a process to sign into google
+     */
     public void requestSignIn() {
         if (isSignedIn()) {
             readGoogleDrive();
@@ -124,10 +131,18 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
         startActivityForResult(signInIntent, GoogleDriveManager.RC_SIGN_IN);
     }
 
+    /**
+     * check if the user is signIn
+     * @return true if the user is sign in and false if not
+     */
     public boolean isSignedIn() {
         return GoogleDriveManager.GoogleSignInClient != null && GoogleDriveManager.DriveServiceHelper != null;
     }
 
+
+    /**
+     * Disconnect the user of google drive
+     */
     public void disconnect(){
         GoogleDriveManager.GoogleSignInClient = null;
         GoogleDriveManager.DriveServiceHelper = null;
@@ -147,6 +162,10 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
         }
     }
 
+    /**
+     * Creates a connection to google drive
+     * @param result result of the sign in
+     */
     private void handleSignInResult(Intent result) {
         GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener(googleAccount -> {
@@ -171,10 +190,16 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
                 });
     }
 
+    /**
+     * Show a message to the user of a failed log in
+     */
     public void onFailedLogIn() {
         CustomDialogUtility.showDialog(this, getResources().getString(R.string.message_google_drive_failed_log_in));
     }
 
+    /**
+     * Read all the storyboards that are in google drive
+     */
     public void readGoogleDrive() {
         if(GoogleDriveManager.DriveServiceHelper.files == null) {
             setLoadingDialog(getResources().getString(R.string.message_google_drive_success_log_in));
@@ -185,6 +210,9 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
         }
     }
 
+    /**
+     * Update the recycler view with the information in google drive
+     */
     public void updateLocalData() {
         GoogleDriveManager.DriveServiceHelper.searchForAppFolderID(() -> {
 
@@ -249,8 +277,9 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
     public void onNoteClick(int position) {
         StoryBoard selected = storyBoards.get(position);
         GoogleDriveManager.DriveServiceHelper.readFile(selected.getStoryBoardFileId()).addOnSuccessListener((result) -> {
-            Log.w(TAG_DEBUG, "FIRST RESULT NAME: " + result.first);
-            Log.w(TAG_DEBUG, "SECOND RESULT JSON: " + result.second);
+            Intent intent = new Intent();
+            intent.putExtra(StoryBoardConstant.STORY_BOARD_NAME.name(), result.second);
+            startActivity(intent);
         });
     }
 }

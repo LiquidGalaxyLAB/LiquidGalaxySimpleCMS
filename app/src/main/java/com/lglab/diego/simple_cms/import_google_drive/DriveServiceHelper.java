@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * This class is a helper to connect to google drive
+ */
 public class DriveServiceHelper {
 
     private static final String TAG_DEBUG = "DriveServiceHelper";
@@ -41,6 +44,11 @@ public class DriveServiceHelper {
         mDriveService = driveService;
     }
 
+    /**
+     * Create a file in google Drive
+     * @param title The tittle of the new file
+     * @return the id of the file
+     */
         public Task<String> createFile(String title) {
         return Tasks.call(mExecutor, () -> {
 
@@ -65,7 +73,7 @@ public class DriveServiceHelper {
             if (googleFile == null) {
                 throw new IOException("Null result when requesting file creation.");
             }
-
+            //TODO
            /* Permission userPermission = new Permission()
                     .setType("user")
                     .setRole("reader")
@@ -81,6 +89,11 @@ public class DriveServiceHelper {
         });
     }
 
+    /**
+     * Read a file in google drive
+     * @param fileId The file id that is going to be read
+     * @return The id and the file in a string
+     */
     public Task<Pair<String, String>> readFile(String fileId) {
         return Tasks.call(mExecutor, () -> {
             // Retrieve the metadata as a File object.
@@ -121,6 +134,10 @@ public class DriveServiceHelper {
         });
     }
 
+    /**
+     * Create an app folder
+     * @return The id of the app folder
+     */
     private Task<String> createAppFolderID() {
         return Tasks.call(mExecutor, () -> {
 
@@ -142,6 +159,11 @@ public class DriveServiceHelper {
     }
 
 
+    /**
+     * It search for the app folder
+     * @param onSuccess Runnable
+     * @param onFailure Runnable
+     */
     public void searchForAppFolderID(Runnable onSuccess, Runnable onFailure) {
         Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'SimpleCMS'").setSpaces("drive").execute())
                 .addOnSuccessListener(fileList -> {
@@ -171,6 +193,11 @@ public class DriveServiceHelper {
                 });
     }
 
+    /**
+     * It search all the files inside the app folder
+     * @param onSuccess Runnable
+     * @param onFailure Runnable
+     */
     private void searchForFilesInsideAppFolderID(Runnable onSuccess, Runnable onFailure) {
         queryFiles()
                 .addOnSuccessListener(fileList -> {
@@ -187,6 +214,10 @@ public class DriveServiceHelper {
                 });
     }
 
+    /**
+     * Get all the files
+     * @return The list of files
+     */
     private Task<List<File>> queryFiles() {
         return Tasks.call(mExecutor, () -> {
             List<File> fileList = new ArrayList<>();

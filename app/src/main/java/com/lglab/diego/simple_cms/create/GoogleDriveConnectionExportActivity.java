@@ -22,18 +22,28 @@ import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 
 import java.util.Collections;
 
+/**
+ * This class is in charge of exporting the information to google drive
+ */
 public class GoogleDriveConnectionExportActivity extends TobBarActivity {
 
     private static final String TAG_DEBUG = "GoogleDriveConnectionExportActivity";
 
     private String jsonToUpload;
     private String jsonNameToUpload;
-    private String fileNameId;
+    private String fileId;
 
-    public void requestSignIn(String storyBoardJson, String name, String fileNameId) {
+
+    /**
+     * Request a sign and if it is not sign it starts a process to sign into google
+     * @param storyBoardJson the json to be upload
+     * @param name the name of the storyboard
+     * @param fileId the id of the storyboard
+     */
+    public void requestSignIn(String storyBoardJson, String name, String fileId) {
         this.jsonToUpload = storyBoardJson;
         this.jsonNameToUpload = name;
-        this.fileNameId = fileNameId;
+        this.fileId = fileId;
         if (isSignedIn()) {
             setFileGoogleDrive();
             return;
@@ -55,6 +65,10 @@ public class GoogleDriveConnectionExportActivity extends TobBarActivity {
         startActivityForResult(signInIntent, GoogleDriveManager.RC_SIGN_IN);
     }
 
+    /**
+     * check if the user is signIn
+     * @return true if the user is sign in and false if not
+     */
     public boolean isSignedIn() {
         return GoogleDriveManager.GoogleSignInClient != null && GoogleDriveManager.DriveServiceHelper != null;
     }
@@ -65,6 +79,9 @@ public class GoogleDriveConnectionExportActivity extends TobBarActivity {
         disconnect();
     }
 
+    /**
+     * Disconnect the user of google drive
+     */
     public void disconnect(){
         GoogleDriveManager.GoogleSignInClient = null;
         GoogleDriveManager.DriveServiceHelper = null;
@@ -84,6 +101,10 @@ public class GoogleDriveConnectionExportActivity extends TobBarActivity {
         }
     }
 
+    /**
+     * Creates a connection to google drive
+     * @param result result of the sign in
+     */
     private void handleSignInResult(Intent result) {
         GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener(googleAccount -> {
@@ -108,15 +129,21 @@ public class GoogleDriveConnectionExportActivity extends TobBarActivity {
                 });
     }
 
+    /**
+     * Show a message to the user of a failed log in
+     */
     public void onFailedLogIn() {
         CustomDialogUtility.showDialog(this, getResources().getString(R.string.message_google_drive_failed_log_in));
         this.jsonToUpload = null;
         this.jsonNameToUpload = null;
     }
 
+    /**
+     * Export the file and save it in google drive
+     */
     public void setFileGoogleDrive(){
 
-        if(fileNameId == null) {
+        if(fileId == null) {
             GoogleDriveManager.DriveServiceHelper.createFile(jsonNameToUpload)
                     .addOnSuccessListener((result) -> GoogleDriveManager.DriveServiceHelper.saveFile(result, jsonNameToUpload, jsonToUpload)
                             .addOnFailureListener(exception -> {
@@ -138,7 +165,7 @@ public class GoogleDriveConnectionExportActivity extends TobBarActivity {
                         this.jsonNameToUpload = null;
                     });
         }else{
-            GoogleDriveManager.DriveServiceHelper.saveFile(fileNameId, jsonNameToUpload, jsonToUpload)
+            GoogleDriveManager.DriveServiceHelper.saveFile(fileId, jsonNameToUpload, jsonToUpload)
                     .addOnSuccessListener((result) -> {
                         CustomDialogUtility.showDialog(GoogleDriveConnectionExportActivity.this,
                                 getResources().getString(R.string.message_success_upload));

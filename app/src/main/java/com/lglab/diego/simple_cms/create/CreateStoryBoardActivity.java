@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
@@ -34,6 +36,7 @@ import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.my_storyboards.StoryBoardConstant;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -53,6 +56,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
     private POI currentPoi;
     private int currentPoiPosition;
     private long currentStoryBoardId = Long.MIN_VALUE;
+    private String currentStoryBoardGoogleDriveID = "";
 
     private EditText storyBoardName;
     private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes,
@@ -85,6 +89,9 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         currentStoryBoardId = getIntent().getLongExtra(StoryBoardConstant.STORY_BOARD_ID.name(), Long.MIN_VALUE);
         String name = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_NAME.name());
         if (currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
+
+        String storyBoardJson = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON.name());
+        if(storyBoardJson != null) chargeStoryBoardJson(storyBoardJson);
 
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
@@ -134,7 +141,32 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         changeButtonClickableBackgroundColor();
     }
 
+    /**
+     * It charge the storyboard that was selected from google drive
+     * @param storyBoardJson the string of the storyboard
+     */
+    private void chargeStoryBoardJson(String storyBoardJson) {
+        Log.w(TAG_DEBUG, "STORY BOARD JSON: " + storyBoardJson);
+        try{
+            com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+            JSONObject  jsonStoryBoard = new JSONObject(storyBoardJson);
+            storyBoard.unpack(jsonStoryBoard);
+            actions = storyBoard.getActions();
+            storyBoardName.setText(storyBoard.getName());
+            currentPoi = (POI) actions.get(0);
+            currentPoiPosition = 0;
+            currentStoryBoardGoogleDriveID = storyBoard.getStoryBoardFileId();
+        }catch (JSONException jsonException) {
+            Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
+        }
 
+    }
+
+
+    /**
+     * Charge the storyboard that was selected locally
+     * @param name the name of the storyboard to charge
+     */
     private void chargeStoryBoard(String name) {
         try {
             AppDatabase db = AppDatabase.getAppDatabase(this);
@@ -158,8 +190,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         } else {
             try {
                 com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-                if (currentStoryBoardId != Long.MIN_VALUE)
-                    storyBoard.setStoryBoardId(currentStoryBoardId);
+                storyBoard.setStoryBoardFileId(currentStoryBoardGoogleDriveID);
                 storyBoard.setName(name);
                 storyBoard.setActions(actions);
                 JSONObject jsonStoryboard = storyBoard.pack();
