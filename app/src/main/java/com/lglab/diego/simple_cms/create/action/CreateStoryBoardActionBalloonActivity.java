@@ -1,4 +1,4 @@
-package com.example.simple_cms.create;
+package com.lglab.diego.simple_cms.create.action;
 
 import android.Manifest;
 import android.app.Activity;
@@ -22,15 +22,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.simple_cms.R;
-import com.example.simple_cms.connection.LGConnectionSendFile;
-import com.example.simple_cms.create.utility.connection.LGConnectionTest;
-import com.example.simple_cms.create.utility.model.ActionController;
-import com.example.simple_cms.create.utility.model.ActionIdentifier;
-import com.example.simple_cms.create.utility.model.balloon.Balloon;
-import com.example.simple_cms.create.utility.model.poi.POI;
-import com.example.simple_cms.dialog.CustomDialogUtility;
-import com.example.simple_cms.utility.ConstantPrefs;
+import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.connection.LGConnectionSendFile;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
+import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
+import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -138,18 +138,11 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             if(isConnected.get()){
                 Balloon balloon = new Balloon();
                 if(imageUri != null){
-                    ActionController.getInstance().createResourcesFolder(null);
                     imagePath = getFilePath(imageUri);
-                    LGConnectionSendFile lgConnectionSendFile = LGConnectionSendFile.getInstance();
-                    lgConnectionSendFile.addPath(imagePath);
-                    lgConnectionSendFile.startConnection();
                 }
                 balloon.setPoi(poi).setDescription(description.getText().toString())
                         .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString());
-                ActionController.getInstance().writeFileBalloonFile(null);
                 ActionController.getInstance().sendBalloon(balloon, null);
-                ActionController.getInstance().sendChangeBallon(balloon, null);
-
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
@@ -203,7 +196,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 pickImageFromGallery();
             } else {
-                CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permision_denied_image));
+                CustomDialogUtility.showDialog(this, getResources().getString(R.string.alert_permission_denied_image));
             }
         }
     }

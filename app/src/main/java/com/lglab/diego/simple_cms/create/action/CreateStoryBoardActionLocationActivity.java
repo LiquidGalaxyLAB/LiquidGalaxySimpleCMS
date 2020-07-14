@@ -1,4 +1,4 @@
-package com.example.simple_cms.create;
+package com.lglab.diego.simple_cms.create.action;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,15 +17,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.simple_cms.R;
-import com.example.simple_cms.create.utility.connection.LGConnectionTest;
-import com.example.simple_cms.create.utility.model.ActionIdentifier;
-import com.example.simple_cms.create.utility.model.poi.POI;
-import com.example.simple_cms.create.utility.model.poi.POICamera;
-import com.example.simple_cms.create.utility.model.ActionController;
-import com.example.simple_cms.create.utility.model.poi.POILocation;
-import com.example.simple_cms.dialog.CustomDialogUtility;
-import com.example.simple_cms.utility.ConstantPrefs;
+import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
+import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POILocation;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
+import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

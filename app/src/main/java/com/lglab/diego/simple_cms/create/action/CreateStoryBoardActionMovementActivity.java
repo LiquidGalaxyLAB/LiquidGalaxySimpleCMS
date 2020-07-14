@@ -1,4 +1,4 @@
-package com.example.simple_cms.create;
+package com.lglab.diego.simple_cms.create.action;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,14 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.simple_cms.R;
-import com.example.simple_cms.create.utility.connection.LGConnectionTest;
-import com.example.simple_cms.create.utility.model.ActionIdentifier;
-import com.example.simple_cms.create.utility.model.movement.Movement;
-import com.example.simple_cms.create.utility.model.poi.POI;
-import com.example.simple_cms.create.utility.model.poi.POICamera;
-import com.example.simple_cms.create.utility.model.ActionController;
-import com.example.simple_cms.utility.ConstantPrefs;
+import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
+import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
+import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -178,7 +178,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             if(isConnected.get()){
                 if(switchCompatOrbitMode.isChecked()){
-                    ActionController.getInstance().orbit();
+                    ActionController.getInstance().orbit(poi);
                 } else{
                     POI poiSend = new POI(poi);
                     POICamera poiCamera = poiSend.getPoiCamera();

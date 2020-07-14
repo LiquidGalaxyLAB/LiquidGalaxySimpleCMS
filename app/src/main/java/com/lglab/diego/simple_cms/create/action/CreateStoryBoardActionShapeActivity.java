@@ -1,4 +1,4 @@
-package com.example.simple_cms.create;
+package com.lglab.diego.simple_cms.create.action;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,16 +21,16 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.simple_cms.R;
-import com.example.simple_cms.create.utility.adapter.PointRecyclerAdapter;
-import com.example.simple_cms.create.utility.connection.LGConnectionTest;
-import com.example.simple_cms.create.utility.model.ActionController;
-import com.example.simple_cms.create.utility.model.ActionIdentifier;
-import com.example.simple_cms.create.utility.model.poi.POI;
-import com.example.simple_cms.create.utility.model.shape.Point;
-import com.example.simple_cms.create.utility.model.shape.Shape;
-import com.example.simple_cms.dialog.CustomDialogUtility;
-import com.example.simple_cms.utility.ConstantPrefs;
+import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.utility.adapter.PointRecyclerAdapter;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
+import com.lglab.diego.simple_cms.create.utility.model.shape.Point;
+import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
+import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import java.util.ArrayList;
 import java.util.List;

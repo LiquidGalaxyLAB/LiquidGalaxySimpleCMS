@@ -105,7 +105,7 @@ public class ActionBuildCommandUtility {
                 String imageCommand = "";
 
                 if(balloon.getImagePath() != null && !balloon.getImagePath().equals("")) {
-                    imageCommand =  "        <img src=\"" +  ActionBuildCommandUtility.RESOURCES_FOLDER_PATH +  getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
+                    imageCommand =  "        <img src=\"./resources/" + getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
                             "        <br>\n";
                 }
                 String videoCommand = "";
@@ -182,5 +182,16 @@ public class ActionBuildCommandUtility {
                 .append(BASE_PATH).append("shape.kml");
         Log.w(TAG_DEBUG, "Command: " + command.toString());
         return  command.toString();
+    }
+
+    /**
+     * @return Command to clean the kmls.txt
+     */
+    static String buildCleanKMLs() {
+        String command = "echo '' > " +
+                BASE_PATH +
+                "kmls.txt";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
     }
 }

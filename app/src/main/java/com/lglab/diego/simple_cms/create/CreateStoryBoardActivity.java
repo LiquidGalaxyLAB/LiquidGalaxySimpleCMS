@@ -20,15 +20,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionBalloonActivity;
+import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionLocationActivity;
+import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionMovementActivity;
+import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionShapeActivity;
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
 import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
 import com.lglab.diego.simple_cms.db.AppDatabase;
 import com.lglab.diego.simple_cms.db.entity.StoryBoard;
@@ -92,7 +96,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
         currentStoryBoardGoogleDriveID = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name());
         String storyBoardJson = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON.name());
-        if(storyBoardJson != null) chargeStoryBoardJson(storyBoardJson);
+        if (storyBoardJson != null) chargeStoryBoardJson(storyBoardJson);
 
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
@@ -148,24 +152,27 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
      * Test the actions of the storyboard
      */
     private void testStoryBoard() {
-
+        CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
+        List<Action> actionsSend = new ArrayList<>(actions);
+        TestStoryboardThread.getInstance().startConnection(actionsSend);
     }
 
     /**
      * It charge the storyboard that was selected from google drive
+     *
      * @param storyBoardJson the string of the storyboard
      */
     private void chargeStoryBoardJson(String storyBoardJson) {
         Log.w(TAG_DEBUG, "STORY BOARD JSON: " + storyBoardJson);
-        try{
+        try {
             com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-            JSONObject  jsonStoryBoard = new JSONObject(storyBoardJson);
+            JSONObject jsonStoryBoard = new JSONObject(storyBoardJson);
             storyBoard.unpack(jsonStoryBoard);
             actions = storyBoard.getActions();
             storyBoardName.setText(storyBoard.getName());
             currentPoi = (POI) actions.get(0);
             currentPoiPosition = 0;
-        }catch (JSONException jsonException) {
+        } catch (JSONException jsonException) {
             Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
         }
 
@@ -174,6 +181,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
     /**
      * Charge the storyboard that was selected locally
+     *
      * @param name the name of the storyboard to charge
      */
     private void chargeStoryBoard(String name) {
@@ -205,12 +213,12 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
                 JSONObject jsonStoryboard = storyBoard.pack();
                 Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonStoryboard.toString());
                 requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID);
-        } catch(Exception e){
-            Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
+            } catch (Exception e) {
+                Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
+            }
         }
-    }
 
-}
+    }
 
     /**
      * Save or update the storyboard locally
