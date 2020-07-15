@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/image_available"
+        android:id="@+id/admin_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="386dp"
@@ -43,13 +43,13 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toBottomOf="@+id/admin_password"
-        app:layout_constraintEnd_toStartOf="@+id/admin_password"
+        app:layout_constraintBottom_toBottomOf="@+id/text_admin_password"
+        app:layout_constraintEnd_toStartOf="@+id/text_admin_password"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/admin_password"
+        android:id="@+id/text_admin_password"
         android:layout_width="302dp"
         android:layout_height="35dp"
         android:layout_marginTop="10dp"
@@ -59,6 +59,7 @@
         android:fontFamily="@font/roboto"
         android:hint="@string/example_admin_password"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
@@ -84,7 +85,7 @@
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_password"
+        app:layout_constraintTop_toBottomOf="@+id/text_admin_password"
         app:layout_constraintVertical_bias="0.412" />
 
     <Button
@@ -110,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="320dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="15dp"
         android:fontFamily="@font/roboto"
         android:minWidth="200dp"
         android:text="@string/current_admin_password"
@@ -118,8 +119,8 @@
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/admin_password"
-        app:layout_constraintEnd_toStartOf="@+id/admin_password"
+        app:layout_constraintBottom_toBottomOf="@+id/text_admin_password"
+        app:layout_constraintEnd_toStartOf="@+id/text_admin_password"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -133,6 +134,7 @@
         android:fontFamily="@font/roboto"
         android:hint="@string/example_current_admin_password"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
@@ -147,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="354dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/roboto"
         android:minWidth="200dp"
         android:text="@string/new_admin_password"
@@ -162,13 +164,14 @@
         android:id="@+id/text_new_admin_password"
         android:layout_width="302dp"
         android:layout_height="35dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="380dp"
         android:autofillHints="@string/example_new_admin_password"
         android:background="@drawable/rectangle_insert_url"
         android:fontFamily="@font/roboto"
         android:hint="@string/example_new_admin_password"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
@@ -176,14 +179,14 @@
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_password" />
+        app:layout_constraintTop_toBottomOf="@+id/text_admin_password" />
 
     <TextView
-        android:id="@+id/confirm_admin_password"
+        android:id="@+id/confirm_new_admin_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="324dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/roboto"
         android:minWidth="200dp"
         android:text="@string/confirm_admin_password"
@@ -191,11 +194,11 @@
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/confirm_new_admin_password"
+        app:layout_constraintBottom_toBottomOf="@+id/text_confirm_new_admin_password"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/confirm_new_admin_password"
+        android:id="@+id/text_confirm_new_admin_password"
         android:layout_width="302dp"
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
@@ -205,6 +208,7 @@
         android:fontFamily="@font/roboto"
         android:hint="@string/example_confirm_admin_password"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
@@ -225,10 +229,25 @@
         android:fontFamily="@font/roboto_light"
         android:minWidth="200dp"
         android:minHeight="80dp"
-        android:text="@string/button_change_password"
+        android:text="@string/button_update_password"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="862dp"
+        android:layout_height="653dp"
+        android:layout_marginEnd="208dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/label_logo"
+        android:scaleX=".5"
+        android:scaleY=".5"
+        android:src="@drawable/logo_liquid_galaxy"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

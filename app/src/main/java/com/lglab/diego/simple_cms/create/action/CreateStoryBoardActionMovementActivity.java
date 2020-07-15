@@ -54,7 +54,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         oldHeading = findViewById(R.id.old_heading);
         oldTilt = findViewById(R.id.old_tilt);
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.image_available);
+        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
 

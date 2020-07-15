@@ -35,6 +35,7 @@
     <string name="button_add">Add</string>
     <string name="button_log_in">Log in</string>
     <string name="button_change_password">Change Password</string>
+    <string name="button_update_password">Update Password</string>
     <string name="button_log_out">Log Out</string>
     <string name="button_Connect_Google">Continue with Google</string>
     <string name="button_import_drive">Connect to Google Drive</string>
@@ -169,6 +170,12 @@
     <string name="example_new_admin_password">Your New Password</string>
     <string name="confirm_admin_password">Confirm Admin Password</string>
     <string name="example_confirm_admin_password">Your Confirm Password</string>
+    <string name="message_log_in_success">Your are now log in</string>
+    <string name="message_log_in_fail">Your password is wrong</string>
+    <string name="message_current_password_is_wrong">Wrong current password</string>
+    <string name="message_new_confirm_password_not_equal">The new and confirm password need to be equal</string>
+    <string name="message_you_need_log_in">You need to be log in to access to this feature</string>
+    <string name="message_your_password_update">Your password has been updated</string>
 
 
     <string-array name="actions">

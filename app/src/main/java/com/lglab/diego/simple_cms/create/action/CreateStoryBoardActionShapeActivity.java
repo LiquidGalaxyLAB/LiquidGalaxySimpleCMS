@@ -61,7 +61,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_shape);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.image_available);
+        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
 

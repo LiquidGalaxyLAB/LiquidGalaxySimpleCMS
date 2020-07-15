@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".create.CreateStoryBoardActionShapeActivity"
+    tools:context=".create.action.CreateStoryBoardActionShapeActivity"
     android:id="@+id/linearLayout3">
 
 
     <TextView
-        android:id="@+id/image_available"
+        android:id="@+id/admin_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="320dp"
@@ -53,7 +53,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/butt_add_point"
         app:layout_constraintEnd_toEndOf="@+id/location_name_title"
-        app:layout_constraintTop_toBottomOf="@+id/image_available"
+        app:layout_constraintTop_toBottomOf="@+id/admin_password"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

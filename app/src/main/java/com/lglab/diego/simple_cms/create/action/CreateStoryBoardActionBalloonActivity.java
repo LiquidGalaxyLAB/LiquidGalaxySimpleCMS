@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.connection.LGConnectionSendFile;
 import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
@@ -64,7 +63,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_balloon);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.image_available);
+        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         description = findViewById(R.id.description);

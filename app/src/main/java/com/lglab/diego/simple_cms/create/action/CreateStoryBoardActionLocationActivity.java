@@ -58,7 +58,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         range = findViewById(R.id.range);
         altitude_mode = findViewById(R.id.altitude_mode);
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.image_available);
+        imageAvailable = findViewById(R.id.admin_password);
 
         Button buttTest = findViewById(R.id.butt_test);
         Button buttCancel = findViewById(R.id.butt_cancel);

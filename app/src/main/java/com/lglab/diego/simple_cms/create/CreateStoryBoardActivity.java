@@ -73,7 +73,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
         View topBar = findViewById(R.id.top_bar);
         buttCreate = topBar.findViewById(R.id.butt_create_menu);
-        storyBoardName = findViewById(R.id.admin_password);
+        storyBoardName = findViewById(R.id.text_admin_password);
 
 
         Button buttTest = findViewById(R.id.butt_test);
@@ -86,7 +86,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         Button buttSaveGoogleDrive = findViewById(R.id.butt_save_on_google_drive);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.image_available);
+        imageAvailable = findViewById(R.id.admin_password);
 
         currentStoryBoardId = getIntent().getLongExtra(StoryBoardConstant.STORY_BOARD_ID.name(), Long.MIN_VALUE);
         String name = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_NAME.name());
@@ -214,24 +214,28 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
      * Save or update the storyboard Google Drive
      */
     private void saveStoryboardGoogleDrive() {
-        String name = storyBoardName.getText().toString();
-        if (name.equals("")) {
-            CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
-                    getResources().getString(R.string.You_need_a_name_to_create_a_story_board));
-        } else {
-            try {
-                com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-                storyBoard.setStoryBoardFileId(currentStoryBoardGoogleDriveID);
-                storyBoard.setName(name);
-                storyBoard.setActions(actions);
-                JSONObject jsonStoryboard = storyBoard.pack();
-                Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonStoryboard.toString());
-                requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID);
-            } catch (Exception e) {
-                Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
+        if(isLogIn()){
+            String name = storyBoardName.getText().toString();
+            if (name.equals("")) {
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.You_need_a_name_to_create_a_story_board));
+            } else {
+                try {
+                    com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+                    storyBoard.setStoryBoardFileId(currentStoryBoardGoogleDriveID);
+                    storyBoard.setName(name);
+                    storyBoard.setActions(actions);
+                    JSONObject jsonStoryboard = storyBoard.pack();
+                    Log.w(TAG_DEBUG, "JSON OBJECT GENERATED:" + jsonStoryboard.toString());
+                    requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID);
+                } catch (Exception e) {
+                    Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
+                }
             }
+        }else{
+            CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                    getResources().getString(R.string.message_you_need_log_in));
         }
-
     }
 
     /**
