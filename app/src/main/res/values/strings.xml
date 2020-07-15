@@ -34,6 +34,7 @@
     <string name="button_description">Description</string>
     <string name="button_add">Add</string>
     <string name="button_log_in">Log in</string>
+    <string name="button_change_password">Change Password</string>
     <string name="button_log_out">Log Out</string>
     <string name="button_Connect_Google">Continue with Google</string>
     <string name="button_import_drive">Connect to Google Drive</string>
@@ -157,6 +158,18 @@
     <string name="message_google_drive_failed_log_in">Unable to sign in. Make sure you have internet connection and try again</string>
     <string name="message_failed_upload">Failed to upload the file to Google Drive</string>
     <string name="message_success_upload">Uploaded file to Google Drive</string>
+
+
+    //Account
+    <string name="admin_password">Admin Password</string>
+    <string name="example_admin_password">Your Password</string>
+    <string name="current_admin_password">Current Admin Password</string>
+    <string name="example_current_admin_password">Your Current Password</string>
+    <string name="new_admin_password">New Admin Password</string>
+    <string name="example_new_admin_password">Your New Password</string>
+    <string name="confirm_admin_password">Confirm Admin Password</string>
+    <string name="example_confirm_admin_password">Your Confirm Password</string>
+
 
     <string-array name="actions">
         <item>Actions</item>

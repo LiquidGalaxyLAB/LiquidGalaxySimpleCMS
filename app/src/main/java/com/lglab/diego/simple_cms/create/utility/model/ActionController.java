@@ -106,7 +106,7 @@ public class ActionController {
      * @param balloon  Balloon with the information to build command
      * @param listener listener
      */
-    public void sendBalloon(Balloon balloon, LGCommand.Listener listener) {
+    public void sendBalloon(Balloon balloon, LGCommand.Listener listener, int duration) {
         Uri imageUri = balloon.getImageUri();
         if (imageUri != null) {
             createResourcesFolder(null);
@@ -130,7 +130,7 @@ public class ActionController {
 
         handler.postDelayed(() -> {
             cleanFileKMLs(null);
-        }, 10000);
+        }, duration);
     }
 
     /**
@@ -183,7 +183,7 @@ public class ActionController {
      * @param shape    Shape with the information to build the command
      * @param listener listener
      */
-    public void sendShape(Shape shape, LGCommand.Listener listener) {
+    public void sendShape(Shape shape, LGCommand.Listener listener, int duration) {
         writeFileShapeFile(null);
 
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandSendShape(shape), LGCommand.CRITICAL_MESSAGE, (String result) -> {
@@ -197,7 +197,7 @@ public class ActionController {
 
         handler.postDelayed(() -> {
             cleanFileKMLs(null);
-        }, 10000);
+        }, duration);
     }
 
     /**

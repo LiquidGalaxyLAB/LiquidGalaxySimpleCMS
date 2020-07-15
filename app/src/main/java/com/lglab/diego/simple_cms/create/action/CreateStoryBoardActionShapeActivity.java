@@ -166,7 +166,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             if(isConnected.get()){
                 Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked());
-                ActionController.getInstance().sendShape(shape, null);
+                ActionController.getInstance().sendShape(shape, null, poi.getPoiCamera().getDuration() * 1000);
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }

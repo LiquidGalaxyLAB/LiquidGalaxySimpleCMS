@@ -142,7 +142,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
                 }
                 balloon.setPoi(poi).setDescription(description.getText().toString())
                         .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString());
-                ActionController.getInstance().sendBalloon(balloon, null);
+                ActionController.getInstance().sendBalloon(balloon, null, poi.getPoiCamera().getDuration() * 1000);
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }

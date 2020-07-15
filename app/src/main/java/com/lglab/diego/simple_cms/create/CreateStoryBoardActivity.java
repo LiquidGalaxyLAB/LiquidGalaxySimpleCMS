@@ -27,12 +27,10 @@ import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionMovementAc
 import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionShapeActivity;
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
-import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
 import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
-import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
 import com.lglab.diego.simple_cms.db.AppDatabase;
 import com.lglab.diego.simple_cms.db.entity.StoryBoard;
@@ -63,8 +61,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
     private String currentStoryBoardGoogleDriveID = null;
 
     private EditText storyBoardName;
-    private Button buttCreate, buttLocation, buttMovements, buttBalloon, buttShapes,
-            buttTest, buttDelete, buttSaveLocally, buttSaveGoogleDrive;
+    private Button buttCreate;
     private TextView connectionStatus, imageAvailable;
 
     @Override
@@ -76,16 +73,17 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
         View topBar = findViewById(R.id.top_bar);
         buttCreate = topBar.findViewById(R.id.butt_create_menu);
+        storyBoardName = findViewById(R.id.admin_password);
 
-        buttLocation = findViewById(R.id.butt_location);
-        buttMovements = findViewById(R.id.butt_movements);
-        buttBalloon = findViewById(R.id.butt_balloon);
-        buttShapes = findViewById(R.id.butt_shapes);
-        buttDelete = findViewById(R.id.butt_delete);
-        buttSaveLocally = findViewById(R.id.butt_save_locally);
-        buttSaveGoogleDrive = findViewById(R.id.butt_save_on_google_drive);
-        buttTest = findViewById(R.id.butt_test);
-        storyBoardName = findViewById(R.id.story_board_name);
+
+        Button buttTest = findViewById(R.id.butt_test);
+        Button buttLocation = findViewById(R.id.butt_location);
+        Button buttMovements = findViewById(R.id.butt_movements);
+        Button buttBalloon = findViewById(R.id.butt_balloon);
+        Button buttShapes = findViewById(R.id.butt_shapes);
+        Button buttDelete = findViewById(R.id.butt_delete);
+        Button buttSaveLocally = findViewById(R.id.butt_save_locally);
+        Button buttSaveGoogleDrive = findViewById(R.id.butt_save_on_google_drive);
 
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_available);
@@ -153,8 +151,24 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
      */
     private void testStoryBoard() {
         CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
-        List<Action> actionsSend = new ArrayList<>(actions);
-        TestStoryboardThread.getInstance().startConnection(actionsSend);
+
+        List<List<Action>> listActions = new ArrayList<>();
+        List<Action> subActions = new ArrayList<>();
+        Action action;
+        subActions.add(actions.get(0));
+        for(int j = 1; j < actions.size(); j++){
+            action = actions.get(j);
+            if(action instanceof POI){
+                listActions.add(subActions);
+                subActions = new ArrayList<>();
+                subActions.add(action);
+            }else{
+                subActions.add(action);
+            }
+        }
+        listActions.add(subActions);
+
+        TestStoryboardThread.getInstance().startConnection(listActions);
     }
 
     /**
