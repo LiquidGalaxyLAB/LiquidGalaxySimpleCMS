@@ -152,7 +152,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
     private void loadDataJson() {
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
-        String storyBoardJson = sharedPreferences.getString(ConstantPrefs.STORY_BOARD_JSO.name(), "");
+        String storyBoardJson = sharedPreferences.getString(ConstantPrefs.STORY_BOARD_JSON.name(), "");
         if(!storyBoardJson.equals("")){
             try {
                 com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
@@ -373,7 +373,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
             storyBoard.setName(storyBoardName.getText().toString());
             storyBoard.setActions(actions);
             SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
-            editor.putString(ConstantPrefs.STORY_BOARD_JSO.name(), storyBoard.pack().toString());
+            editor.putString(ConstantPrefs.STORY_BOARD_JSON.name(), storyBoard.pack().toString());
             editor.apply();
         } catch (JSONException jsonException) {
             Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
