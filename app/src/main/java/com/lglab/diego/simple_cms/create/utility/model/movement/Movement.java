@@ -35,6 +35,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     private double newHeading;
     private double newTilt;
     private boolean isOrbitMode;
+    private int duration;
 
     /**
      * Empty Constructor
@@ -43,12 +44,13 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         super(ActionIdentifier.MOVEMENT_ACTIVITY.getId());
     }
 
-    public Movement(long id, POI poi, double newHeading, double newTilt, boolean isOrbitMode){
+    public Movement(long id, POI poi, double newHeading, double newTilt, boolean isOrbitMode, int duration){
         super(id, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         this.poi = poi;
         this.newHeading = newHeading;
         this.newTilt = newTilt;
         this.isOrbitMode = isOrbitMode;
+        this.duration = duration;
     }
 
     public Movement(Parcel in) {
@@ -57,6 +59,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.newHeading = in.readDouble();
         this.newTilt = in.readDouble();
         this.isOrbitMode = in.readInt() != 0;
+        this.duration = in.readInt();
     }
 
     public Movement(Movement movement) {
@@ -65,11 +68,12 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.newHeading = movement.newHeading;
         this.newTilt = movement.newTilt;
         this.isOrbitMode = movement.isOrbitMode;
+        this.duration = movement.duration;
     }
 
     public static Movement getMovement(com.lglab.diego.simple_cms.db.entity.Movement actionDB) {
         POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
-        return new Movement(actionDB.actionId, poi, actionDB.newHeading, actionDB.newTilt, actionDB.isOrbitMode);
+        return new Movement(actionDB.actionId, poi, actionDB.newHeading, actionDB.newTilt, actionDB.isOrbitMode, actionDB.duration);
     }
 
     public POI getPoi() {
@@ -108,6 +112,15 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         return this;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public Movement setDuration(int duration) {
+        this.duration = duration;
+        return this;
+    }
+
     @Override
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
@@ -118,6 +131,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         obj.put("movement_new_heading", newHeading);
         obj.put("movement_new_tilt", newTilt);
         obj.put("movement_orbit_mode", isOrbitMode);
+        obj.put("movement_duration", duration);
 
         return obj;
     }
@@ -133,6 +147,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         newHeading = obj.getDouble("movement_new_heading");
         newTilt = obj.getDouble("movement_new_tilt");
         isOrbitMode = obj.getBoolean("movement_orbit_mode");
+        duration = obj.getInt("movement_duration");
 
         return this;
     }
@@ -140,7 +155,8 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "Location Name: " + this.poi.getPoiLocation().getName() + " New Heading: " + this.newHeading + " New Tilt: " +  this.newTilt;
+        return "Location Name: " + this.poi.getPoiLocation().getName() + " New Heading: " + this.newHeading +
+                " New Tilt: " +  this.newTilt + " Duration: " + this.duration;
     }
 
 
@@ -156,5 +172,6 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         parcel.writeDouble(newHeading);
         parcel.writeDouble(newTilt);
         parcel.writeInt(isOrbitMode ? 1 : 0);
+        parcel.writeInt(duration);
     }
 }

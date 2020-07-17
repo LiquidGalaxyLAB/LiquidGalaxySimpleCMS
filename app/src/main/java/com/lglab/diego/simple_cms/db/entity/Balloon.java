@@ -17,6 +17,7 @@ public class Balloon extends Action {
     public String imageUriBalloon;
     public String imagePathBalloon;
     public String videoPathBalloon;
+    public int durationBalloon;
 
     public static Balloon getBalloonDBMODEL(com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon action) {
         Balloon balloon = new Balloon();
@@ -29,6 +30,7 @@ public class Balloon extends Action {
         balloon.imageUriBalloon = action.getImageUri() != null ? action.getImageUri().toString() : "";
         balloon.imagePathBalloon = action.getImagePath();
         balloon.videoPathBalloon = action.getVideoPath();
+        balloon.durationBalloon = action.getDuration();
 
         return balloon;
     }

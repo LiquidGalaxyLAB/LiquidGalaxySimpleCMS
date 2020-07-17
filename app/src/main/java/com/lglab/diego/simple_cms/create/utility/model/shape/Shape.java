@@ -35,6 +35,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
     private POI poi;
     private List points;
     private boolean isExtrude;
+    private int duration;
 
 
     public Shape(){
@@ -42,14 +43,16 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         poi = null;
         points = new ArrayList<>();
         isExtrude = false;
+        duration = 0;
     }
 
 
-    public Shape(long id, List<Point> points, boolean isExtrude, POI poi) {
+    public Shape(long id, List<Point> points, boolean isExtrude, POI poi, int duration) {
        super(id, ActionIdentifier.SHAPES_ACTIVITY.getId());
        this.poi = poi;
        this.points = points;
        this.isExtrude = isExtrude;
+       this.duration = duration;
     }
 
     public Shape(Parcel in) {
@@ -57,6 +60,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         this.poi = in.readParcelable(POI.class.getClassLoader());
         this.points = in.readArrayList(Point.class.getClassLoader());
         this.isExtrude = in.readInt() != 0;
+        this.duration = in.readInt();
     }
 
     public Shape(Shape shape){
@@ -64,12 +68,13 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         this.poi = shape.poi;
         this.points = shape.points;
         this.isExtrude = shape.isExtrude;
+        this.duration = shape.duration;
     }
 
     public static Shape getShape(com.lglab.diego.simple_cms.db.entity.shape.Shape actionDB) {
         POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
         List<Point> points = Point.getPoints(actionDB.points);
-        return new Shape(actionDB.actionId, points, actionDB.isExtrude, poi);
+        return new Shape(actionDB.actionId, points, actionDB.isExtrude, poi, actionDB.duration);
     }
 
 
@@ -100,6 +105,15 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         return this;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public Shape setDuration(int duration) {
+        this.duration = duration;
+        return this;
+    }
+
     @Override
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
@@ -113,6 +127,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         }
         obj.put("jsonPoints", jsonPoints);
         obj.put("isExtrude", isExtrude);
+        obj.put("duration", duration);
 
         return obj;
     }
@@ -136,6 +151,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         }
         this.points = arrayPoint;
         this.isExtrude = obj.getBoolean("isExtrude");
+        this.duration = obj.getInt("duration");
 
         return this;
     }
@@ -162,5 +178,6 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         parcel.writeParcelable(poi, flags);
         parcel.writeList(points);
         parcel.writeInt(isExtrude ? 1 : 0);
+        parcel.writeInt(duration);
     }
 }

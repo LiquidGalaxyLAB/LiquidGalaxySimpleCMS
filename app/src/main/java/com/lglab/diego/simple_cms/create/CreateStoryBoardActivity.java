@@ -145,6 +145,8 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
 
         buttTest.setOnClickListener((view) -> testStoryBoard());
 
+        initRecyclerView();
+
         changeButtonClickableBackgroundColor();
     }
 
@@ -166,7 +168,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
                 currentStoryBoardGoogleDriveID = storyBoard.getStoryBoardFileId();
                 currentStoryBoardId = storyBoard.getStoryBoardId();
             } catch (JSONException jsonException) {
-                Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
+                Log.w(TAG_DEBUG, "ERROR CONVERTING JSON: " + jsonException);
             }
         }
     }
@@ -176,24 +178,8 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
      */
     private void testStoryBoard() {
         CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
-
-        List<List<Action>> listActions = new ArrayList<>();
-        List<Action> subActions = new ArrayList<>();
-        Action action;
-        subActions.add(actions.get(0));
-        for(int j = 1; j < actions.size(); j++){
-            action = actions.get(j);
-            if(action instanceof POI){
-                listActions.add(subActions);
-                subActions = new ArrayList<>();
-                subActions.add(action);
-            }else{
-                subActions.add(action);
-            }
-        }
-        listActions.add(subActions);
-
-        TestStoryboardThread.getInstance().startConnection(listActions);
+        List<Action> actionsSend = new ArrayList<>(actions);
+        TestStoryboardThread.getInstance().startConnection(actionsSend);
     }
 
     /**
@@ -374,7 +360,7 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
     @Override
     protected void onResume() {
         loadData();
-        initRecyclerView();
+        rePaintRecyclerView();
         super.onResume();
     }
 
@@ -382,6 +368,8 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
     protected void onPause() {
         try {
             com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+            storyBoard.setStoryBoardFileId(currentStoryBoardGoogleDriveID);
+            storyBoard.setStoryBoardId(currentStoryBoardId);
             storyBoard.setName(storyBoardName.getText().toString());
             storyBoard.setActions(actions);
             SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
@@ -422,6 +410,14 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
+        RecyclerView.Adapter mAdapter = new ActionRecyclerAdapter(this, actions, this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    /**
+     * It re paints the recyclerview with the actions
+     */
+    private void rePaintRecyclerView(){
         RecyclerView.Adapter mAdapter = new ActionRecyclerAdapter(this, actions, this);
         mRecyclerView.setAdapter(mAdapter);
     }

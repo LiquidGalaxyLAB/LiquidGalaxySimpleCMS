@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -47,7 +48,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private TextView connectionStatus, imageAvailable,
             locationName, locationNameTitle;
 
-    private EditText description, videoURL;
+    private EditText description, videoURL, duration;
     private ImageView imageView;
 
     private Handler handler = new Handler();
@@ -69,6 +70,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
         imageView = findViewById(R.id.image_view);
         videoURL = findViewById(R.id.video_url);
+        duration = findViewById(R.id.duration);
 
         Button buttTest = findViewById(R.id.butt_test);
         Button buttCancel = findViewById(R.id.butt_cancel);
@@ -95,6 +97,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             if(imageUri != null) imageView.setImageURI(imageUri);
             imagePath = balloon.getImagePath();
             videoURL.setText(balloon.getVideoPath());
+            duration.setText(String.valueOf(balloon.getDuration()));
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
@@ -130,23 +133,28 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      * Test the balloon action and the connection to the Liquid Galaxy
      */
     private void testConnection() {
-        AtomicBoolean isConnected = new AtomicBoolean(false);
-        LGConnectionTest.testPriorConnection(this, isConnected);
-        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
-        handler.postDelayed(() -> {
-            if(isConnected.get()){
-                Balloon balloon = new Balloon();
-                if(imageUri != null){
-                    imagePath = getFilePath(imageUri);
+        String durationString = duration.getText().toString();
+        if(durationString.equals("")){
+            CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
+        }else{
+            AtomicBoolean isConnected = new AtomicBoolean(false);
+            LGConnectionTest.testPriorConnection(this, isConnected);
+            SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+            handler.postDelayed(() -> {
+                if(isConnected.get()){
+                    Balloon balloon = new Balloon();
+                    if(imageUri != null){
+                        imagePath = getFilePath(imageUri);
+                    }
+                    balloon.setPoi(poi).setDescription(description.getText().toString())
+                            .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString()).setDuration(Integer.parseInt(durationString));
+                    ActionController.getInstance().sendBalloon(balloon, null, balloon.getDuration() * 1000);
+                }else{
+                    connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
-                balloon.setPoi(poi).setDescription(description.getText().toString())
-                        .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString());
-                ActionController.getInstance().sendBalloon(balloon, null, poi.getPoiCamera().getDuration() * 1000);
-            }else{
-                connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            }
-            loadConnectionStatus(sharedPreferences);
-        }, 1200);
+                loadConnectionStatus(sharedPreferences);
+            }, 1200);
+        }
     }
 
     /**
@@ -168,14 +176,20 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      * Send the action to add a balloon
      */
     private void addBalloon() {
-        Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString())
-                .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString());
-        Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), balloon);
-        returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-        returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-        setResult(Activity.RESULT_OK, returnInfoIntent);
-        finish();
+        String durationString = duration.getText().toString();
+        if(durationString.equals("")){
+            CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
+        }else{
+            Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString())
+                    .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString())
+                    .setDuration(Integer.parseInt(durationString));
+            Intent returnInfoIntent = new Intent();
+            returnInfoIntent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), balloon);
+            returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            setResult(Activity.RESULT_OK, returnInfoIntent);
+            finish();
+        }
     }
 
     /**

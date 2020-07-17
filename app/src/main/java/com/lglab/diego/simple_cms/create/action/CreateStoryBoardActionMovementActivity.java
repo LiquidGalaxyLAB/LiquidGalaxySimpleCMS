@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,6 +38,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
     private TextView seekBarValueHeading, seekBarValueTilt,
             oldHeading, oldTilt, connectionStatus, imageAvailable,
             locationName, locationNameTitle;
+    private EditText duration;
     private SeekBar seekBarHeading, seekBarTilt;
     private SwitchCompat switchCompatOrbitMode;
 
@@ -57,6 +60,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
+        duration = findViewById(R.id.duration);
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         loadConnectionStatus(sharedPreferences);
@@ -94,6 +98,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             boolean isOrbitMode = movement.isOrbitMode();
             switchCompatOrbitMode.setChecked(isOrbitMode);
             setSwitchAndSeekBar(isOrbitMode);
+            duration.setText(String.valueOf(movement.getDuration()));
         }
 
         switchCompatOrbitMode.setOnCheckedChangeListener((buttonView, isChecked) -> setSwitchAndSeekBar(isChecked));
@@ -223,15 +228,20 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
     private void addMovement() {
         int seekBarHeadingValue = seekBarHeading.getProgress();
         int seekBarTiltValue = seekBarTilt.getProgress();
-        Movement movement = new Movement().setNewHeading(seekBarHeadingValue)
-                .setNewTilt(seekBarTiltValue).setPoi(poi).setOrbitMode(switchCompatOrbitMode.isChecked());
-        Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), movement);
-        returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-        returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-        setResult(Activity.RESULT_OK, returnInfoIntent);
-        finish();
-
+        String durationString = duration.getText().toString();
+        if(durationString.equals("")){
+            CustomDialogUtility.showDialog(CreateStoryBoardActionMovementActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
+        }else{
+            int durationInt = Integer.parseInt(durationString);
+            Movement movement = new Movement().setNewHeading(seekBarHeadingValue)
+                    .setNewTilt(seekBarTiltValue).setPoi(poi).setOrbitMode(switchCompatOrbitMode.isChecked()).setDuration(durationInt);
+            Intent returnInfoIntent = new Intent();
+            returnInfoIntent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), movement);
+            returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            setResult(Activity.RESULT_OK, returnInfoIntent);
+            finish();
+        }
     }
 
     /**

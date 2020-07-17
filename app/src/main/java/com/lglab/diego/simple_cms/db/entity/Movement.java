@@ -16,6 +16,7 @@ public class Movement extends Action {
     public double newHeading;
     public double newTilt;
     public boolean isOrbitMode;
+    public int duration;
 
     public static Movement getMovementDBMODEL(com.lglab.diego.simple_cms.create.utility.model.movement.Movement action) {
         Movement movement = new Movement();
@@ -26,6 +27,7 @@ public class Movement extends Action {
         movement.newHeading = action.getNewHeading();
         movement.newTilt = action.getNewTilt();
         movement.isOrbitMode = action.isOrbitMode();
+        movement.duration = action.getDuration();
 
         return movement;
     }

@@ -45,6 +45,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
     private TextView connectionStatus, imageAvailable,
             locationName, locationNameTitle;
+    private EditText duration;
 
     private RecyclerView mRecyclerView;
     List<Point> points = new ArrayList<>();
@@ -64,6 +65,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
+        duration = findViewById(R.id.duration);
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
         switchCompatExtrude = findViewById(R.id.switch_button);
@@ -93,6 +95,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             points = shape.getPoints();
             boolean isExtrude = shape.isExtrude();
             switchCompatExtrude.setChecked(isExtrude);
+            duration.setText(String.valueOf(shape.getDuration()));
         }else {
             Point point = new Point();
             double temp = 0.0;
@@ -160,31 +163,42 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
      * Test the action and the connection to the liquid galaxy
      */
     private void testConnection() {
-        AtomicBoolean isConnected = new AtomicBoolean(false);
-        LGConnectionTest.testPriorConnection(this, isConnected);
-        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
-        handler.postDelayed(() -> {
-            if(isConnected.get()){
-                Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked());
-                ActionController.getInstance().sendShape(shape, null, poi.getPoiCamera().getDuration() * 1000);
-            }else{
-                connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            }
-            loadConnectionStatus(sharedPreferences);
-        }, 1200);
+        String durationString = duration.getText().toString();
+        if(durationString.equals("")){
+            CustomDialogUtility.showDialog(CreateStoryBoardActionShapeActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
+        }else{
+            AtomicBoolean isConnected = new AtomicBoolean(false);
+            LGConnectionTest.testPriorConnection(this, isConnected);
+            SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+            handler.postDelayed(() -> {
+                if(isConnected.get()){
+                    Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked()).setDuration(Integer.parseInt(durationString));
+                    ActionController.getInstance().sendShape(shape, null, shape.getDuration() * 1000);
+                }else{
+                    connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
+                }
+                loadConnectionStatus(sharedPreferences);
+            }, 1200);
+        }
     }
 
     /**
      * Send the action of adding the shape
      */
     private void addShape() {
-        Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked());
-        Intent returnInfoIntent = new Intent();
-        returnInfoIntent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), shape);
-        returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-        returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-        setResult(Activity.RESULT_OK, returnInfoIntent);
-        finish();
+        String durationString = duration.getText().toString();
+        if(durationString.equals("")){
+            CustomDialogUtility.showDialog(CreateStoryBoardActionShapeActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
+        }else{
+            Shape shape = new Shape().setPoi(poi).setPoints(points)
+                    .setExtrude(switchCompatExtrude.isChecked()).setDuration(Integer.parseInt(durationString));
+            Intent returnInfoIntent = new Intent();
+            returnInfoIntent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), shape);
+            returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            setResult(Activity.RESULT_OK, returnInfoIntent);
+            finish();
+        }
     }
 
     /**

@@ -21,7 +21,6 @@ import org.json.JSONObject;
  */
 public class Balloon extends Action implements IJsonPacker, Parcelable {
 
-
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Balloon createFromParcel(Parcel in) {
             return new Balloon(in);
@@ -37,6 +36,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     private Uri imageUri;
     private String imagePath;
     private String videoPath;
+    private int duration;
 
     /**
      * Empty Constructor
@@ -45,13 +45,14 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         super(ActionIdentifier.BALLOON_ACTIVITY.getId());
     }
 
-    public Balloon(long id, POI poi, String description, Uri imageUri, String imagePath, String videoPath) {
+    public Balloon(long id, POI poi, String description, Uri imageUri, String imagePath, String videoPath, int duration) {
         super(id, ActionIdentifier.BALLOON_ACTIVITY.getId());
         this.poi = poi;
         this.description = description;
         this.imageUri = imageUri;
         this.imagePath = imagePath;
         this.videoPath = videoPath;
+        this.duration = duration;
     }
 
     public Balloon(Parcel in) {
@@ -61,6 +62,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.imageUri = in.readParcelable(Uri.class.getClassLoader());
         this.imagePath = in.readString();
         this.videoPath = in.readString();
+        this.duration = in.readInt();
     }
 
     public Balloon(Balloon balloon) {
@@ -70,12 +72,14 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.imageUri = balloon.imageUri;
         this.imagePath = balloon.imagePath;
         this.videoPath = balloon.videoPath;
+        this.duration = balloon.duration;
     }
 
     public static Balloon getBalloon(com.lglab.diego.simple_cms.db.entity.Balloon actionDB) {
         POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
         Uri imageUri = actionDB.imageUriBalloon != null ? Uri.parse(actionDB.imageUriBalloon) : null;
-        return  new Balloon(actionDB.actionId, poi, actionDB.descriptionBalloon, imageUri, actionDB.imagePathBalloon, actionDB.videoPathBalloon);
+        return  new Balloon(actionDB.actionId, poi, actionDB.descriptionBalloon, imageUri,
+                actionDB.imagePathBalloon, actionDB.videoPathBalloon, actionDB.durationBalloon);
     }
 
     public POI getPoi() {
@@ -124,6 +128,15 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         return this;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public Balloon setDuration(int duration) {
+        this.duration = duration;
+        return this;
+    }
+
     @Override
     public JSONObject pack() throws JSONException {
         JSONObject obj = new JSONObject();
@@ -135,6 +148,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         obj.put("image_uri", imageUri != null ? imageUri.toString(): "");
         obj.put("image_path", imagePath != null ? imagePath: "");
         obj.put("video_path", videoPath != null ? videoPath: "");
+        obj.put("duration", duration);
 
         return obj;
     }
@@ -153,6 +167,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         imageUri = !uri.equals("") ?  Uri.parse(obj.getString("image_uri")):null;
         imagePath = obj.getString("image_path");
         videoPath = obj.getString("video_path");
+        duration = obj.getInt("duration");
 
         return this;
     }
@@ -162,7 +177,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
     public String toString() {
         return "Location Name: " + this.poi.getPoiLocation().getName() + " Image Uri: " + this.imageUri.toString()  + " Video URL: " +  this.videoPath;
     }
-
 
     @Override
     public int describeContents() {
@@ -177,5 +191,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         parcel.writeParcelable(imageUri, flags);
         parcel.writeString(imagePath);
         parcel.writeString(videoPath);
+        parcel.writeInt(duration);
     }
+
 }

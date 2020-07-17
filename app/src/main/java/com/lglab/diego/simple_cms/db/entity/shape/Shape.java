@@ -18,6 +18,7 @@ public class Shape extends Action {
     @Embedded
     public SimplePOI simplePOI;
     public boolean isExtrude;
+    public int duration;
 
     @Ignore
     public List points;
@@ -30,6 +31,7 @@ public class Shape extends Action {
         shape.simplePOI = SimplePOI.getSIMPLEPOIDBMODEL(action.getPoi());
         shape.isExtrude = action.isExtrude();
         shape.points = Point.getPointsDBMODEL(action.getPoints());
+        shape.duration = action.getDuration();
 
         return shape;
     }
