@@ -59,11 +59,13 @@ public class TestStoryboardThread implements Runnable {
             } else if (actionSend instanceof Balloon) {
                 Balloon balloon = (Balloon) actionSend;
                 duration = balloon.getDuration() * 1000;
-                actionController.sendBalloon(balloon, null, duration);
+                actionController.sendBalloon(balloon, null);
+                actionController.cleanFileKMLs(duration - 200);
             } else if (actionSend instanceof Shape) {
                 Shape shape = (Shape) actionSend;
                 duration = shape.getDuration() * 1000;
-                actionController.sendShape(shape, null, duration);
+                actionController.sendShape(shape, null);
+                actionController.cleanFileKMLs(duration - 200);
             }
             try {
                 Log.w(TAG_DEBUG, "DURATION ACTION: " + duration);

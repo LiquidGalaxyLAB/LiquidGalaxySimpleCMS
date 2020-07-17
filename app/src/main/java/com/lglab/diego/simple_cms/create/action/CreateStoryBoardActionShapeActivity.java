@@ -41,7 +41,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
+/*
     private static final String TAG_DEBUG = "CreateStoryBoardActionShapeActivity";
+*/
 
     private TextView connectionStatus, imageAvailable,
             locationName, locationNameTitle;
@@ -173,7 +175,8 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             handler.postDelayed(() -> {
                 if(isConnected.get()){
                     Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked()).setDuration(Integer.parseInt(durationString));
-                    ActionController.getInstance().sendShape(shape, null, shape.getDuration() * 1000);
+                    ActionController.getInstance().sendShape(shape, null);
+                    ActionController.getInstance().cleanFileKMLs(shape.getDuration() * 1000);
                 }else{
                     connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }

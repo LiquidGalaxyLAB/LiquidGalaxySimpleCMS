@@ -170,11 +170,11 @@ public class ActionBuildCommandUtility {
         if(shape.isExtrude()) command.append("<extrude>1</extrude>\n");
         command.append("<tessellate>1</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
                 .append("<coordinates>\n");
-        List<Point> points = shape.getPoints();
+        List points = shape.getPoints();
         int pointsLength = points.size();
         Point point;
         for(int i = 0; i < pointsLength; i++){
-            point = points.get(i);
+            point = (Point) points.get(i);
             command.append("    ").append(point.getLongitude()).append(",").append(point.getLatitude())
                     .append(",").append(point.getAltitude()).append("\n");
         }
