@@ -96,6 +96,8 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         String storyBoardJson = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON.name());
         if (storyBoardJson != null) chargeStoryBoardJson(storyBoardJson);
 
+        if(currentStoryBoardId == Long.MIN_VALUE && storyBoardJson == null)  loadDataJson();
+
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
             intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
@@ -146,6 +148,29 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         changeButtonClickableBackgroundColor();
     }
 
+    private void loadDataJson() {
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        String storyBoardJson = sharedPreferences.getString(ConstantPrefs.STORY_BOARD_JSO.name(), "");
+        if(!storyBoardJson.equals("")){
+            try {
+                com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+                JSONObject jsonStoryBoard = new JSONObject(storyBoardJson);
+                storyBoard.unpack(jsonStoryBoard);
+                List<Action> actionsSaved = storyBoard.getActions();
+                storyBoardName.setText(storyBoard.getName());
+                if(actionsSaved.size() > 0){
+                    actions = actionsSaved;
+                    currentPoi = (POI) actions.get(0);
+                }
+                currentPoiPosition = 0;
+                currentStoryBoardGoogleDriveID = storyBoard.getStoryBoardFileId();
+                currentStoryBoardId = storyBoard.getStoryBoardId();
+            } catch (JSONException jsonException) {
+                Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
+            }
+        }
+    }
+
     /**
      * Test the actions of the storyboard
      */
@@ -189,7 +214,6 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         } catch (JSONException jsonException) {
             Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
         }
-
     }
 
 
@@ -352,6 +376,21 @@ public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivit
         loadData();
         initRecyclerView();
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        try {
+            com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+            storyBoard.setName(storyBoardName.getText().toString());
+            storyBoard.setActions(actions);
+            SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+            editor.putString(ConstantPrefs.STORY_BOARD_JSO.name(), storyBoard.pack().toString());
+            editor.apply();
+        } catch (JSONException jsonException) {
+            Log.w(TAG_DEBUG, "ERRO CONVERTIN JSON: " + jsonException);
+        }
+        super.onPause();
     }
 
     @Override

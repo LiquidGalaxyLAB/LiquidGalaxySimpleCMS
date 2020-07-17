@@ -11,7 +11,7 @@ public enum ConstantPrefs {
     FILE_NAME("fileName"), LATITUDE("latitude"), LONGITUDE("longitude"),
     ALTITUDE("altitude"), DURATION("duration"),
     HEADING("heading"), TILT("tilt"), RANGE("range"),
-    ALTITUDE_MODE("altitudeMode");
+    ALTITUDE_MODE("altitudeMode"), STORY_BOARD_JSO("storyboardjso");
 
     private final String name;
 
