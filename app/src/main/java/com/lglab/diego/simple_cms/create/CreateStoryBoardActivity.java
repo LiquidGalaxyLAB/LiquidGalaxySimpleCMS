@@ -48,7 +48,7 @@ import java.util.Objects;
 /**
  * This activity is in charge of creating the storyboards with the respective different actions
  */
-public class CreateStoryBoardActivity extends GoogleDriveConnectionExportActivity implements
+public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implements
         ActionRecyclerAdapter.OnNoteListener {
 
     private static final String TAG_DEBUG = "CreateStoryBoardActivity";
