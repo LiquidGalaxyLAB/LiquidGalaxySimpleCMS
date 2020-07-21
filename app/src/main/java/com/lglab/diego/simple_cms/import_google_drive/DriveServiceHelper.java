@@ -7,6 +7,7 @@ import androidx.core.util.Pair;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.api.client.http.ByteArrayContent;
+import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
@@ -46,20 +47,21 @@ public class DriveServiceHelper {
 
     /**
      * Create a file in google Drive
+     *
      * @param title The tittle of the new file
      * @return the id of the file
      */
-        public Task<String> createFile(String title) {
+    public Task<String> createFile(String title) {
         return Tasks.call(mExecutor, () -> {
 
 
             FileList result = mDriveService.files().list()
-                    .setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'SimpleCMS'")
+                    .setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS'")
                     .setSpaces("drive")
                     .execute();
             if (result.getFiles().size() > 0) {
                 drive_app_folder = result.getFiles().get(0).getId();
-            }else{
+            } else {
                 createAppFolderID();
             }
 
@@ -68,6 +70,9 @@ public class DriveServiceHelper {
                     .setParents(Collections.singletonList(drive_app_folder))
                     .setMimeType(JSON_MIME_TYPE)
                     .setName(title);
+
+            /*java.io.File filePath = new java.io.File("files/photo.jpg");
+            FileContent mediaContent = new FileContent("image/jpeg", filePath);*/
 
             File googleFile = mDriveService.files().create(metadata).execute();
             if (googleFile == null) {
@@ -91,6 +96,7 @@ public class DriveServiceHelper {
 
     /**
      * Read a file in google drive
+     *
      * @param fileId The file id that is going to be read
      * @return The id and the file in a string
      */
@@ -102,7 +108,7 @@ public class DriveServiceHelper {
 
             // Stream the file contents to a String.
             try (InputStream is = mDriveService.files().get(fileId).executeMediaAsInputStream();
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
                 StringBuilder stringBuilder = new StringBuilder();
                 String line;
 
@@ -136,6 +142,7 @@ public class DriveServiceHelper {
 
     /**
      * Create an app folder
+     *
      * @return The id of the app folder
      */
     private Task<String> createAppFolderID() {
@@ -146,7 +153,7 @@ public class DriveServiceHelper {
             File metadata = new File()
                     .setParents(root)
                     .setMimeType(FOLDER_MIME_TYPE)
-                    .setName("SimpleCMS");
+                    .setName("CMS");
 
             File googleFile = mDriveService.files().create(metadata).execute();
             if (googleFile == null) {
@@ -161,11 +168,12 @@ public class DriveServiceHelper {
 
     /**
      * It search for the app folder
+     *
      * @param onSuccess Runnable
      * @param onFailure Runnable
      */
     public void searchForAppFolderID(Runnable onSuccess, Runnable onFailure) {
-        Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'SimpleCMS'").setSpaces("drive").execute())
+        Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS'").setSpaces("drive").execute())
                 .addOnSuccessListener(fileList -> {
                     List<File> files = fileList.getFiles();
                     if (files.size() > 0) {
@@ -181,20 +189,21 @@ public class DriveServiceHelper {
                                 })
                                 .addOnFailureListener(exception -> {
                                     Log.w(TAG_DEBUG, "Unable to search for appfolder", exception);
-                                    if(onFailure != null)
+                                    if (onFailure != null)
                                         onFailure.run();
                                 });
                     }
                 })
                 .addOnFailureListener(exception -> {
                     Log.w(TAG_DEBUG, "Unable to search for appfolder", exception);
-                    if(onFailure != null)
+                    if (onFailure != null)
                         onFailure.run();
                 });
     }
 
     /**
      * It search all the files inside the app folder
+     *
      * @param onSuccess Runnable
      * @param onFailure Runnable
      */
@@ -202,20 +211,21 @@ public class DriveServiceHelper {
         queryFiles()
                 .addOnSuccessListener(fileList -> {
                     files = new HashMap<>();
-                    for(File file : fileList) {
+                    for (File file : fileList) {
                         files.put(file.getId(), file.getName());
                     }
                     onSuccess.run();
                 })
                 .addOnFailureListener(exception -> {
                     Log.w(TAG_DEBUG, "Unable to search for for files inside appfolder", exception);
-                    if(onFailure != null)
+                    if (onFailure != null)
                         onFailure.run();
                 });
     }
 
     /**
      * Get all the files
+     *
      * @return The list of files
      */
     private Task<List<File>> queryFiles() {
