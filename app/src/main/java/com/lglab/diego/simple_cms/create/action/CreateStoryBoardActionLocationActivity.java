@@ -74,7 +74,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
             buttDelete.setVisibility(View.VISIBLE);
             loadPoiData(poi);
         }else{
-            /*loadData();*/
+            loadData();
         }
 
         buttCancel.setOnClickListener( (view) ->

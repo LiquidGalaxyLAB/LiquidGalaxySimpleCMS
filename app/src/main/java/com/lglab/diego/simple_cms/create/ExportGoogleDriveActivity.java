@@ -1,6 +1,5 @@
 package com.lglab.diego.simple_cms.create;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 

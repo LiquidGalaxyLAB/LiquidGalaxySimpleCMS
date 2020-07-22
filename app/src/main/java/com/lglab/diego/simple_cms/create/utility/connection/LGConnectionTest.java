@@ -50,28 +50,6 @@ public class LGConnectionTest {
         }, 1000);
     }
 
-   /* *//**
-     * Clean the query.text file
-     *//*
-    public static void cleanQuery() {
-        handler.postDelayed(() -> {
-            String cleanTempTxt = "chmod 777 /tmp/query.txt; echo '' > /tmp/query.txt";
-            LGCommand lgCommand = new LGCommand(cleanTempTxt, LGCommand.CRITICAL_MESSAGE, null);
-            sendCommand(lgCommand);
-            } , 5000);
-    }*/
-
-    /**
-     * Clean the kml of the balloon
-     */
-    public static void cleanKMLBalloon() {
-        handler.postDelayed(() -> {
-            String cleanKMLCommand = "chmod 777 /var/www/html/kmls.txt; echo '' > /var/www/html/balloon.kml";
-            LGCommand lgCommand = new LGCommand(cleanKMLCommand, LGCommand.CRITICAL_MESSAGE, null);
-            sendCommand(lgCommand);
-            } , 5000);
-    }
-
     /**
      * Send a command to the liquid galaxy
      * @param lgCommand lg command to be send
