@@ -266,7 +266,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             storyBoard.setName(name);
             storyBoard.setActions(actions);
             JSONObject jsonStoryboard = storyBoard.pack();
-            requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID);
+            requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID, this);
         }catch (JSONException e) {
             Log.w(TAG_DEBUG, "JSON ERROR: " + e.getMessage());
         }

@@ -1,7 +1,9 @@
 package com.lglab.diego.simple_cms.import_google_drive;
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.Task;
@@ -12,7 +14,9 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
+import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +48,7 @@ public class DriveServiceHelper {
 
     private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
     private static final String JSON_MIME_TYPE = "application/json";
+    private static final long MAX_SIZE = 5242880;
 
     public DriveServiceHelper(Drive driveService) {
         mDriveService = driveService;
@@ -130,7 +135,7 @@ public class DriveServiceHelper {
      * Updates the file identified by {@code fileId} with the given {@code name} and {@code
      * content}.
      */
-    public Task<Void> saveFile(String fileId, String name, String content) {
+    public Task<Void> saveFile(String fileId, String name, String content, AppCompatActivity activity) {
         return Tasks.call(mExecutor, () -> {
             // Create a File containing any metadata changes.
             File metadata = new File().setName(name);
@@ -138,8 +143,15 @@ public class DriveServiceHelper {
            // Convert content to an AbstractInputStreamContent instance.
             ByteArrayContent contentStream = ByteArrayContent.fromString("application/json", content);
 
-            // Update the metadata and contents.
-            mDriveService.files().update(fileId, metadata, contentStream).execute();
+            long length = contentStream.getLength();
+
+            if(length < MAX_SIZE){
+                // Update the metadata and contents.
+                mDriveService.files().update(fileId, metadata, contentStream).execute();
+                Log.w(TAG_DEBUG, "SIZE: " +  length);
+            }else{
+                CustomDialogUtility.showDialog(activity, activity.getResources().getString(R.string.message_file_less_5MB));
+            }
             return null;
         });
     }

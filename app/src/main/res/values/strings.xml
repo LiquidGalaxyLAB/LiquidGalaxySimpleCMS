@@ -149,11 +149,13 @@
     <string name="alert_message_delete_action_location">The actions related to the location will be deleted</string>
     <string name="alert_message_delete_storyboard">The storyboard will be deleted</string>
     <string name="alert_permission_denied_image">Permission denied, you cannot select an image</string>
+    <string name="alert_permission_denied_save">Permission denied, you cannot select a save story board</string>
     <string name="alert_permission_denied_test_image">Permission denied, you cannot test the balloon in liquid galaxy</string>
     <string name="alert_permission_denied_video">Permission denied, you cannot select an video</string>
     <string name="alert_save_story_board">The storyboard has been successfully saved</string>
     <string name="alert_update_story_board">The storyboard has been updated</string>
     <string name="icon_action">Icon Action</string>
+    <string name="message_file_less_5MB">The storyboard need to be less of 5MB</string>
 
     //Google Drive
     <string name="message_google_drive_success_log_in">Searching files from Google Drive</string>

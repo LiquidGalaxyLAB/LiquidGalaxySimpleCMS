@@ -1,9 +1,11 @@
 package com.lglab.diego.simple_cms.create;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +34,7 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
     private String jsonToUpload;
     private String jsonNameToUpload;
     private String fileId;
+    private AppCompatActivity activity;
 
 
     /**
@@ -40,10 +43,11 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
      * @param name the name of the storyboard
      * @param fileId the id of the storyboard
      */
-    public void requestSignIn(String storyBoardJson, String name, String fileId) {
+    public void requestSignIn(String storyBoardJson, String name, String fileId, AppCompatActivity activity) {
         this.jsonToUpload = storyBoardJson;
         this.jsonNameToUpload = name;
         this.fileId = fileId;
+        this.activity = activity;
         if (isSignedIn()) {
             setFileGoogleDrive();
             return;
@@ -145,7 +149,7 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
 
         if(fileId == null) {
             GoogleDriveManager.DriveServiceHelper.createFile(jsonNameToUpload)
-                    .addOnSuccessListener((result) -> GoogleDriveManager.DriveServiceHelper.saveFile(result, jsonNameToUpload, jsonToUpload)
+                    .addOnSuccessListener((result) -> GoogleDriveManager.DriveServiceHelper.saveFile(result, jsonNameToUpload, jsonToUpload, activity)
                             .addOnFailureListener(exception -> {
                                 CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                         getResources().getString(R.string.message_failed_upload));
@@ -165,7 +169,7 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
                         this.jsonNameToUpload = null;
                     });
         }else{
-            GoogleDriveManager.DriveServiceHelper.saveFile(fileId, jsonNameToUpload, jsonToUpload)
+            GoogleDriveManager.DriveServiceHelper.saveFile(fileId, jsonNameToUpload, jsonToUpload, activity)
                     .addOnSuccessListener((result) -> {
                         CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                 getResources().getString(R.string.message_success_upload));
