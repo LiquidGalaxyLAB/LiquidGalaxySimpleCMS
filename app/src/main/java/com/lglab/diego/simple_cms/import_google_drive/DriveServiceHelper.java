@@ -67,6 +67,13 @@ public class DriveServiceHelper {
                 createAppFolderID();
             }
 
+            /*try{
+                Thread.sleep(1000);
+            }catch (Exception e){
+                Log.w(TAG_DEBUG, "ERROR");
+            }*/
+
+
             File metadata = new File()
                     .setParents(Collections.singletonList(drive_app_folder))
                     .setMimeType(JSON_MIME_TYPE)
@@ -77,7 +84,7 @@ public class DriveServiceHelper {
                 throw new IOException("Null result when requesting file creation.");
             }
 
-            Permission userPermission = new Permission()
+            /*Permission userPermission = new Permission()
                     .setType("user")
                     .setRole("reader")
                     .setEmailAddress("liquidgalaxylab@gmail.com");
@@ -85,7 +92,7 @@ public class DriveServiceHelper {
             Permission permission = mDriveService.permissions().create(googleFile.getId(), userPermission).setFields("id").execute();
             if (permission == null) {
                 throw new IOException("Null result when requesting file creation.");
-            }
+            }*/
 
             Log.w(TAG_DEBUG, "FILE CREATED ID:" + googleFile.getId());
             return googleFile.getId();

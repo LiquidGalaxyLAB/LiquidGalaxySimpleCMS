@@ -180,4 +180,31 @@ public class ActionController {
             lgConnectionManager.addCommandToLG(lgCommand);
         }, duration);
     }
+
+    /**
+     * It cleans the balloon.kml file
+     */
+    public void cleanBalloonKML(int duration) {
+        handler.postDelayed( () -> {
+            LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCleanBalloonKML(),
+                    LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            });
+            LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+            lgConnectionManager.startConnection();
+            lgConnectionManager.addCommandToLG(lgCommand);
+        }, duration);
+    }
+    /**
+     * It cleans the shape.kml file
+     */
+    public void cleanShapeKML(int duration) {
+        handler.postDelayed( () -> {
+            LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCleanShapeKML(),
+                    LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            });
+            LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+            lgConnectionManager.startConnection();
+            lgConnectionManager.addCommandToLG(lgCommand);
+        }, duration);
+    }
 }

@@ -17,6 +17,8 @@ import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 public class LogIn extends TobBarActivity {
 
+    public static final String TAG_DEBUG = "LOGIN";
+
     private Button buttAccount, buttLogIn, buttChangePassword, buttUpdatePassword;
     private TextView adminPassword, currentAdminPassword, newAdminPassword, confirmAdminPassword;
     private EditText textAdminPassword, textCurrentAdminPassword, textNewAdminPassword, textConfirmAdminPassword;
@@ -48,12 +50,9 @@ public class LogIn extends TobBarActivity {
         imageView3 = findViewById(R.id.imageView3);
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
-/*        if(sharedPreferences.getBoolean(ConstantsLogInLogOut.IS_LOGIN.name(), false)){
+        if(sharedPreferences.getBoolean(ConstantsLogInLogOut.IS_LOGIN.name(), false)){
             setLogIN();
-        }*/
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(ConstantsLogInLogOut.IS_LOGIN.name(), false);
-        editor.apply();
+        }
 
         buttLogIn.setOnClickListener((view) -> logIn());
         buttChangePassword.setOnClickListener((view -> changePassword()));

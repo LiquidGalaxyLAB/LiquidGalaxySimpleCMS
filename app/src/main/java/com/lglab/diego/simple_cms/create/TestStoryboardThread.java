@@ -74,5 +74,7 @@ public class TestStoryboardThread implements Runnable {
                 Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
             }
         }
+        actionController.cleanBalloonKML(500);
+        actionController.cleanShapeKML(500);
     }
 }

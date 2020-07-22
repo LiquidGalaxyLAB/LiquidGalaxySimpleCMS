@@ -194,4 +194,25 @@ public class ActionBuildCommandUtility {
         Log.w(TAG_DEBUG, "command: " + command);
         return command;
     }
+
+    /**
+     * @return Command to clean the balloon.kml
+     */
+    static String buildCleanBalloonKML() {
+        String command = "echo '' > " +
+                BASE_PATH +
+                "balloon.kml";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
+    }
+    /**
+     * @return Command to clean the shape.kml
+     */
+    static String buildCleanShapeKML() {
+        String command = "echo '' > " +
+                BASE_PATH +
+                "shape.kml";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
+    }
 }
