@@ -284,16 +284,24 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             try {
                 AppDatabase db = AppDatabase.getAppDatabase(this);
                 if (currentStoryBoardId != Long.MIN_VALUE) {
-                    db.storyBoardDao().updateStoryBoardWithActions(currentStoryBoardId, getActionsDB());
-                    CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
-                            getResources().getString(R.string.alert_update_story_board));
+                    try{
+                        db.storyBoardDao().updateStoryBoardWithActions(currentStoryBoardId, getActionsDB());
+                        CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                                getResources().getString(R.string.alert_update_story_board));
+                    }catch (Exception e){
+                        Log.w(TAG_DEBUG, "Create a new Storyboard");
+                        saveStoryBoardRoom(name, db);
+                        CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                                getResources().getString(R.string.alert_save_story_board));
+                    }
+
                 } else {
                     saveStoryBoardRoom(name, db);
                     CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                             getResources().getString(R.string.alert_save_story_board));
                 }
             } catch (Exception e) {
-                Log.w(TAG_DEBUG, "ERROR DB: " + e.getMessage());
+                Log.w(TAG_DEBUG, "ERROR DB SAVE: " + e.getMessage());
             }
         }
     }
