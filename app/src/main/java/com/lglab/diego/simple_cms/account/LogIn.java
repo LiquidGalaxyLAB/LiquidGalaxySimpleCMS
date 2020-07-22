@@ -19,7 +19,7 @@ public class LogIn extends TobBarActivity {
 
     public static final String TAG_DEBUG = "LOGIN";
 
-    private Button buttAccount, buttLogIn, buttChangePassword, buttUpdatePassword;
+    private Button buttAccount, buttLogIn, buttChangePassword, buttUpdatePassword, buttLogOut;
     private TextView adminPassword, currentAdminPassword, newAdminPassword, confirmAdminPassword;
     private EditText textAdminPassword, textCurrentAdminPassword, textNewAdminPassword, textConfirmAdminPassword;
     private ImageView imageLogo, imageView3;
@@ -45,6 +45,7 @@ public class LogIn extends TobBarActivity {
         buttLogIn = findViewById(R.id.butt_log_in);
         buttChangePassword = findViewById(R.id.butt_change_password);
         buttUpdatePassword = findViewById(R.id.butt_update_password);
+        buttLogOut = findViewById(R.id.butt_logout);
 
         imageLogo = findViewById(R.id.image_logo);
         imageView3 = findViewById(R.id.imageView3);
@@ -57,10 +58,12 @@ public class LogIn extends TobBarActivity {
         buttLogIn.setOnClickListener((view) -> logIn());
         buttChangePassword.setOnClickListener((view -> changePassword()));
         buttUpdatePassword.setOnClickListener((view) -> updatePassword());
+        buttLogOut.setOnClickListener((view) -> logOut());
 
 
         changeButtonClickableBackgroundColor();
     }
+
 
     /**
      * Log in in to the application
@@ -99,6 +102,7 @@ public class LogIn extends TobBarActivity {
         buttUpdatePassword.setVisibility(View.INVISIBLE);
         imageView3.setVisibility(View.INVISIBLE);
         imageLogo.setVisibility(View.VISIBLE);
+        buttLogOut.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -164,6 +168,29 @@ public class LogIn extends TobBarActivity {
         confirmAdminPassword.setVisibility(View.INVISIBLE);
         textConfirmAdminPassword.setVisibility(View.INVISIBLE);
         buttUpdatePassword.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Log out of the application
+     */
+    private void logOut() {
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putBoolean(ConstantsLogInLogOut.IS_LOGIN.name(), false);
+        editor.apply();
+        setLogOut();
+    }
+
+    /**
+     * Set the UI log out
+     */
+    private void setLogOut() {
+        adminPassword.setVisibility(View.VISIBLE);
+        textAdminPassword.setVisibility(View.VISIBLE);
+        buttLogIn.setVisibility(View.VISIBLE);
+        buttChangePassword.setVisibility(View.VISIBLE);
+        imageView3.setVisibility(View.VISIBLE);
+        imageLogo.setVisibility(View.INVISIBLE);
+        buttLogOut.setVisibility(View.INVISIBLE);
     }
 
 
