@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -26,7 +25,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.account.LogIn;
 import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
 import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;

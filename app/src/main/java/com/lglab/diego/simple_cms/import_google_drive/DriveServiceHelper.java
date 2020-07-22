@@ -1,6 +1,5 @@
 package com.lglab.diego.simple_cms.import_google_drive;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,17 +8,12 @@ import androidx.core.util.Pair;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.api.client.http.ByteArrayContent;
-import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +22,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -74,21 +67,17 @@ public class DriveServiceHelper {
                 createAppFolderID();
             }
 
-
             File metadata = new File()
                     .setParents(Collections.singletonList(drive_app_folder))
                     .setMimeType(JSON_MIME_TYPE)
                     .setName(title);
 
-            /*java.io.File filePath = new java.io.File("files/photo.jpg");
-            FileContent mediaContent = new FileContent("image/jpeg", filePath);*/
-
             File googleFile = mDriveService.files().create(metadata).execute();
             if (googleFile == null) {
                 throw new IOException("Null result when requesting file creation.");
             }
-            //TODO
-           /* Permission userPermission = new Permission()
+
+            Permission userPermission = new Permission()
                     .setType("user")
                     .setRole("reader")
                     .setEmailAddress("liquidgalaxylab@gmail.com");
@@ -96,7 +85,7 @@ public class DriveServiceHelper {
             Permission permission = mDriveService.permissions().create(googleFile.getId(), userPermission).setFields("id").execute();
             if (permission == null) {
                 throw new IOException("Null result when requesting file creation.");
-            }*/
+            }
 
             Log.w(TAG_DEBUG, "FILE CREATED ID:" + googleFile.getId());
             return googleFile.getId();
@@ -188,8 +177,8 @@ public class DriveServiceHelper {
      * @param onSuccess Runnable
      * @param onFailure Runnable
      */
-    public void searchForAppFolderID(Runnable onSuccess, Runnable onFailure) {
-        Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS'").setSpaces("drive").execute())
+     public void searchForAppFolderID(Runnable onSuccess, Runnable onFailure) {
+        Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS' and parents in 'root' ").setSpaces("drive").execute())
                 .addOnSuccessListener(fileList -> {
                     List<File> files = fileList.getFiles();
                     if (files.size() > 0) {
