@@ -95,11 +95,14 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         String name = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_NAME.name());
         if (currentStoryBoardId != Long.MIN_VALUE) chargeStoryBoard(name);
 
-        currentStoryBoardGoogleDriveID = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name());
-        String storyBoardJson = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON.name());
-        if (storyBoardJson != null) chargeStoryBoardJson(storyBoardJson);
+        String id = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name());
+        if(id != null){
+            SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+            String storyBoardJson = sharedPreferences.getString(ConstantPrefs.STORY_BOARD_JSON.name(), "");
+            chargeStoryBoardJson(storyBoardJson);
+        }
 
-        if (currentStoryBoardId == Long.MIN_VALUE && storyBoardJson == null) loadDataJson();
+        if (currentStoryBoardId == Long.MIN_VALUE && id == null) loadDataJson();
 
         buttLocation.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);

@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.my_storyboards.StoryBoardConstant;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
+import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -282,9 +285,11 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
         StoryBoard selected = storyBoards.get(position);
         if(isSignedIn()){
             GoogleDriveManager.DriveServiceHelper.readFile(selected.getStoryBoardFileId()).addOnSuccessListener((result) -> {
+                SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+                editor.putString(ConstantPrefs.STORY_BOARD_JSON.name(), result.second);
+                editor.apply();
                 Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
                 intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name(), selected.getStoryBoardFileId());
-                intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON.name(), result.second);
                 startActivity(intent);
             });
         }else{
