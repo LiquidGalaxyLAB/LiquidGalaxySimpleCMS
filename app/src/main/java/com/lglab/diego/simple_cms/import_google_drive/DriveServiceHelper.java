@@ -41,6 +41,7 @@ public class DriveServiceHelper {
 
     private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
     private static final String JSON_MIME_TYPE = "application/json";
+    private static final String FOLDER_ID = "1vB0CXQiLhcSs6Ri0s9DliB7ifrp7OV_w";
     private static final long MAX_SIZE = 5242880;
 
     public DriveServiceHelper(Drive driveService) {
@@ -57,6 +58,7 @@ public class DriveServiceHelper {
         return Tasks.call(mExecutor, () -> {
 
 
+            //LOCALLY CREATE THE FOLDER
             FileList result = mDriveService.files().list()
                     .setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS'")
                     .setSpaces("drive")
@@ -81,18 +83,32 @@ public class DriveServiceHelper {
 
             File googleFile = mDriveService.files().create(metadata).execute();
             if (googleFile == null) {
+                Log.w(TAG_DEBUG, "Null result when requesting file creation.");
                 throw new IOException("Null result when requesting file creation.");
             }
 
-            /*Permission userPermission = new Permission()
+            //FOLDER IN LIQUID GALAXY
+            Permission userPermission = new Permission()
                     .setType("user")
                     .setRole("reader")
+                    .setEmailAddress("ateneariveros.dog@gmail.com");
+/*
                     .setEmailAddress("liquidgalaxylab@gmail.com");
+*/
+
+
+            Drive.Permissions.List list = mDriveService.permissions().list(FOLDER_ID);
+            Log.w(TAG_DEBUG, "SIZE: " + list.size());
+            Log.w(TAG_DEBUG, "ID: " + list.getFileId());
 
             Permission permission = mDriveService.permissions().create(googleFile.getId(), userPermission).setFields("id").execute();
+
             if (permission == null) {
+                Log.w(TAG_DEBUG, "Null result when requesting file creation. Permission");
                 throw new IOException("Null result when requesting file creation.");
-            }*/
+            }else{
+                Log.w(TAG_DEBUG, permission.getId());
+            }
 
             Log.w(TAG_DEBUG, "FILE CREATED ID:" + googleFile.getId());
             return googleFile.getId();
@@ -247,7 +263,7 @@ public class DriveServiceHelper {
             do {
                 FileList result = mDriveService.files()
                         .list()
-                        .setQ("mimeType = 'application/json' and parents in '" + drive_app_folder + "' ")
+                        .setQ("mimeType = 'application/json' and parents in '" + drive_app_folder + "' and trashed=false ")
                         .setSpaces("drive")
                         .setFields("nextPageToken, files(id, name)")
                         .setPageToken(pageToken)
