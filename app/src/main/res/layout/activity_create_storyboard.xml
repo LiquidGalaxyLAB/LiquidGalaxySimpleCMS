@@ -32,7 +32,7 @@
         android:scrollbars="horizontal"
         android:textColor="@color/textColorClick"
         app:layout_constraintBottom_toBottomOf="@+id/file_name"
-        app:layout_constraintEnd_toStartOf="@+id/image_available" />
+        app:layout_constraintEnd_toStartOf="@+id/admin_password" />
 
     <Button
         android:id="@+id/butt_test"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/my_recycler_view" />
 
     <TextView
-        android:id="@+id/image_available"
+        android:id="@+id/admin_password"
         android:layout_width="635dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="69dp"
@@ -77,13 +77,13 @@
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
-        app:layout_constraintBottom_toTopOf="@+id/story_board_name"
-        app:layout_constraintEnd_toEndOf="@+id/image_available"
+        app:layout_constraintBottom_toTopOf="@+id/text_admin_password"
+        app:layout_constraintEnd_toEndOf="@+id/admin_password"
         app:layout_constraintTop_toBottomOf="@+id/top_bar" />
 
 
     <EditText
-        android:id="@+id/story_board_name"
+        android:id="@+id/text_admin_password"
         android:layout_width="309dp"
         android:layout_height="28dp"
         android:layout_marginEnd="176dp"
@@ -116,7 +116,7 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/story_board_name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/text_admin_password"
         app:layout_constraintEnd_toStartOf="@+id/butt_save_locally"
         app:layout_constraintHorizontal_bias="0.768"
         app:layout_constraintStart_toEndOf="@+id/butt_location" />
@@ -137,7 +137,7 @@
         app:layout_constraintBottom_toTopOf="@+id/butt_location"
         app:layout_constraintEnd_toStartOf="@+id/butt_save_on_google_drive"
         app:layout_constraintStart_toEndOf="@+id/butt_delete"
-        app:layout_constraintTop_toBottomOf="@+id/story_board_name" />
+        app:layout_constraintTop_toBottomOf="@+id/text_admin_password" />
 
     <Button
         android:id="@+id/butt_save_on_google_drive"

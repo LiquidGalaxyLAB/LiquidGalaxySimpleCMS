@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".create.CreateStoryBoardActionBalloonActivity">
+    tools:context=".create.action.CreateStoryBoardActionBalloonActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/image_available"
+            android:id="@+id/admin_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="300dp"
@@ -94,10 +94,47 @@
             app:layout_constraintEnd_toStartOf="@+id/butt_add_image" />
 
         <TextView
+            android:id="@+id/text_view_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="65dp"
+            android:layout_marginBottom="355dp"
+            android:text="@string/duration"
+            android:fontFamily="@font/roboto"
+            android:textAlignment="center"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/hint_text_font_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/duration" />
+
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="330dp"
+            android:layout_marginBottom="360dp"
+            android:autofillHints="@string/example_latitude_longitude_altitude"
+            android:background="@drawable/rectangle_insert_url"
+            android:fontFamily="@font/roboto_thin"
+            android:hint="@string/duration_example"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="30"
+            android:minWidth="150dp"
+            android:singleLine="true"
+            android:text="@string/action_default_time_balloon"
+            android:textAlignment="center"
+            android:textColor="@color/textColorClick"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/primary_text_font_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
             android:id="@+id/txt_video_url"
             android:layout_width="216dp"
             android:layout_height="47dp"
-            android:layout_marginBottom="130dp"
+            android:layout_marginBottom="110dp"
             android:fontFamily="@font/roboto"
             android:minWidth="635dp"
             android:text="@string/video_url"
@@ -112,7 +149,7 @@
             android:layout_width="460dp"
             android:layout_height="54dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="60dp"
             android:autofillHints="@string/example_video_url"
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto_thin"

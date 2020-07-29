@@ -1,5 +1,6 @@
 package com.lglab.diego.simple_cms.create.utility.model;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.lglab.diego.simple_cms.create.utility.IJsonPacker;
@@ -123,6 +124,12 @@ public class StoryBoard implements IJsonPacker {
         return obj;
     }
 
+    /**
+     * unpack a normal json without images
+     * @param obj  json object
+     * @return StoryBoard
+     * @throws JSONException error converting json to object
+     */
     @Override
     public StoryBoard unpack(JSONObject obj) throws JSONException {
 
@@ -156,6 +163,42 @@ public class StoryBoard implements IJsonPacker {
         actions = arrayActions;
 
         return this;
+    }
+
+    /**
+     * Unpack a json that comes form google drive
+     * @param obj  json object
+     * @throws JSONException error converting json to object
+     */
+    public void unpackStoryBoard(JSONObject obj, Context context) throws JSONException {
+
+        storyBoardId = obj.getLong("storyboard_id");
+        name = obj.getString("name");
+
+        JSONArray jsonActions = obj.getJSONArray("jsonActions");
+        List<Action> arrayActions = new ArrayList<>();
+        JSONObject actionJson;
+        int type;
+        for (int i = 0; i < jsonActions.length(); i++) {
+            actionJson = jsonActions.getJSONObject(i);
+            type = actionJson.getInt("type");
+            if (type == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
+                POI poi = new POI();
+                arrayActions.add(poi.unpack(actionJson));
+            } else if (type == ActionIdentifier.MOVEMENT_ACTIVITY.getId()) {
+                Movement movement = new Movement();
+                arrayActions.add(movement.unpack(actionJson));
+            } else if (type == ActionIdentifier.BALLOON_ACTIVITY.getId()) {
+                Balloon balloon = new Balloon();
+                arrayActions.add(balloon.unpackBalloon(actionJson, context));
+            } else if (type == ActionIdentifier.SHAPES_ACTIVITY.getId()) {
+                Shape shape = new Shape();
+                arrayActions.add(shape.unpack(actionJson));
+            } else {
+                Log.w(TAG_DEBUG, "ERROR TYPE");
+            }
+        }
+        actions = arrayActions;
     }
 
 }

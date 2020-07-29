@@ -33,6 +33,10 @@ public class POICamera {
         return tilt;
     }
 
+    public void setTilt(double tilt) {
+        this.tilt = tilt;
+    }
+
     public double getRange() {
         return range;
     }

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Point;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

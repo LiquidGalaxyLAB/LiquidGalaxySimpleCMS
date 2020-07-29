@@ -15,7 +15,6 @@ import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -14,6 +14,9 @@ import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 
 import java.util.List;
 
+/**
+ * This is class is in charge of the recycler view with the story board imported from google drive
+ */
 public class GoogleDriveStoryBoardRecyclerAdapter extends RecyclerView.Adapter<GoogleDriveStoryBoardRecyclerAdapter.ViewHolder> {
 
     private static final String TAG_DEBUG = "GoogleDriveStoryBoardRecyclerAdapter";

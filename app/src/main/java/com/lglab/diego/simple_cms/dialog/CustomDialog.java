@@ -27,7 +27,7 @@ public class CustomDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.dialog_fragment, null);
 
         v.getBackground().setAlpha(220);
@@ -42,7 +42,7 @@ public class CustomDialog extends DialogFragment {
         Button ok = v.findViewById(R.id.ok);
         ok.setOnClickListener(view -> dismiss());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setView(v);
         return builder.create();
     }
