@@ -120,7 +120,7 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                .requestScopes(new Scope(DriveScopes.DRIVE))
                 //The scope should be changed in order to see other files... https://developers.google.com/drive/api/v3/about-auth https://www.googleapis.com/auth/drive
                 .build();
 

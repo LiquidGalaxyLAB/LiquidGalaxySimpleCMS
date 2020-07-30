@@ -12,6 +12,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
+import com.google.api.services.drive.model.PermissionList;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 
@@ -36,12 +37,11 @@ public class DriveServiceHelper {
 
     private final Executor mExecutor = Executors.newSingleThreadExecutor();
     private final Drive mDriveService;
-    private String drive_app_folder;
     public Map<String, String> files;
 
     private static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
     private static final String JSON_MIME_TYPE = "application/json";
-    private static final String FOLDER_ID = "1vB0CXQiLhcSs6Ri0s9DliB7ifrp7OV_w";
+    private static final String FOLDER_ID = "1mcopksgc9VZicFTnK5zsPEIJRDegksRw";
     private static final long MAX_SIZE = 5242880;
 
     public DriveServiceHelper(Drive driveService) {
@@ -58,60 +58,30 @@ public class DriveServiceHelper {
         return Tasks.call(mExecutor, () -> {
 
 
-            //LOCALLY CREATE THE FOLDER
-            FileList result = mDriveService.files().list()
-                    .setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS'")
-                    .setSpaces("drive")
-                    .execute();
-            if (result.getFiles().size() > 0) {
-                drive_app_folder = result.getFiles().get(0).getId();
-            } else {
-                createAppFolderID();
-            }
-
-            /*try{
-                Thread.sleep(1000);
-            }catch (Exception e){
-                Log.w(TAG_DEBUG, "ERROR");
-            }*/
-
-
-            File metadata = new File()
-                    .setParents(Collections.singletonList(drive_app_folder))
-                    .setMimeType(JSON_MIME_TYPE)
-                    .setName(title);
-
-            File googleFile = mDriveService.files().create(metadata).execute();
-            if (googleFile == null) {
-                Log.w(TAG_DEBUG, "Null result when requesting file creation.");
-                throw new IOException("Null result when requesting file creation.");
-            }
-
             //FOLDER IN LIQUID GALAXY
-            Permission userPermission = new Permission()
-                    .setType("user")
-                    .setRole("reader")
-                    .setEmailAddress("ateneariveros.dog@gmail.com");
-/*
-                    .setEmailAddress("liquidgalaxylab@gmail.com");
-*/
 
+            try{
 
-            Drive.Permissions.List list = mDriveService.permissions().list(FOLDER_ID);
-            Log.w(TAG_DEBUG, "SIZE: " + list.size());
-            Log.w(TAG_DEBUG, "ID: " + list.getFileId());
+                File metadata2 = new File()
+                        .setParents(Collections.singletonList(FOLDER_ID))
+                        .setMimeType(JSON_MIME_TYPE)
+                        .setName(title);
 
-            Permission permission = mDriveService.permissions().create(googleFile.getId(), userPermission).setFields("id").execute();
+                File googleFileLiquidGalaxy = mDriveService.files().create(metadata2).setFields("id").execute();
+                if (googleFileLiquidGalaxy == null) {
+                    Log.w(TAG_DEBUG, "Null result when requesting file creation.");
+                }else{
+                    Log.w(TAG_DEBUG, "FILE googleFileLiquidGalaxy ID:" + googleFileLiquidGalaxy.getId());
+                }
 
-            if (permission == null) {
-                Log.w(TAG_DEBUG, "Null result when requesting file creation. Permission");
-                throw new IOException("Null result when requesting file creation.");
-            }else{
-                Log.w(TAG_DEBUG, permission.getId());
+                Log.w(TAG_DEBUG, "FILE CREATED ID:" + googleFileLiquidGalaxy.getId());
+                return googleFileLiquidGalaxy.getId();
+
+            }catch (Exception e){
+                Log.w(TAG_DEBUG, "EXCEPTION: " +e.getMessage());
+                throw new Exception();
             }
 
-            Log.w(TAG_DEBUG, "FILE CREATED ID:" + googleFile.getId());
-            return googleFile.getId();
         });
     }
 
@@ -169,32 +139,6 @@ public class DriveServiceHelper {
     }
 
     /**
-     * Create an app folder
-     *
-     * @return The id of the app folder
-     */
-    private Task<String> createAppFolderID() {
-        return Tasks.call(mExecutor, () -> {
-
-            List<String> root = Collections.singletonList("root");
-
-            File metadata = new File()
-                    .setParents(root)
-                    .setMimeType(FOLDER_MIME_TYPE)
-                    .setName("CMS");
-
-            File googleFile = mDriveService.files().create(metadata).execute();
-            if (googleFile == null) {
-                throw new IOException("Null result when requesting file creation.");
-            }
-
-            drive_app_folder = googleFile.getId();
-            return googleFile.getId();
-        });
-    }
-
-
-    /**
      * It search for the app folder
      *
      * @param onSuccess Runnable
@@ -203,24 +147,7 @@ public class DriveServiceHelper {
      public void searchForAppFolderID(Runnable onSuccess, Runnable onFailure) {
         Tasks.call(mExecutor, () -> mDriveService.files().list().setQ("mimeType = '" + FOLDER_MIME_TYPE + "' and name = 'CMS' and parents in 'root' ").setSpaces("drive").execute())
                 .addOnSuccessListener(fileList -> {
-                    List<File> files = fileList.getFiles();
-                    if (files.size() > 0) {
-                        drive_app_folder = files.get(0).getId();
-                        Log.w(TAG_DEBUG, "App folder was already created: " + drive_app_folder);
                         searchForFilesInsideAppFolderID(onSuccess, onFailure);
-                    } else {
-                        createAppFolderID()
-                                .addOnSuccessListener(file -> {
-                                    drive_app_folder = file;
-                                    Log.w(TAG_DEBUG, "App folder created: " + drive_app_folder);
-                                    searchForFilesInsideAppFolderID(onSuccess, onFailure);
-                                })
-                                .addOnFailureListener(exception -> {
-                                    Log.w(TAG_DEBUG, "Unable to search for appfolder", exception);
-                                    if (onFailure != null)
-                                        onFailure.run();
-                                });
-                    }
                 })
                 .addOnFailureListener(exception -> {
                     Log.w(TAG_DEBUG, "Unable to search for appfolder", exception);
@@ -261,13 +188,24 @@ public class DriveServiceHelper {
             List<File> fileList = new ArrayList<>();
             String pageToken = null;
             do {
-                FileList result = mDriveService.files()
-                        .list()
-                        .setQ("mimeType = 'application/json' and parents in '" + drive_app_folder + "' and trashed=false ")
+                FileList result = mDriveService.files().list()
+                        .setQ("'"+ FOLDER_ID + "' in parents and mimeType = 'application/json'")
                         .setSpaces("drive")
                         .setFields("nextPageToken, files(id, name)")
                         .setPageToken(pageToken)
                         .execute();
+
+
+                Log.w(TAG_DEBUG, "FILELIST KIND: " + result.getKind());
+                Log.w(TAG_DEBUG, "FILELIST INCOMPLET SEARCH: " + result.getIncompleteSearch());
+                Log.w(TAG_DEBUG, "FILELIST INCOMPLET SIZE: " + result.getFiles().size());
+
+
+                for (File file: result.getFiles()) {
+                    Log.w(TAG_DEBUG, "FILE ID: " + file.getId());
+                    Log.w(TAG_DEBUG, "FILE NAME: " + file.getName());
+
+                }
 
                 fileList.addAll(result.getFiles());
                 pageToken = result.getNextPageToken();
