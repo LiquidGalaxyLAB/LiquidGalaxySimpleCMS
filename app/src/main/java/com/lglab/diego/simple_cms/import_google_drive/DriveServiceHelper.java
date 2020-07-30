@@ -57,9 +57,7 @@ public class DriveServiceHelper {
     public Task<String> createFile(String title) {
         return Tasks.call(mExecutor, () -> {
 
-
             //FOLDER IN LIQUID GALAXY
-
             try{
 
                 File metadata2 = new File()
