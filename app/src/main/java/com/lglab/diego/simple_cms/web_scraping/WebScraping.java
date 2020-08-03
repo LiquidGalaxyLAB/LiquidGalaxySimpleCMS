@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 import com.lglab.diego.simple_cms.web_scraping.data.InfoScrapingList;
@@ -92,6 +93,7 @@ public class WebScraping extends TobBarActivity implements
             try {
                 getInfoTechConferencesSpain();
             }catch (IOException e){
+                CustomDialogUtility.showDialog(this, getResources().getString(R.string.message_error_connection));
                 Log.w(TAG_DEBUG, "WEB SCRAPPING EXCEPTION: " + e.getMessage());
             }
             runOnUiThread(this::rePaintRecyclerView);

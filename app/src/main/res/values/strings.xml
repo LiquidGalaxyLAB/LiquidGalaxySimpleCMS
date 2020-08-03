@@ -157,6 +157,7 @@
     <string name="alert_update_story_board">The storyboard has been updated</string>
     <string name="icon_action">Icon Action</string>
     <string name="message_file_less_5MB">The storyboard need to be less of 5MB</string>
+    <string name="message_error_connection">Please, check your internet connection</string>
 
     //Google Drive
     <string name="message_google_drive_success_log_in">Searching files from Google Drive</string>
