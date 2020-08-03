@@ -20,6 +20,7 @@ import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.import_google_drive.ImportGoogleDriveActivity;
 import com.lglab.diego.simple_cms.my_storyboards.MyStoryBoardActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
+import com.lglab.diego.simple_cms.web_scraping.WebScraping;
 
 
 /**
@@ -76,6 +77,15 @@ public class TobBarActivity extends AppCompatActivity {
     }
 
     /**
+     * Pass form the actual activity to the activity Scraping
+     * @param view The view which is call.
+     */
+    public void buttScraping(View view) {
+        Intent intent = new Intent(getApplicationContext(), WebScraping.class);
+        startActivity(intent);
+    }
+
+    /**
      * Pass form the actual activity to the activity LogIn
      * @param view The view which is call.
      */
@@ -83,7 +93,6 @@ public class TobBarActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LogIn.class);
         startActivity(intent);
     }
-
 
     /**
      * Change the background color and the option clickable to false of the button_connect

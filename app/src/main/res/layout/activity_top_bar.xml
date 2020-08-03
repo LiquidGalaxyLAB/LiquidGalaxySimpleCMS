@@ -68,8 +68,24 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintBaseline_toBaselineOf="@+id/butt_import_google_drive"
-        app:layout_constraintEnd_toStartOf="@+id/butt_account"
+        app:layout_constraintEnd_toStartOf="@+id/butt_scraping"
         app:layout_constraintStart_toEndOf="@+id/butt_import_google_drive"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_scraping"
+        android:layout_width="0dp"
+        android:layout_height="86dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/roboto"
+        android:onClick="buttScraping"
+        android:text="@string/menu_scraping"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_connect_menu"
+        app:layout_constraintEnd_toStartOf="@+id/butt_account"
+        app:layout_constraintStart_toEndOf="@+id/butt_connect_menu"
         tools:ignore="ButtonStyle" />
 
     <Button
@@ -83,9 +99,9 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/butt_connect_menu"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_scraping"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/butt_connect_menu"
+        app:layout_constraintStart_toEndOf="@+id/butt_scraping"
         tools:ignore="ButtonStyle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
