@@ -21,11 +21,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
-        android:layout_width="782dp"
-        android:layout_height="478dp"
+        android:layout_width="943dp"
+        android:layout_height="462dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="236dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="168dp"
         android:background="@color/background"
         android:minHeight="578dp"
         android:padding="20dp"

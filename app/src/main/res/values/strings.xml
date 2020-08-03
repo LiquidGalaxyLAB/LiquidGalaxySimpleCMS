@@ -53,6 +53,7 @@
     <string name="menu_my_storyboards">My Storyboards</string>
     <string name="menu_create">Create</string>
     <string name="menu_connect">Connect</string>
+    <string name="menu_scraping">Scraping </string>
     <string name="menu_account">Account</string>
 
     <string name="account_username">Username</string>
