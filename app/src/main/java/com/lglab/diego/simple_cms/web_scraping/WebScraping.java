@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,7 @@ public class WebScraping extends TobBarActivity implements
     private RecyclerView mRecyclerView;
     List<InfoScraping> infoScrapingList = new ArrayList<>();
 
+    private TextView connectionStatus, imageAvailable;
     private Button buttScraping;
 
     @Override
@@ -49,6 +52,9 @@ public class WebScraping extends TobBarActivity implements
         buttScraping = topBar.findViewById(R.id.butt_scraping);
         Button test = findViewById(R.id.butt_test);
         mRecyclerView = findViewById(R.id.my_recycler_view);
+
+        connectionStatus = findViewById(R.id.connection_status);
+        imageAvailable = findViewById(R.id.image_text);
 
         changeButtonClickableBackgroundColor();
 
@@ -137,6 +143,7 @@ public class WebScraping extends TobBarActivity implements
     protected void onResume() {
         super.onResume();
         loadPreviousData();
+        loadConnectionStatus(getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE));
         initRecyclerView();
     }
 
@@ -158,6 +165,7 @@ public class WebScraping extends TobBarActivity implements
         }
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -169,6 +177,20 @@ public class WebScraping extends TobBarActivity implements
             editor.apply();
         } catch (JSONException jsonException) {
             Log.w(TAG_DEBUG, "ERROR JSON: " + jsonException);
+        }
+    }
+
+    /**
+     * Set the connection status on the view
+     */
+    private void loadConnectionStatus(SharedPreferences sharedPreferences) {
+        boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
+        if (isConnected) {
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
+            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
+        }else{
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
+            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 

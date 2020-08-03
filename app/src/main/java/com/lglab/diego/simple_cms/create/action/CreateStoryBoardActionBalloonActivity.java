@@ -149,8 +149,6 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
                             .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString()).setDuration(Integer.parseInt(durationString));
                     ActionController.getInstance().sendBalloon(balloon, null);
                     ActionController.getInstance().cleanFileKMLs(balloon.getDuration() * 1000);
-                }else{
-                    connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
                 loadConnectionStatus(sharedPreferences);
             }, 1200);
@@ -246,13 +244,16 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
 
     /**
-     * Set the conenction status on the view
+     * Set the connection status on the view
      */
     private void loadConnectionStatus(SharedPreferences sharedPreferences) {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
             imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
+        }else{
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
+            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 }
