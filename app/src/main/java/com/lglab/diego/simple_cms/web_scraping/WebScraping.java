@@ -91,6 +91,7 @@ public class WebScraping extends TobBarActivity {
                         Elements hLi = hLu.get(j - 1).select("li");
                         for(int k = 0; k < hLi.size(); k++){
                             Log.w(TAG_DEBUG, "hLi: " +  hLi.get(k));
+                            //TODO
                         }
                     }
                 }
