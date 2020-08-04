@@ -99,10 +99,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="1160dp"
-        android:layout_height="400dp"
+        android:layout_height="420dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/background"
         android:minHeight="578dp"
         android:padding="20dp"
