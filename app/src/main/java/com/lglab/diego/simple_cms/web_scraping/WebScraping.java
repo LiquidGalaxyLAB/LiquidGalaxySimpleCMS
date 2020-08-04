@@ -17,11 +17,13 @@ import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
+import com.lglab.diego.simple_cms.web_scraping.data.GDG;
 import com.lglab.diego.simple_cms.web_scraping.data.InfoScrapingList;
 import com.lglab.diego.simple_cms.web_scraping.data.Constant;
 import com.lglab.diego.simple_cms.web_scraping.data.InfoScraping;
 import com.lglab.diego.simple_cms.web_scraping.data.TechConferencesSpain;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -37,6 +39,8 @@ public class WebScraping extends TobBarActivity implements
         WebScrapingRecyclerAdapter.OnNoteListener {
 
     private static final String TAG_DEBUG = "WebScraping";
+
+    private static final String URL_TCS = "https://npatarino.github.io/tech-conferences-spain/";
 
     private RecyclerView mRecyclerView;
     List<InfoScraping> infoScrapingList = new ArrayList<>();
@@ -129,7 +133,7 @@ public class WebScraping extends TobBarActivity implements
      * @throws IOException IO ERROR
      */
     private void getInfoTechConferencesSpain() throws IOException {
-        Document doc = Jsoup.connect("https://npatarino.github.io/tech-conferences-spain/").get();
+        Document doc = Jsoup.connect(URL_TCS).get();
         Elements table = doc.getElementsByClass("container");
         Elements hTwo = table.select("div > h2");
         Elements hThree = table.select("div > h3");
@@ -176,6 +180,37 @@ public class WebScraping extends TobBarActivity implements
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 2);
         editor.apply();
+        new Thread(() -> {
+            try {
+                String dataFirst = Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%278278042.977599466%21%27%5D%2C%5B%21%2733197364%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
+                String dataSecond = Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%279338428.800590158%21%27%5D%2C%5B%21%2719172090%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
+                String dataThird= Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.1503808534232264E7%21%27%5D%2C%5B%21%2731305726%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
+                String dataFourth = Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.582815908947181E7%21%27%5D%2C%5B%21%2723452552%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
+                infoScrapingList.clear();
+                getGDGInfo(dataFirst);
+                getGDGInfo(dataSecond);
+                getGDGInfo(dataThird);
+                getGDGInfo(dataFourth);
+            }catch (IOException e){
+                CustomDialogUtility.showDialog(this, getResources().getString(R.string.message_error_connection));
+                Log.w(TAG_DEBUG, "WEB SCRAPPING EXCEPTION: " + e.getMessage());
+            } catch (JSONException e) {
+                Log.w(TAG_DEBUG, "JSON EXCEPTION: " + e.getMessage());
+            }
+            runOnUiThread(this::rePaintRecyclerView);
+        }).start();
+    }
+
+    private void getGDGInfo(String data) throws JSONException {
+        JSONObject jsonObject = new JSONObject(data);
+        JSONArray gdgJson = jsonObject.getJSONArray("responses").getJSONObject(0).getJSONObject("value").getJSONArray("chapters");
+        Log.w(TAG_DEBUG, "CHAPTERS: " + gdgJson.toString());
+        for(int i = 0; i < gdgJson.length(); i++){
+            Log.w(TAG_DEBUG, "GDG OBJECT: " + gdgJson.getJSONObject(i).toString());
+            GDG gdg = new GDG();
+            gdg.unpack(gdgJson.getJSONObject(i));
+            infoScrapingList.add(gdg);
+        }
     }
 
 
@@ -200,7 +235,7 @@ public class WebScraping extends TobBarActivity implements
                 infoScraping.unpack(jsonInfoWebScraping);
                 infoScrapingList = infoScraping.getInfoScrappingList();
             } catch (JSONException jsonException) {
-                Log.w(TAG_DEBUG, "ERROR CONVERTING JSON: " + jsonException);
+                Log.w(TAG_DEBUG, "ERROR CONVERTING JSON: " + jsonException.getMessage());
             }
         }
     }

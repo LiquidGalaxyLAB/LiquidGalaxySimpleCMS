@@ -45,6 +45,9 @@ public class InfoScrapingList implements IJsonPacker {
             if(infoScrapping instanceof TechConferencesSpain){
                 TechConferencesSpain techConferencesSpain = (TechConferencesSpain) infoScrapping;
                 jsonInfoScrapping.put(techConferencesSpain.pack());
+            }else if(infoScrapping instanceof GDG){
+                GDG gdg = (GDG) infoScrapping;
+                jsonInfoScrapping.put(gdg.pack());
             }else {
                 Log.w(TAG_DEBUG, "ERROR TYPE");
             }
@@ -64,9 +67,13 @@ public class InfoScrapingList implements IJsonPacker {
         for (int i = 0; i < jsonInfoScrapping.length(); i++) {
             infoScrappingJson = jsonInfoScrapping.getJSONObject(i);
             type = infoScrappingJson.getInt("type");
+            Log.w("WebScraping", "TYPE: " + type);
             if(type == Constant.TECH_CONFERENCES_SPAIN.getId()){
                 TechConferencesSpain techConferencesSpain = new TechConferencesSpain();
                 arrayInfoScrapping.add(techConferencesSpain.unpack(infoScrappingJson));
+            }else if(type == Constant.GDG.getId()){
+                GDG gdg = new GDG();
+                arrayInfoScrapping.add(gdg.unpack(infoScrappingJson));
             }else {
                 Log.w(TAG_DEBUG, "ERROR TYPE");
             }

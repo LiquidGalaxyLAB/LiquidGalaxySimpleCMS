@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.web_scraping.data.GDG;
 import com.lglab.diego.simple_cms.web_scraping.data.InfoScraping;
 import com.lglab.diego.simple_cms.web_scraping.data.Constant;
 import com.lglab.diego.simple_cms.web_scraping.data.TechConferencesSpain;
@@ -42,16 +43,22 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
 
     @Override
     public void onBindViewHolder(@NonNull WebScrapingRecyclerAdapter.ViewHolder holder, int position) {
-        Log.w(TAG_DEBUG, "onBindViewHolder called");
         InfoScraping currentItem = infoScrapings.get(position);
         int type = currentItem.getType();
         if(type == Constant.TECH_CONFERENCES_SPAIN.getId()){
             TechConferencesSpain techConferencesSpain = (TechConferencesSpain) currentItem;
             holder.name.setText(techConferencesSpain.getName());
             String date = techConferencesSpain.getDay() + "-" + techConferencesSpain.getMonth() + "-" +techConferencesSpain.getYear();
-            Log.w(TAG_DEBUG, "DATE: " + date);
             holder.date.setText(date);
             holder.location.setText(techConferencesSpain.getCity());
+        }else if(type == Constant.GDG.getId()){
+            GDG gdg = (GDG) currentItem;
+            holder.name.setText(gdg.getName());
+            holder.date.setText(gdg.getStatus());
+            String location = gdg.getCity() + ", " + gdg.getCountry();
+            holder.location.setText(location);
+        }else{
+            Log.w(TAG_DEBUG, "ERROR TYPE");
         }
     }
 
