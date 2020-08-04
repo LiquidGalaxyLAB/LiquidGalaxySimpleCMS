@@ -73,7 +73,7 @@ public class WebScraping extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
+        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -81,7 +81,7 @@ public class WebScraping extends TobBarActivity implements
      * It re paints the recyclerview with the actions
      */
     private void rePaintRecyclerView() {
-        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
+        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this);
         mRecyclerView.setAdapter(mAdapter);
     }
 

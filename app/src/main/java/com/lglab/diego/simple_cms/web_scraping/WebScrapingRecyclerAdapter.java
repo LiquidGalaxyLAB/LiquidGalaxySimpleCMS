@@ -4,9 +4,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
@@ -23,10 +25,12 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
 
     private static final String TAG_DEBUG = "WebScrapingRecyclerAdapter";
 
+    private AppCompatActivity activity;
     private List<InfoScraping> infoScrapings;
     private WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
 
-    public WebScrapingRecyclerAdapter(List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
+    public WebScrapingRecyclerAdapter(AppCompatActivity activity, List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
+        this.activity = activity;
         this.infoScrapings = infoScrapings;
         this.mOnNoteListener = onNoteListener;
     }
@@ -58,17 +62,23 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
     /**
      * This is the most efficient way to have the view holder and the click listener
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView date, urlTwitter, urlWebPage, name, city ;
+        Button buttonShowLG;
         WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
 
-        ViewHolder(View itemView, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
+        ViewHolder(View itemView, WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener) {
             super(itemView);
             this.name = itemView.findViewById(R.id.file_name_text);
-            this.mOnNoteListener = onNoteListener;
-
+            buttonShowLG = itemView.findViewById(R.id.butt_show);
+            buttonShowLG.setOnClickListener(view -> showLG(activity));
+            this.mOnNoteListener = mOnNoteListener;
             itemView.setOnClickListener(this);
+        }
+
+        private void showLG(AppCompatActivity activity){
+            Log.w(TAG_DEBUG, "NAME: " + name.getText());
         }
 
         @Override
