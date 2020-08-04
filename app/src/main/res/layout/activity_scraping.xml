@@ -32,7 +32,7 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/simple_cms"
-        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_location"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -45,15 +45,61 @@
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
-        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_location"
         app:layout_constraintEnd_toEndOf="@+id/image_text"
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
         app:layout_constraintVertical_bias="1.0" />
 
+
+    <TextView
+        android:id="@+id/text_view_event_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="300dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/text_view_event_name"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="@id/text_view_location" />
+
+    <TextView
+        android:id="@+id/text_view_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="300dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/text_view_location"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="@id/text_view_date" />
+
+    <TextView
+        android:id="@+id/text_view_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="360dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/text_view_date"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="1160dp"
-        android:layout_height="440dp"
+        android:layout_height="400dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="16dp"

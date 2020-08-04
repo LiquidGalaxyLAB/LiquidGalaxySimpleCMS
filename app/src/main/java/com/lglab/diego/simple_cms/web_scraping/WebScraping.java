@@ -41,11 +41,16 @@ public class WebScraping extends TobBarActivity implements
     private static final String TAG_DEBUG = "WebScraping";
 
     private static final String URL_TCS = "https://npatarino.github.io/tech-conferences-spain/";
+    private static final String URL_GDG_FIRST = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%278278042.977599466%21%27%5D%2C%5B%21%2733197364%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_SECOND = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%279338428.800590158%21%27%5D%2C%5B%21%2719172090%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_THIRD = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.1503808534232264E7%21%27%5D%2C%5B%21%2731305726%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_FOURTH = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.582815908947181E7%21%27%5D%2C%5B%21%2723452552%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
 
     private RecyclerView mRecyclerView;
     List<InfoScraping> infoScrapingList = new ArrayList<>();
 
     private TextView connectionStatus, imageAvailable;
+    private TextView textViewEventName, textViewLocation, textViewDate;
     private Button buttScraping;
 
     @Override
@@ -62,6 +67,9 @@ public class WebScraping extends TobBarActivity implements
 
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.image_text);
+        textViewEventName = findViewById(R.id.text_view_event_name);
+        textViewLocation = findViewById(R.id.text_view_location);
+        textViewDate = findViewById(R.id.text_view_date);
 
         changeButtonClickableBackgroundColor();
 
@@ -117,6 +125,7 @@ public class WebScraping extends TobBarActivity implements
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 1);
         editor.apply();
+        setTableTitle(1);
         new Thread(() -> {
             try {
                 getInfoTechConferencesSpain();
@@ -180,12 +189,13 @@ public class WebScraping extends TobBarActivity implements
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 2);
         editor.apply();
+        setTableTitle(2);
         new Thread(() -> {
             try {
-                String dataFirst = Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%278278042.977599466%21%27%5D%2C%5B%21%2733197364%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
-                String dataSecond = Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%279338428.800590158%21%27%5D%2C%5B%21%2719172090%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
-                String dataThird= Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.1503808534232264E7%21%27%5D%2C%5B%21%2731305726%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
-                String dataFourth = Jsoup.connect("https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.582815908947181E7%21%27%5D%2C%5B%21%2723452552%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29").ignoreContentType(true).execute().body();
+                String dataFirst = Jsoup.connect(URL_GDG_FIRST).ignoreContentType(true).execute().body();
+                String dataSecond = Jsoup.connect(URL_GDG_SECOND).ignoreContentType(true).execute().body();
+                String dataThird= Jsoup.connect(URL_GDG_THIRD).ignoreContentType(true).execute().body();
+                String dataFourth = Jsoup.connect(URL_GDG_FOURTH).ignoreContentType(true).execute().body();
                 infoScrapingList.clear();
                 getGDGInfo(dataFirst);
                 getGDGInfo(dataSecond);
@@ -204,9 +214,7 @@ public class WebScraping extends TobBarActivity implements
     private void getGDGInfo(String data) throws JSONException {
         JSONObject jsonObject = new JSONObject(data);
         JSONArray gdgJson = jsonObject.getJSONArray("responses").getJSONObject(0).getJSONObject("value").getJSONArray("chapters");
-        Log.w(TAG_DEBUG, "CHAPTERS: " + gdgJson.toString());
         for(int i = 0; i < gdgJson.length(); i++){
-            Log.w(TAG_DEBUG, "GDG OBJECT: " + gdgJson.getJSONObject(i).toString());
             GDG gdg = new GDG();
             gdg.unpack(gdgJson.getJSONObject(i));
             infoScrapingList.add(gdg);
@@ -218,8 +226,37 @@ public class WebScraping extends TobBarActivity implements
     protected void onResume() {
         super.onResume();
         loadPreviousData();
-        loadConnectionStatus(getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE));
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        loadConnectionStatus(sharedPreferences);
+        setUI(sharedPreferences);
         initRecyclerView();
+    }
+
+    /**
+     * Set UI when resume the activity
+     */
+    private void setUI(SharedPreferences sharedPreferences) {
+        int refreshWebScraping = sharedPreferences.getInt(Constant.REFRESH_WEB_SCRAPING.name(), 0);
+        setTableTitle(refreshWebScraping);
+    }
+
+    /**
+     * Set the titles of the recycler view
+     * @param refreshWebScraping the type of info download it
+     */
+    private void setTableTitle(int refreshWebScraping) {
+        if(refreshWebScraping != 0){
+            textViewEventName.setVisibility(View.VISIBLE);
+            textViewLocation.setVisibility(View.VISIBLE);
+            textViewDate.setVisibility(View.VISIBLE);
+            if(refreshWebScraping == 1){
+                textViewEventName.setText(getResources().getString(R.string.text_view_event_name));
+                textViewDate.setText(getResources().getString(R.string.text_view_date));
+            }else{
+                textViewEventName.setText(getResources().getString(R.string.text_view_community));
+                textViewDate.setText(getResources().getString(R.string.text_view_status));
+            }
+        }
     }
 
     /**
