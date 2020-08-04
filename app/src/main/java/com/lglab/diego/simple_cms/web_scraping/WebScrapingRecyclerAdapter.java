@@ -25,12 +25,10 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
 
     private static final String TAG_DEBUG = "WebScrapingRecyclerAdapter";
 
-    private AppCompatActivity activity;
     private List<InfoScraping> infoScrapings;
     private WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
 
-    public WebScrapingRecyclerAdapter(AppCompatActivity activity, List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
-        this.activity = activity;
+    public WebScrapingRecyclerAdapter(List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
         this.infoScrapings = infoScrapings;
         this.mOnNoteListener = onNoteListener;
     }
@@ -50,6 +48,10 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
         if(type == Constant.TECH_CONFERENCES_SPAIN.getId()){
             TechConferencesSpain techConferencesSpain = (TechConferencesSpain) currentItem;
             holder.name.setText(techConferencesSpain.getName());
+            String date = techConferencesSpain.getDay() + "-" + techConferencesSpain.getMonth() + "-" +techConferencesSpain.getYear();
+            Log.w(TAG_DEBUG, "DATE: " + date);
+            holder.date.setText(date);
+            holder.location.setText(techConferencesSpain.getCity());
         }
     }
 
@@ -64,20 +66,22 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView date, urlTwitter, urlWebPage, name, city ;
+        TextView date, name, location;
         Button buttonShowLG;
         WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
 
         ViewHolder(View itemView, WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener) {
             super(itemView);
-            this.name = itemView.findViewById(R.id.file_name_text);
+            this.name = itemView.findViewById(R.id.file_name);
+            this.date = itemView.findViewById(R.id.date);
+            this.location = itemView.findViewById(R.id.location);
             buttonShowLG = itemView.findViewById(R.id.butt_show);
-            buttonShowLG.setOnClickListener(view -> showLG(activity));
+            buttonShowLG.setOnClickListener(view -> showLG());
             this.mOnNoteListener = mOnNoteListener;
             itemView.setOnClickListener(this);
         }
 
-        private void showLG(AppCompatActivity activity){
+        private void showLG(){
             Log.w(TAG_DEBUG, "NAME: " + name.getText());
         }
 

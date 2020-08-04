@@ -69,7 +69,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         seekBarTilt = findViewById(R.id.seek_bar_tilt);
         switchCompatOrbitMode = findViewById(R.id.switch_button);
 
-        Button buttTest = findViewById(R.id.butt_test);
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);

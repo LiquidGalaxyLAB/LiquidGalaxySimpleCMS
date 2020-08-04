@@ -72,7 +72,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.my_recycler_view);
         switchCompatExtrude = findViewById(R.id.switch_button);
 
-        Button buttTest = findViewById(R.id.butt_test);
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);

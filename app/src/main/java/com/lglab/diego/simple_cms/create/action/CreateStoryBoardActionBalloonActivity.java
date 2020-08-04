@@ -71,7 +71,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         videoURL = findViewById(R.id.video_url);
         duration = findViewById(R.id.duration);
 
-        Button buttTest = findViewById(R.id.butt_test);
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);

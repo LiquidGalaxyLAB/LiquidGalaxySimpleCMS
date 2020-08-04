@@ -79,7 +79,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         storyBoardName = findViewById(R.id.text_admin_password);
 
 
-        Button buttTest = findViewById(R.id.butt_test);
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttLocation = findViewById(R.id.butt_location);
         Button buttMovements = findViewById(R.id.butt_movements);
         Button buttBalloon = findViewById(R.id.butt_balloon);

@@ -51,7 +51,9 @@ public class WebScraping extends TobBarActivity implements
 
         View topBar = findViewById(R.id.top_bar);
         buttScraping = topBar.findViewById(R.id.butt_scraping);
-        Button test = findViewById(R.id.butt_test);
+        Button buttGDG = findViewById(R.id.butt_gdg);
+        Button buttTCS = findViewById(R.id.butt_tcs);
+        Button buttUpdate = findViewById(R.id.butt_refresh);
         mRecyclerView = findViewById(R.id.my_recycler_view);
 
         connectionStatus = findViewById(R.id.connection_status);
@@ -59,8 +61,11 @@ public class WebScraping extends TobBarActivity implements
 
         changeButtonClickableBackgroundColor();
 
-        test.setOnClickListener(view -> Scrapping());
+        buttGDG.setOnClickListener(view -> scrappingGDG());
+        buttTCS.setOnClickListener(view -> scrappingTCS());
+        buttUpdate.setOnClickListener(view -> updateScraping());
     }
+
 
     /**
      * Initiate the recycleview
@@ -73,7 +78,7 @@ public class WebScraping extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this);
+        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -81,14 +86,33 @@ public class WebScraping extends TobBarActivity implements
      * It re paints the recyclerview with the actions
      */
     private void rePaintRecyclerView() {
-        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this);
+        RecyclerView.Adapter mAdapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    /**
+     * Refresh the scraping
+     */
+    private void updateScraping() {
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        int refreshWebScraping = sharedPreferences.getInt(Constant.REFRESH_WEB_SCRAPING.name(), 0);
+        if(refreshWebScraping == 1){
+            scrappingTCS();
+        }else if(refreshWebScraping == 2){
+            scrappingGDG();
+        }else{
+            CustomDialogUtility.showDialog(WebScraping.this, getResources().getString(R.string.message_update_web_scraping));
+        }
     }
 
     /**
      * Create the connection to the Tech Conference Spain
      */
-    private void Scrapping() {
+    private void scrappingTCS() {
+        CustomDialogUtility.showDialog(WebScraping.this, getResources().getString(R.string.message_downloading_data_tcs));
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 1);
+        editor.apply();
         new Thread(() -> {
             try {
                 getInfoTechConferencesSpain();
@@ -120,12 +144,15 @@ public class WebScraping extends TobBarActivity implements
      * @param hLu DAY, name, urls, city
      */
     private void getInfo(Elements hTwo, Elements hThree, Elements hLu) {
+        infoScrapingList.clear();
         String year, month, day, urlTwitter, urlWebPage, name, city;
         Element element;
         for(int i = 0; i < hTwo.size(); i++){
-            year = String.valueOf(hTwo.get(i));
+            year = String.valueOf(hTwo.get(i).ownText());
+            Log.w(TAG_DEBUG, "YEAR: " + year);
             for(int j = 1; j < hThree.size(); j++){
-                month = String.valueOf(hThree.get(j));
+                month = String.valueOf(hThree.get(j).ownText());
+                Log.w(TAG_DEBUG, "MONTH: " + month);
                 Elements hLi = hLu.get(j - 1).select("li");
                 for(int k = 0; k < hLi.size(); k++){
                     element = hLi.get(k);
@@ -140,6 +167,17 @@ public class WebScraping extends TobBarActivity implements
             }
         }
     }
+
+    /**
+     * Create the connection to the Google Meet GDG
+     */
+    private void scrappingGDG() {
+        CustomDialogUtility.showDialog(WebScraping.this, getResources().getString(R.string.message_downloading_data_gdg));
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 2);
+        editor.apply();
+    }
+
 
     @Override
     protected void onResume() {
@@ -204,8 +242,5 @@ public class WebScraping extends TobBarActivity implements
     }
 
     @Override
-    public void onNoteClick(int position) {
-        InfoScraping selected = infoScrapingList.get(position);
-
-    }
+    public void onNoteClick(int position) {}
 }

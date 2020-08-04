@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toStartOf="@+id/admin_password" />
 
     <Button
-        android:id="@+id/butt_test"
+        android:id="@+id/butt_gdg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
