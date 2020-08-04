@@ -5,6 +5,7 @@ import com.lglab.diego.simple_cms.create.utility.IJsonPacker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class GDG extends InfoScraping implements IJsonPacker {
 
     private long id;
@@ -97,4 +98,5 @@ public class GDG extends InfoScraping implements IJsonPacker {
 
         return this;
     }
+
 }

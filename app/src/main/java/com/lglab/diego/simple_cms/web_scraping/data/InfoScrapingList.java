@@ -22,9 +22,6 @@ public class InfoScrapingList implements IJsonPacker {
 
     public InfoScrapingList(){}
 
-    public InfoScrapingList(List<InfoScraping> infoScrappingList) {
-        this.infoScrappingList = infoScrappingList;
-    }
 
     public List<InfoScraping> getInfoScrappingList() {
         return infoScrappingList;
@@ -42,10 +39,7 @@ public class InfoScrapingList implements IJsonPacker {
         InfoScraping infoScrapping;
         for(int i = 0; i < infoScrappingList.size(); i++){
             infoScrapping = infoScrappingList.get(i);
-            if(infoScrapping instanceof TechConferencesSpain){
-                TechConferencesSpain techConferencesSpain = (TechConferencesSpain) infoScrapping;
-                jsonInfoScrapping.put(techConferencesSpain.pack());
-            }else if(infoScrapping instanceof GDG){
+            if(infoScrapping instanceof GDG){
                 GDG gdg = (GDG) infoScrapping;
                 jsonInfoScrapping.put(gdg.pack());
             }else {
@@ -68,10 +62,7 @@ public class InfoScrapingList implements IJsonPacker {
             infoScrappingJson = jsonInfoScrapping.getJSONObject(i);
             type = infoScrappingJson.getInt("type");
             Log.w("WebScraping", "TYPE: " + type);
-            if(type == Constant.TECH_CONFERENCES_SPAIN.getId()){
-                TechConferencesSpain techConferencesSpain = new TechConferencesSpain();
-                arrayInfoScrapping.add(techConferencesSpain.unpack(infoScrappingJson));
-            }else if(type == Constant.GDG.getId()){
+            if(type == Constant.GDG.getId()){
                 GDG gdg = new GDG();
                 arrayInfoScrapping.add(gdg.unpack(infoScrappingJson));
             }else {

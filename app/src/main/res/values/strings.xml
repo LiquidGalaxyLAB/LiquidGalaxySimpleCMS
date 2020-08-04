@@ -57,7 +57,7 @@
     <string name="menu_my_storyboards">My Storyboards</string>
     <string name="menu_create">Create</string>
     <string name="menu_connect">Connect</string>
-    <string name="menu_scraping">Scraping </string>
+    <string name="menu_external_api">External API</string>
     <string name="menu_account">Account</string>
 
     <string name="account_username">Username</string>
@@ -198,10 +198,8 @@
 
     //Web scrapping
     <string name="text_view_event_name">Event Name</string>
-    <string name="text_view_community">Community</string>
-    <string name="text_view_location">Location</string>
-    <string name="text_view_date">Date</string>
-    <string name="text_view_status">Status</string>
+    <string name="text_view_city">City</string>
+    <string name="text_view_country">Country</string>
 
 
 

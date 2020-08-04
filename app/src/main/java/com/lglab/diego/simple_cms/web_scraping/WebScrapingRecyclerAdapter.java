@@ -8,14 +8,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.web_scraping.data.GDG;
 import com.lglab.diego.simple_cms.web_scraping.data.InfoScraping;
 import com.lglab.diego.simple_cms.web_scraping.data.Constant;
-import com.lglab.diego.simple_cms.web_scraping.data.TechConferencesSpain;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
     private List<InfoScraping> infoScrapings;
     private WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
 
-    public WebScrapingRecyclerAdapter(List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
+    WebScrapingRecyclerAdapter(List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
         this.infoScrapings = infoScrapings;
         this.mOnNoteListener = onNoteListener;
     }
@@ -45,18 +43,11 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
     public void onBindViewHolder(@NonNull WebScrapingRecyclerAdapter.ViewHolder holder, int position) {
         InfoScraping currentItem = infoScrapings.get(position);
         int type = currentItem.getType();
-        if(type == Constant.TECH_CONFERENCES_SPAIN.getId()){
-            TechConferencesSpain techConferencesSpain = (TechConferencesSpain) currentItem;
-            holder.name.setText(techConferencesSpain.getName());
-            String date = techConferencesSpain.getDay() + "-" + techConferencesSpain.getMonth() + "-" +techConferencesSpain.getYear();
-            holder.date.setText(date);
-            holder.location.setText(techConferencesSpain.getCity());
-        }else if(type == Constant.GDG.getId()){
+         if(type == Constant.GDG.getId()){
             GDG gdg = (GDG) currentItem;
             holder.name.setText(gdg.getName());
-            holder.date.setText(gdg.getStatus());
-            String location = gdg.getCity() + ", " + gdg.getCountry();
-            holder.location.setText(location);
+            holder.city.setText(gdg.getCity());
+            holder.country.setText(gdg.getCountry());
         }else{
             Log.w(TAG_DEBUG, "ERROR TYPE");
         }
@@ -71,17 +62,17 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
     /**
      * This is the most efficient way to have the view holder and the click listener
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView date, name, location;
+        TextView name, city, country;
         Button buttonShowLG;
         WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
 
         ViewHolder(View itemView, WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener) {
             super(itemView);
             this.name = itemView.findViewById(R.id.file_name);
-            this.date = itemView.findViewById(R.id.date);
-            this.location = itemView.findViewById(R.id.location);
+            this.city = itemView.findViewById(R.id.city);
+            this.country = itemView.findViewById(R.id.country);
             buttonShowLG = itemView.findViewById(R.id.butt_show);
             buttonShowLG.setOnClickListener(view -> showLG());
             this.mOnNoteListener = mOnNoteListener;
