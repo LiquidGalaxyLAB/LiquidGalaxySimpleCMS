@@ -162,10 +162,8 @@ public class WebScraping extends TobBarActivity implements
         Element element;
         for(int i = 0; i < hTwo.size(); i++){
             year = String.valueOf(hTwo.get(i).ownText());
-            Log.w(TAG_DEBUG, "YEAR: " + year);
             for(int j = 1; j < hThree.size(); j++){
                 month = String.valueOf(hThree.get(j).ownText());
-                Log.w(TAG_DEBUG, "MONTH: " + month);
                 Elements hLi = hLu.get(j - 1).select("li");
                 for(int k = 0; k < hLi.size(); k++){
                     element = hLi.get(k);
