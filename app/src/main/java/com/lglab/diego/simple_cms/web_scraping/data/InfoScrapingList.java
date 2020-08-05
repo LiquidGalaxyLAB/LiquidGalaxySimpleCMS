@@ -61,7 +61,6 @@ public class InfoScrapingList implements IJsonPacker {
         for (int i = 0; i < jsonInfoScrapping.length(); i++) {
             infoScrappingJson = jsonInfoScrapping.getJSONObject(i);
             type = infoScrappingJson.getInt("type");
-            Log.w("WebScraping", "TYPE: " + type);
             if(type == Constant.GDG.getId()){
                 GDG gdg = new GDG();
                 arrayInfoScrapping.add(gdg.unpack(infoScrappingJson));

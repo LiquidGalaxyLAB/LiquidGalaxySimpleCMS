@@ -23,7 +23,7 @@
     <string name="button_test">Test</string>
     <string name="button_refresh">Refresh</string>
     <string name="button_gdg">GDG</string>
-    <string name="button_tech_conference_spain">TCS</string>
+    <string name="button_tour">Tour GDG</string>
     <string name="button_open">Open</string>
     <string name="button_back">Back</string>
     <string name="button_previous">Previous</string>
@@ -197,9 +197,12 @@
 
 
     //Web scrapping
-    <string name="text_view_event_name">Event Name</string>
+    <string name="text_view_community_name">Community Name</string>
     <string name="text_view_city">City</string>
     <string name="text_view_country">Country</string>
+    <string name="text_based_kevin">Based on Kevin Simper\'s gdgsearch.com \n https://github.com/kevinsimper/gdg-search</string>
+    <string name="text_empty">empty</string>
+    <string name="text_search">Type and Search</string>
 
 
 

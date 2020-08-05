@@ -24,15 +24,16 @@
         android:id="@+id/image_text"
         android:layout_width="650dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="320dp"
+        android:layout_marginEnd="400dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
         android:text="@string/image_not_available_on_screen"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/simple_cms"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_city"
+        app:layout_constraintBottom_toTopOf="@+id/text_based_kevin"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -40,8 +41,9 @@
         android:id="@+id/connection_status"
         android:layout_width="37dp"
         android:layout_height="37dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="78dp"
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
@@ -50,15 +52,47 @@
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
         app:layout_constraintVertical_bias="1.0" />
 
+    <Button
+        android:id="@+id/butt_gdg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="536dp"
+        android:background="@drawable/button_primary"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/button_gdg"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/text_based_kevin"
+        android:layout_width="650dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="400dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_horizontal|top"
+        android:text="@string/text_based_kevin"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_city"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/text_view_event_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="270dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="0dp"
         android:fontFamily="@font/roboto"
-        android:text="@string/text_view_event_name"
+        android:text="@string/text_view_community_name"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size"
@@ -99,16 +133,31 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="1160dp"
-        android:layout_height="420dp"
+        android:layout_height="320dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="0dp"
         android:background="@color/background"
         android:minHeight="578dp"
         android:padding="20dp"
         android:scrollbars="horizontal"
         android:textColor="@color/textColorClick"
-        app:layout_constraintBottom_toTopOf="@+id/butt_gdg"
+        app:layout_constraintBottom_toTopOf="@+id/text_length_community"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/text_length_community"
+        android:layout_width="650dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_horizontal|top"
+        android:text="@string/text_empty"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/primary_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/butt_tour"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -130,20 +179,42 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/butt_gdg"
+        android:id="@+id/butt_tour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="160dp"
+        android:layout_marginEnd="700dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_primary"
+        android:background="@drawable/button_tour"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
-        android:minWidth="200dp"
+        android:minWidth="220dp"
         android:minHeight="80dp"
-        android:text="@string/button_gdg"
+        android:text="@string/button_tour"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/action_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/text_search"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="400dp"
+        android:minHeight="80dp"
+        android:hint="@string/text_search"
+        android:autofillHints="@string/text_search"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:textAllCaps="false"
+        android:textColorHint="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
