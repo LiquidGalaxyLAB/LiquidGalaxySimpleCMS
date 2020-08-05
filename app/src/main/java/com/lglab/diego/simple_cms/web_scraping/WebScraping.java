@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -55,7 +53,6 @@ public class WebScraping extends TobBarActivity implements
 
     private TextView connectionStatus, imageAvailable;
     private TextView textViewEventName, textViewLocation, textViewDate, textLengthCommunity;
-    private EditText actionSearch;
     private Button buttScraping;
 
     @Override
@@ -75,7 +72,7 @@ public class WebScraping extends TobBarActivity implements
         textViewLocation = findViewById(R.id.text_view_city);
         textViewDate = findViewById(R.id.text_view_country);
         textLengthCommunity = findViewById(R.id.text_length_community);
-        actionSearch = findViewById(R.id.action_search);
+        EditText actionSearch = findViewById(R.id.action_search);
         actionSearch.addTextChangedListener(new TextWatcher() {
 
 
@@ -111,15 +108,6 @@ public class WebScraping extends TobBarActivity implements
         mRecyclerView.setHasFixedSize(true);
         adapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
         mRecyclerView.setAdapter(adapter);
-    }
-
-    /**
-     * It re paints the recyclerview with the actions
-     */
-    private void rePaintRecyclerView() {
-        adapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
-        mRecyclerView.setAdapter(adapter);
-        setLengthCommunity();
     }
 
     /**
@@ -174,7 +162,6 @@ public class WebScraping extends TobBarActivity implements
             } catch (JSONException e) {
                 Log.w(TAG_DEBUG, "JSON EXCEPTION: " + e.getMessage());
             }
-            runOnUiThread(this::rePaintRecyclerView);
         }).start();
     }
 
