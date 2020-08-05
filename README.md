@@ -5,46 +5,21 @@
 
 ## Deploy
 
-The first step is to download the project. (Remember you need to install the USB of OEM controllers of your tablet (windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb) )
+### IMPORTANT
+The min android is <strong>8.0 (API level 26)<strong>. Also, remember to install the USB of OEM controllers of your tablet (for windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb).
 
-There are 3 forms to install the project.
+There are 2 forms to install the project.
 
 ### First
 
-Connected the tablet to the computer, and then, go to the folder you download, open the terminal and write the following command: 
+It is possible to download the last apk in Releases or [clicking in here](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/releases/download/0.2/SimpleCMS-0.2.apk). After download it in your tablet, go to the where the project has been download it. For example, My Files-> Download History and click on the apk. 
 
-```
-C:\\Downloads\SimpleCMS> gradlew installDebug
-```
+#### Remember
 
-This will create the apk and installed to your tablet. 
-
-You can read more in the following link: [Install the project in your tablet]( https://developer.android.com/studio/build/building-cmdline#DebugMode)
+After clicking on the apk, the tablet could ask for permissions. Give the permissions to try this awesome apk! :sunglasses:
 
 ### Second
 
-Open the project in Android Studio. Then, click on the tab build on the top of android studio, and click make the project. 
-Finally, click on the tab Run on the top of android studio, and click on run.  You can follow the step in the following GIF: 
-
-![](https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/RunSimpleCMS.gif)
-
-### Third 
-
-Then, go to the folder you download, open the terminal and write the following command: 
-
-```
-C:\\Downloads\SimpleCMS> gradlew assembleDebug
-```
-
-This command will create an apk in the following route: 
-project_name/module_name/build/outputs/apk/module_name-debug.apk
-
-Finally you can install the apk to your tablet by using the adb install. (You need to have your tablet connect to your computer by USB). Open the terminal and run the following command: 
-
-```
-  C:\\Downloads\SimpleCMS>  adb -d install path/to/your_app.apk
-```
-
-You can read more in the following link: [Install the project in your tablet]( https://developer.android.com/studio/build/building-cmdline#DebugMode)
+Download the project locally. Afterwards, open the project using Android Studio. Then, connect a device or emulator and click on the run button. For instructions on how to do this, [check out the Android Developers official guide](https://developer.android.com/training/basics/firstapp/running-app)
 
 
