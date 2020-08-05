@@ -16,7 +16,7 @@ It is possible to download the last apk in Releases or [clicking in here](https:
 
 #### Remember
 
-After clicking on the apk, the tablet could ask for permissions. Give the permissions to try this awesome apk! :sunglasses:
+After clicking on the apk, the tablet could ask for permissions. Give the permissions to try the :sparkler: Simple CMS :sparkler: project! :sunglasses:
 
 ### Second
 
