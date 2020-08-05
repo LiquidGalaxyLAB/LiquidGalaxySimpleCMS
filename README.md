@@ -6,7 +6,7 @@
 ## Deploy
 
 ### IMPORTANT
-The min android is <strong>8.0 (API level 26)<strong>. Also, remember to install the USB of OEM controllers of your tablet (for windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb).
+The min android is <strong>8.0 (API level 26)</strong>. Also, remember to install the USB of OEM controllers of your tablet (for windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb).
 
 There are 2 forms to install the project.
 
