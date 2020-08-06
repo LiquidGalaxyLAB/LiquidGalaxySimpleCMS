@@ -17,7 +17,7 @@ import com.lglab.diego.simple_cms.web_scraping.data.InfoScraping;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TourGDG implements Runnable {
+public class TourGDGThread implements Runnable {
 
     private static final String TAG_DEBUG = "TourGDG";
 
@@ -27,8 +27,7 @@ public class TourGDG implements Runnable {
     private Button buttTour, buttStopTour;
 
 
-
-    TourGDG(List<InfoScraping> infoScrapingList, AppCompatActivity activity, Button buttTour, Button buttStopTour){
+    TourGDGThread(List<InfoScraping> infoScrapingList, AppCompatActivity activity, Button buttTour, Button buttStopTour){
         this.infoScrapingList = infoScrapingList;
         this.activity = activity;
         this.buttTour = buttTour;
@@ -48,7 +47,7 @@ public class TourGDG implements Runnable {
         running.set(true);
         int duration = 15000;
         ActionController actionController = ActionController.getInstance();
-        for(int i = 0; i < infoScrapingList.size() && running.get() ; i++){
+        for(int i = 0; i < infoScrapingList.size() && running.get(); i++){
             Log.w(TAG_DEBUG, "GOING");
             sendInformationLG((GDG) infoScrapingList.get(i), actionController);
             try {
@@ -61,13 +60,9 @@ public class TourGDG implements Runnable {
         actionController.cleanFileKMLs(0);
         Log.w(TAG_DEBUG, "END");
 
-        activity.runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                buttTour.setVisibility(View.VISIBLE);
-                buttStopTour.setVisibility(View.INVISIBLE);
-            }
+        activity.runOnUiThread(() -> {
+            buttTour.setVisibility(View.VISIBLE);
+            buttStopTour.setVisibility(View.INVISIBLE);
         });
     }
 

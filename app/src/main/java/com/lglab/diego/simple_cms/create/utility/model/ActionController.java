@@ -106,8 +106,6 @@ public class ActionController {
             lgConnectionSendFile.startConnection();
         }
 
-        writeFileBalloonFile();
-
         handler.postDelayed(() -> {
             LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
                 if (listener != null) {
@@ -117,6 +115,10 @@ public class ActionController {
             LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
             lgConnectionManager.startConnection();
             lgConnectionManager.addCommandToLG(lgCommand);
+
+            cleanFileKMLs(0);
+
+            handler.postDelayed(this::writeFileBalloonFile, 500);
         }, 500);
     }
 
@@ -163,7 +165,6 @@ public class ActionController {
      * @param listener listener
      */
     public void sendShape(Shape shape, LGCommand.Listener listener) {
-        writeFileShapeFile();
 
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandSendShape(shape), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
@@ -173,6 +174,10 @@ public class ActionController {
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
+
+        cleanFileKMLs(0);
+
+        handler.postDelayed(this::writeFileShapeFile, 1000);
 
     }
 
@@ -229,7 +234,7 @@ public class ActionController {
     }
 
     /**
-     * Send a ballon in the case of the tour
+     * Send a balloon in the case of the tour
      * @param balloon  Balloon with the information to build command
      * @param listener listener
      */

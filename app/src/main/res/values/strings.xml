@@ -21,6 +21,7 @@
     <string name="button_show">Show LG</string>
     <string name="button_clean_story_board">Clean Storyboard</string>
     <string name="button_test">Test</string>
+    <string name="button_stop">Stop</string>
     <string name="button_refresh">Refresh</string>
     <string name="button_gdg">GDG</string>
     <string name="button_tour">Tour GDG</string>

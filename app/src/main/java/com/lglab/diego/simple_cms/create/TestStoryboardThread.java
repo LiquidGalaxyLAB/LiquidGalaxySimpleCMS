@@ -1,6 +1,10 @@
 package com.lglab.diego.simple_cms.create;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.lglab.diego.simple_cms.create.utility.model.Action;
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
@@ -11,33 +15,40 @@ import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestStoryboardThread implements Runnable {
 
     private static final String TAG_DEBUG = "TestStoryboardThread";
 
-    private static TestStoryboardThread instance = null;
+    private final AtomicBoolean running = new AtomicBoolean(false);
     private List<Action> actions;
+    private AppCompatActivity activity;
+    private Button buttTest, buttStop;
 
-    public static TestStoryboardThread getInstance() {
-        if (instance == null) {
-            instance = new TestStoryboardThread();
-        }
-        return instance;
-    }
-
-    void startConnection(List<Action> actions) {
+    TestStoryboardThread(List<Action> actions, AppCompatActivity activity, Button buttTest, Button buttStop){
         this.actions = actions;
-        new Thread(instance).start();
+        this.activity = activity;
+        this.buttTest = buttTest;
+        this.buttStop = buttStop;
     }
 
+    void start() {
+        Thread worker = new Thread(this);
+        worker.start();
+    }
+
+    void stop() {
+        running.set(false);
+    }
 
     @Override
     public void run() {
+        running.set(true);
         Action actionSend;
         ActionController actionController = ActionController.getInstance();
         int duration = 4000;
-        for (int i = 0; i < actions.size(); i++) {
+        for (int i = 0; i < actions.size() && running.get(); i++) {
             actionSend = actions.get(i);
             if (actionSend instanceof POI) {
                 POI poi = (POI) actionSend;
@@ -76,5 +87,10 @@ public class TestStoryboardThread implements Runnable {
         }
         actionController.cleanBalloonKML(500);
         actionController.cleanShapeKML(500);
+        actionController.cleanFileKMLs(500);
+        activity.runOnUiThread(() -> {
+            buttTest.setVisibility(View.VISIBLE);
+            buttStop.setVisibility(View.INVISIBLE);
+        });
     }
 }

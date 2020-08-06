@@ -51,8 +51,7 @@ public class WebScraping extends TobBarActivity implements
     private RecyclerView mRecyclerView;
     private WebScrapingRecyclerAdapter adapter;
     private List<InfoScraping> infoScrapingList = new ArrayList<>();
-    private TourGDG tourGDG = null;
-    private final AtomicBoolean isTour = new AtomicBoolean(false);
+    private TourGDGThread tourGDG = null;
 
 
     private TextView connectionStatus, imageAvailable;
@@ -121,7 +120,8 @@ public class WebScraping extends TobBarActivity implements
     }
 
     private void tour() {
-        tourGDG = new TourGDG(infoScrapingList, WebScraping.this, buttTour, buttStopTour);
+        CustomDialogUtility.showDialog(WebScraping.this, "Starting the GDG TOUR");
+        tourGDG = new TourGDGThread(infoScrapingList, WebScraping.this, buttTour, buttStopTour);
         tourGDG.start();
         buttTour.setVisibility(View.INVISIBLE);
         buttStopTour.setVisibility(View.VISIBLE);

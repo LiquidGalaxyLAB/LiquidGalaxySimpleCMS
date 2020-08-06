@@ -62,9 +62,11 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     private int currentPoiPosition;
     private long currentStoryBoardId = Long.MIN_VALUE;
     private String currentStoryBoardGoogleDriveID = null;
+    private TestStoryboardThread testStoryboardThread = null;
+
 
     private EditText storyBoardName;
-    private Button buttCreate;
+    private Button buttCreate, buttTest, buttStopTest;
     private TextView connectionStatus, imageAvailable;
 
     @Override
@@ -79,7 +81,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         storyBoardName = findViewById(R.id.text_admin_password);
 
 
-        Button buttTest = findViewById(R.id.butt_gdg);
+        buttTest = findViewById(R.id.butt_test);
+        buttStopTest = findViewById(R.id.butt_stop);
         Button buttLocation = findViewById(R.id.butt_location);
         Button buttMovements = findViewById(R.id.butt_movements);
         Button buttBalloon = findViewById(R.id.butt_balloon);
@@ -151,6 +154,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
         buttTest.setOnClickListener((view) -> testStoryBoard());
 
+        buttStopTest.setOnClickListener((view -> stopTestStoryBoard()));
+
         initRecyclerView();
 
         changeButtonClickableBackgroundColor();
@@ -184,8 +189,19 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      */
     private void testStoryBoard() {
         CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
-        List<Action> actionsSend = new ArrayList<>(actions);
-        TestStoryboardThread.getInstance().startConnection(actionsSend);
+        testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest);
+        testStoryboardThread.start();
+        buttTest.setVisibility(View.INVISIBLE);
+        buttStopTest.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Stop the testing of the storyboard
+     */
+    private void stopTestStoryBoard() {
+        testStoryboardThread.stop();
+        buttTest.setVisibility(View.VISIBLE);
+        buttStopTest.setVisibility(View.INVISIBLE);
     }
 
     /**
