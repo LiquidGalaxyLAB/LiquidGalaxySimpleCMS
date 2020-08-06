@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POILocation;
@@ -149,10 +150,17 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
             handler.postDelayed(() -> {
                 if(isConnected.get()){
                     GDG gdg = (GDG) infoScrapings.get(getAdapterPosition());
-                    POILocation poiLocation = new POILocation("Test", gdg.getLongitude(), gdg.getLatitude(), 500);
+                    POILocation poiLocation = new POILocation(gdg.getName(), gdg.getLongitude(), gdg.getLatitude(), 500);
                     POICamera poiCamera = new POICamera(10, 0, 500, "absolute", 4);
                     POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
                     ActionController.getInstance().moveToPOI(poi, null);
+
+                    Balloon balloon = new Balloon();
+                    String description = gdg.getCity() + ", " + gdg.getCountry();
+                    balloon.setPoi(poi).setDescription(description)
+                            .setImageUri(null).setImagePath(null).setVideoPath(null).setDuration(15);
+                    ActionController.getInstance().sendBalloon(balloon, null);
+                    ActionController.getInstance().cleanFileKMLs(balloon.getDuration() * 1000);
                 }
                 loadConnectionStatus(sharedPreferences);
             }, 1300);
