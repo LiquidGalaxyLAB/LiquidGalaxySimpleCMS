@@ -1,5 +1,7 @@
 package com.lglab.diego.simple_cms.web_scraping;
 
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +12,26 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POILocation;
+import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 import com.lglab.diego.simple_cms.web_scraping.data.GDG;
 import com.lglab.diego.simple_cms.web_scraping.data.InfoScraping;
 import com.lglab.diego.simple_cms.web_scraping.data.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * This is the class in charge of the adapter of the WebScraping recyclerview of the class WebScraping
@@ -27,14 +40,22 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
 
     private static final String TAG_DEBUG = "WebScrapingRecyclerAdapter";
 
+    private AppCompatActivity activity;
     private List<InfoScraping> infoScrapings;
     private List<InfoScraping> infoScrapingsFull;
     private WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
+    private TextView connectionStatus, imageAvailable;
 
-    WebScrapingRecyclerAdapter(List<InfoScraping> infoScrapings, WebScrapingRecyclerAdapter.OnNoteListener onNoteListener) {
+
+    WebScrapingRecyclerAdapter(AppCompatActivity activity, List<InfoScraping> infoScrapings,
+                               WebScrapingRecyclerAdapter.OnNoteListener onNoteListener,
+                               TextView connectionStatus, TextView imageAvailable) {
+        this.activity = activity;
         this.infoScrapings = infoScrapings;
         infoScrapingsFull = new ArrayList<>(infoScrapings);
         this.mOnNoteListener = onNoteListener;
+        this.connectionStatus = connectionStatus;
+        this.imageAvailable = imageAvailable;
     }
 
     @NonNull
@@ -102,11 +123,13 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
     /**
      * This is the most efficient way to have the view holder and the click listener
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, city, country;
         Button buttonShowLG;
         WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
+
+        private Handler handler = new Handler();
 
         ViewHolder(View itemView, WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener) {
             super(itemView);
@@ -120,7 +143,34 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
         }
 
         private void showLG(){
-            Log.w(TAG_DEBUG, "NAME: " + name.getText());
+            AtomicBoolean isConnected = new AtomicBoolean(false);
+            LGConnectionTest.testPriorConnection(activity, isConnected);
+            SharedPreferences sharedPreferences = activity.getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+            handler.postDelayed(() -> {
+                if(isConnected.get()){
+                    GDG gdg = (GDG) infoScrapings.get(getAdapterPosition());
+                    POILocation poiLocation = new POILocation("Test", gdg.getLongitude(), gdg.getLatitude(), 500);
+                    POICamera poiCamera = new POICamera(10, 0, 500, "absolute", 4);
+                    POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
+                    ActionController.getInstance().moveToPOI(poi, null);
+                }
+                loadConnectionStatus(sharedPreferences);
+            }, 1300);
+        }
+
+        /**
+         * Set the connection status on the view
+         * @param sharedPreferences sharedPreferences
+         */
+        private void loadConnectionStatus(SharedPreferences sharedPreferences) {
+            boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
+            if (isConnected) {
+                connectionStatus.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_status_connection_green));
+                imageAvailable.setText(activity.getResources().getString(R.string.image_available_on_screen));
+            }else{
+                connectionStatus.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_status_connection_red));
+                imageAvailable.setText(activity.getResources().getString(R.string.image_not_available_on_screen));
+            }
         }
 
         @Override

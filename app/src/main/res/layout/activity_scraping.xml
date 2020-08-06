@@ -196,6 +196,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/butt_stop_tour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="700dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_tour"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="220dp"
+        android:minHeight="80dp"
+        android:text="@string/button_stop_tour"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <EditText
         android:id="@+id/action_search"
         android:layout_width="wrap_content"

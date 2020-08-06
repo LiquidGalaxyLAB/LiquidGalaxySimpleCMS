@@ -24,6 +24,7 @@
     <string name="button_refresh">Refresh</string>
     <string name="button_gdg">GDG</string>
     <string name="button_tour">Tour GDG</string>
+    <string name="button_stop_tour">Stop Tour</string>
     <string name="button_open">Open</string>
     <string name="button_back">Back</string>
     <string name="button_previous">Previous</string>

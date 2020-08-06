@@ -40,12 +40,12 @@ public class WebScraping extends TobBarActivity implements
 
     private static final String TAG_DEBUG = "WebScraping";
 
-    private static final String URL_GDG_FIRST = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28only%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
-    private static final String URL_GDG_SECOND = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%274337167.077381824%21%27%5D%2C%5B%21%2714638992%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
-    private static final String URL_GDG_THIRD = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%278278042.977599466%21%27%5D%2C%5B%21%2733197364%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
-    private static final String URL_GDG_FOURTH = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%279338428.800590158%21%27%5D%2C%5B%21%2719172090%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
-    private static final String URL_GDG_FIFTH = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.1503808534232264E7%21%27%5D%2C%5B%21%2731305726%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
-    private static final String URL_GDG_SIXTH= "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.582815908947181E7%21%27%5D%2C%5B%21%2723452552%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_FIRST = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%274337167.077381824%21%27%5D%2C%5B%21%2714638992%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_SECOND = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%278278042.977599466%21%27%5D%2C%5B%21%2733197364%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_THIRD = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%279338428.800590158%21%27%5D%2C%5B%21%2719172090%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_FOURTH = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.1503808534232264E7%21%27%5D%2C%5B%21%2731305726%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_FIFTH = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28cursor%3A%27%5B%5B%21%271.582815908947181E7%21%27%5D%2C%5B%21%2723452552%21%27%5D%5D%27%2Conly%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
+    private static final String URL_GDG_SIXTH = "https://www.meetup.com/mp_api/pro/network?queries=%28endpoint%3Apro%2Fgdg%2Fes_groups_summary%2Cmeta%3A%28method%3Aget%29%2Cparams%3A%28only%3A%27cursor%2Ctotal_count%2Cchapters.lat%2Cchapters.lon%2Cchapters.status%2Cchapters.name%2Cchapters.urlname%2Cchapters.id%2Cchapters.country%2Cchapters.state%2Cchapters.city%27%2Csize%3A200%29%2Cref%3AmapMarkers%2Ctype%3AmapMarkers%29";
 
     private RecyclerView mRecyclerView;
     private WebScrapingRecyclerAdapter adapter;
@@ -53,7 +53,7 @@ public class WebScraping extends TobBarActivity implements
 
     private TextView connectionStatus, imageAvailable;
     private TextView textViewEventName, textViewLocation, textViewDate, textLengthCommunity;
-    private Button buttScraping;
+    private Button buttScraping, buttTour, buttStopTour;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +62,8 @@ public class WebScraping extends TobBarActivity implements
 
         View topBar = findViewById(R.id.top_bar);
         buttScraping = topBar.findViewById(R.id.butt_scraping);
+        buttTour = findViewById(R.id.butt_tour);
+        buttStopTour = findViewById(R.id.butt_stop_tour);
         Button buttGDG = findViewById(R.id.butt_gdg);
         Button buttUpdate = findViewById(R.id.butt_refresh);
         mRecyclerView = findViewById(R.id.my_recycler_view);
@@ -73,6 +75,11 @@ public class WebScraping extends TobBarActivity implements
         textViewDate = findViewById(R.id.text_view_country);
         textLengthCommunity = findViewById(R.id.text_length_community);
         EditText actionSearch = findViewById(R.id.action_search);
+
+        buttTour.setOnClickListener(view -> tour());
+        buttStopTour.setOnClickListener(view -> stopTour());
+
+
         actionSearch.addTextChangedListener(new TextWatcher() {
 
 
@@ -94,7 +101,6 @@ public class WebScraping extends TobBarActivity implements
         buttUpdate.setOnClickListener(view -> updateScraping());
     }
 
-
     /**
      * Initiate the recycleview
      */
@@ -106,8 +112,18 @@ public class WebScraping extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        adapter = new WebScrapingRecyclerAdapter(infoScrapingList, WebScraping.this);
+        adapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this, connectionStatus, imageAvailable);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    private void tour() {
+        buttTour.setVisibility(View.INVISIBLE);
+        buttStopTour.setVisibility(View.VISIBLE);
+    }
+
+    private void stopTour() {
+        buttTour.setVisibility(View.VISIBLE);
+        buttStopTour.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -156,6 +172,10 @@ public class WebScraping extends TobBarActivity implements
                     }
                     return 0;
                 });
+                InfoScrapingList infoScraping = new InfoScrapingList();
+                infoScraping.setInfoScrappingList(infoScrapingList);
+                editor.putString(Constant.INFO_WEB_SCRAPING.name(), infoScraping.pack().toString());
+                editor.apply();
             } catch (IOException e) {
                 CustomDialogUtility.showDialog(this, getResources().getString(R.string.message_error_connection));
                 Log.w(TAG_DEBUG, "WEB SCRAPPING EXCEPTION: " + e.getMessage());
@@ -235,20 +255,6 @@ public class WebScraping extends TobBarActivity implements
         }
     }
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        try {
-            InfoScrapingList infoScraping = new InfoScrapingList();
-            infoScraping.setInfoScrappingList(infoScrapingList);
-            SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
-            editor.putString(Constant.INFO_WEB_SCRAPING.name(), infoScraping.pack().toString());
-            editor.apply();
-        } catch (JSONException jsonException) {
-            Log.w(TAG_DEBUG, "ERROR JSON: " + jsonException);
-        }
-    }
 
     /**
      * Set the connection status on the view

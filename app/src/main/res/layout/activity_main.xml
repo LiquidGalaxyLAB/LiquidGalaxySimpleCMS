@@ -125,7 +125,7 @@
         android:hint="@string/example_to_connect"
         android:inputType="textUri"
         android:maxLength="50"
-        android:text="192.168.0.17:22"
+        android:text="192.168.0.18:22"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textColorHint="@color/hintColor"

@@ -14,14 +14,14 @@ public class GDG extends InfoScraping implements IJsonPacker {
     private String city;
     private String country;
     private String name;
-    private long longitude;
-    private long latitude;
+    private double longitude;
+    private double latitude;
 
     public GDG(){
         super(Constant.GDG.getId());
     }
 
-    public GDG(long id, String urlName, String status, String city, String country, String name, long longitude, long latitude) {
+    public GDG(long id, String urlName, String status, String city, String country, String name, double longitude, double latitude) {
         super(Constant.GDG.getId());
         this.id = id;
         this.urlName = urlName;
@@ -57,11 +57,11 @@ public class GDG extends InfoScraping implements IJsonPacker {
         return name;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -93,8 +93,8 @@ public class GDG extends InfoScraping implements IJsonPacker {
         city = obj.getString("city");
         country = obj.getString("country");
         name = obj.getString("name");
-        longitude = obj.getLong("lon");
-        latitude = obj.getLong("lat");
+        longitude = obj.getDouble("lon");
+        latitude = obj.getDouble("lat");
 
         return this;
     }
