@@ -1,6 +1,7 @@
 package com.lglab.diego.simple_cms.web_scraping;
 
 import android.util.Log;
+import android.widget.Button;
 
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
@@ -17,7 +18,6 @@ public class TourGDG implements Runnable {
 
     private static final String TAG_DEBUG = "TourGDG";
 
-    private Thread worker;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private List<InfoScraping> infoScrapingList;
 
@@ -26,8 +26,8 @@ public class TourGDG implements Runnable {
         this.infoScrapingList = infoScrapingList;
     }
 
-    public void start() {
-        worker = new Thread(this);
+    void start() {
+        Thread worker = new Thread(this);
         worker.start();
     }
 

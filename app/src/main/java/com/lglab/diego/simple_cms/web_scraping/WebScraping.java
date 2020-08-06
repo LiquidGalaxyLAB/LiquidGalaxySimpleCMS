@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WebScraping extends TobBarActivity implements
         WebScrapingRecyclerAdapter.OnNoteListener {
@@ -51,6 +52,8 @@ public class WebScraping extends TobBarActivity implements
     private WebScrapingRecyclerAdapter adapter;
     private List<InfoScraping> infoScrapingList = new ArrayList<>();
     private TourGDG tourGDG = null;
+    private final AtomicBoolean isTour = new AtomicBoolean(false);
+
 
     private TextView connectionStatus, imageAvailable;
     private TextView textViewEventName, textViewLocation, textViewDate, textLengthCommunity;
