@@ -121,7 +121,7 @@ public class WebScraping extends TobBarActivity implements
     }
 
     private void tour() {
-        tourGDG = new TourGDG(infoScrapingList);
+        tourGDG = new TourGDG(infoScrapingList, WebScraping.this, buttTour, buttStopTour);
         tourGDG.start();
         buttTour.setVisibility(View.INVISIBLE);
         buttStopTour.setVisibility(View.VISIBLE);
@@ -157,19 +157,7 @@ public class WebScraping extends TobBarActivity implements
         setTableTitle(2);
         new Thread(() -> {
             try {
-                String dataFirst = Jsoup.connect(URL_GDG_FIRST).ignoreContentType(true).execute().body();
-                String dataSecond = Jsoup.connect(URL_GDG_SECOND).ignoreContentType(true).execute().body();
-                String dataThird = Jsoup.connect(URL_GDG_THIRD).ignoreContentType(true).execute().body();
-                String dataFourth = Jsoup.connect(URL_GDG_FOURTH).ignoreContentType(true).execute().body();
-                String dataFifth = Jsoup.connect(URL_GDG_FIFTH).ignoreContentType(true).execute().body();
-                String dataSixth = Jsoup.connect(URL_GDG_SIXTH).ignoreContentType(true).execute().body();
-                infoScrapingList.clear();
-                getGDGInfo(dataFirst);
-                getGDGInfo(dataSecond);
-                getGDGInfo(dataThird);
-                getGDGInfo(dataFourth);
-                getGDGInfo(dataFifth);
-                getGDGInfo(dataSixth);
+                chargeData();
                 Collections.sort(infoScrapingList, (o1, o2) -> {
                     int type = o1.getType();
                     if(type == Constant.GDG.getId()){
@@ -190,6 +178,27 @@ public class WebScraping extends TobBarActivity implements
                 Log.w(TAG_DEBUG, "JSON EXCEPTION: " + e.getMessage());
             }
         }).start();
+    }
+
+    /**
+     * Charge the data for the apis on Meet up GDG
+     * @throws IOException  Error in the reading of the files
+     * @throws JSONException Error in json transformation
+     */
+    private void chargeData() throws IOException, JSONException {
+        String dataFirst = Jsoup.connect(URL_GDG_FIRST).ignoreContentType(true).execute().body();
+        String dataSecond = Jsoup.connect(URL_GDG_SECOND).ignoreContentType(true).execute().body();
+        String dataThird = Jsoup.connect(URL_GDG_THIRD).ignoreContentType(true).execute().body();
+        String dataFourth = Jsoup.connect(URL_GDG_FOURTH).ignoreContentType(true).execute().body();
+        String dataFifth = Jsoup.connect(URL_GDG_FIFTH).ignoreContentType(true).execute().body();
+        String dataSixth = Jsoup.connect(URL_GDG_SIXTH).ignoreContentType(true).execute().body();
+        infoScrapingList.clear();
+        getGDGInfo(dataFirst);
+        getGDGInfo(dataSecond);
+        getGDGInfo(dataThird);
+        getGDGInfo(dataFourth);
+        getGDGInfo(dataFifth);
+        getGDGInfo(dataSixth);
     }
 
     private void getGDGInfo(String data) throws JSONException {

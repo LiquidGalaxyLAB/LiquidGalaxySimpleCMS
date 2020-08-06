@@ -1,7 +1,10 @@
 package com.lglab.diego.simple_cms.web_scraping;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
@@ -20,10 +23,16 @@ public class TourGDG implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private List<InfoScraping> infoScrapingList;
+    private AppCompatActivity  activity;
+    private Button buttTour, buttStopTour;
 
 
-    TourGDG(List<InfoScraping> infoScrapingList){
+
+    TourGDG(List<InfoScraping> infoScrapingList, AppCompatActivity activity, Button buttTour, Button buttStopTour){
         this.infoScrapingList = infoScrapingList;
+        this.activity = activity;
+        this.buttTour = buttTour;
+        this.buttStopTour = buttStopTour;
     }
 
     void start() {
@@ -51,6 +60,15 @@ public class TourGDG implements Runnable {
         }
         actionController.cleanFileKMLs(0);
         Log.w(TAG_DEBUG, "END");
+
+        activity.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                buttTour.setVisibility(View.VISIBLE);
+                buttStopTour.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void sendInformationLG(GDG gdg, ActionController actionController){
