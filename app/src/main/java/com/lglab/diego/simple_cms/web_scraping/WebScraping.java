@@ -49,7 +49,8 @@ public class WebScraping extends TobBarActivity implements
 
     private RecyclerView mRecyclerView;
     private WebScrapingRecyclerAdapter adapter;
-    List<InfoScraping> infoScrapingList = new ArrayList<>();
+    private List<InfoScraping> infoScrapingList = new ArrayList<>();
+    private TourGDG tourGDG = null;
 
     private TextView connectionStatus, imageAvailable;
     private TextView textViewEventName, textViewLocation, textViewDate, textLengthCommunity;
@@ -117,11 +118,14 @@ public class WebScraping extends TobBarActivity implements
     }
 
     private void tour() {
+        tourGDG = new TourGDG(infoScrapingList);
+        tourGDG.start();
         buttTour.setVisibility(View.INVISIBLE);
         buttStopTour.setVisibility(View.VISIBLE);
     }
 
     private void stopTour() {
+        tourGDG.stop();
         buttTour.setVisibility(View.VISIBLE);
         buttStopTour.setVisibility(View.INVISIBLE);
     }

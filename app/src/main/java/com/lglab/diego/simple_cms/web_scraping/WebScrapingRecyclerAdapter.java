@@ -151,15 +151,14 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
                 if(isConnected.get()){
                     GDG gdg = (GDG) infoScrapings.get(getAdapterPosition());
                     POILocation poiLocation = new POILocation(gdg.getName(), gdg.getLongitude(), gdg.getLatitude(), 500);
-                    POICamera poiCamera = new POICamera(10, 0, 500, "absolute", 4);
+                    POICamera poiCamera = new POICamera(10, 0, 1000, "absolute", 4);
                     POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
-                    ActionController.getInstance().moveToPOI(poi, null);
 
                     Balloon balloon = new Balloon();
                     String description = gdg.getCity() + ", " + gdg.getCountry();
                     balloon.setPoi(poi).setDescription(description)
                             .setImageUri(null).setImagePath(null).setVideoPath(null).setDuration(15);
-                    ActionController.getInstance().sendBalloon(balloon, null);
+                    ActionController.getInstance().TourGDG(poi, balloon);
                     ActionController.getInstance().cleanFileKMLs(balloon.getDuration() * 1000);
                 }
                 loadConnectionStatus(sharedPreferences);

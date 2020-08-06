@@ -31,7 +31,8 @@ public class ActionController {
     /**
      * Enforce private constructor
      */
-    private ActionController() {}
+    private ActionController() {
+    }
 
     /**
      * Move the screen to the poi
@@ -107,21 +108,24 @@ public class ActionController {
 
         writeFileBalloonFile();
 
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if (listener != null) {
-                listener.onResponse(result);
-            }
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
+        handler.postDelayed(() -> {
+            LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+                if (listener != null) {
+                    listener.onResponse(result);
+                }
+            });
+            LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+            lgConnectionManager.startConnection();
+            lgConnectionManager.addCommandToLG(lgCommand);
+        }, 500);
     }
 
     /**
      * Create the Resource folder
      */
     private void createResourcesFolder() {
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateResourcesFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {});
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandCreateResourcesFolder(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        });
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
@@ -132,16 +136,21 @@ public class ActionController {
      */
     private void writeFileBalloonFile() {
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildWriteBalloonFile(),
-                LGCommand.CRITICAL_MESSAGE, (String result) -> {});
+                LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        });
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
     }
 
 
+    /**
+     * Write the shape.kml in the Liquid Galaxy
+     */
     private void writeFileShapeFile() {
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildWriteShapeFile(),
-                LGCommand.CRITICAL_MESSAGE, (String result) -> {});
+                LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        });
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
@@ -171,7 +180,7 @@ public class ActionController {
      * It cleans the kmls.txt file
      */
     public void cleanFileKMLs(int duration) {
-        handler.postDelayed( () -> {
+        handler.postDelayed(() -> {
             LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCleanKMLs(),
                     LGCommand.CRITICAL_MESSAGE, (String result) -> {
             });
@@ -185,7 +194,7 @@ public class ActionController {
      * It cleans the balloon.kml file
      */
     public void cleanBalloonKML(int duration) {
-        handler.postDelayed( () -> {
+        handler.postDelayed(() -> {
             LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCleanBalloonKML(),
                     LGCommand.CRITICAL_MESSAGE, (String result) -> {
             });
@@ -194,11 +203,12 @@ public class ActionController {
             lgConnectionManager.addCommandToLG(lgCommand);
         }, duration);
     }
+
     /**
      * It cleans the shape.kml file
      */
     public void cleanShapeKML(int duration) {
-        handler.postDelayed( () -> {
+        handler.postDelayed(() -> {
             LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCleanShapeKML(),
                     LGCommand.CRITICAL_MESSAGE, (String result) -> {
             });
@@ -206,5 +216,35 @@ public class ActionController {
             lgConnectionManager.startConnection();
             lgConnectionManager.addCommandToLG(lgCommand);
         }, duration);
+    }
+
+    /**
+     * Send both command to the Liquid Galaxy
+     * @param poi Poi with the location information
+     * @param balloon Balloon with the information to paint the balloon
+     */
+    public void TourGDG(POI poi, Balloon balloon) {
+        sendBalloonTourGDG(balloon, null);
+        moveToPOI(poi, null);
+    }
+
+    /**
+     * Send a ballon in the case of the tour
+     * @param balloon  Balloon with the information to build command
+     * @param listener listener
+     */
+    private void sendBalloonTourGDG(Balloon balloon, LGCommand.Listener listener) {
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+
+        cleanFileKMLs(0);
+
+        handler.postDelayed(this::writeFileBalloonFile, 1000);
     }
 }
