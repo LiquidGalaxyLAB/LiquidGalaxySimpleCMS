@@ -36,7 +36,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
 
     //private static final String TAG_DEBUG = "CreateStoryBoardActionLocationActivity";
 
-    private EditText file_name, latitude, longitude, altitude, duration, heading, tilt, range, altitude_mode;
+    private EditText file_name, longitude, latitude, altitude, duration, heading, tilt, range, altitude_mode;
     private TextView connectionStatus, imageAvailable;
 
     private Handler handler = new Handler();
@@ -49,8 +49,8 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_location);
 
         file_name = findViewById(R.id.file_name);
-        latitude = findViewById(R.id.video_url);
         longitude = findViewById(R.id.longitude);
+        latitude = findViewById(R.id.latitude);
         altitude = findViewById(R.id.altitude);
         duration = findViewById(R.id.duration);
         heading = findViewById(R.id.heading);

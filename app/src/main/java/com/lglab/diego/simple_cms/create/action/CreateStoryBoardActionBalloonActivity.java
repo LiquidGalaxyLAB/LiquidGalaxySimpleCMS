@@ -93,8 +93,10 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             setTextView();
             description.setText(balloon.getDescription());
             imageUri = balloon.getImageUri();
-            if(imageUri != null) imageView.setImageURI(imageUri);
-            imagePath = balloon.getImagePath();
+            if (imageUri != null) {
+                imageView.setImageURI(imageUri);
+                imagePath = getFilePath(imageUri);
+            }
             videoURL.setText(balloon.getVideoPath());
             duration.setText(String.valueOf(balloon.getDuration()));
         }
@@ -116,7 +118,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         );
 
         buttTest.setOnClickListener((view) ->
-            testConnection()
+                testConnection()
         );
 
         buttAdd.setOnClickListener((view) ->
@@ -124,7 +126,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         );
 
         buttDelete.setOnClickListener((view) ->
-            deleteBalloon()
+                deleteBalloon()
         );
     }
 
@@ -133,16 +135,16 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      */
     private void testConnection() {
         String durationString = duration.getText().toString();
-        if(durationString.equals("")){
+        if (durationString.equals("")) {
             CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
-        }else{
+        } else {
             AtomicBoolean isConnected = new AtomicBoolean(false);
             LGConnectionTest.testPriorConnection(this, isConnected);
             SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
             handler.postDelayed(() -> {
-                if(isConnected.get()){
+                if (isConnected.get()) {
                     Balloon balloon = new Balloon();
-                    if(imageUri != null){
+                    if (imageUri != null) {
                         imagePath = getFilePath(imageUri);
                     }
                     balloon.setPoi(poi).setDescription(description.getText().toString())
@@ -157,15 +159,23 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
     /**
      * It return the absolute path of the file
+     *
      * @param uri uri of the file
      * @return the absolute path of the file
      */
     private String getFilePath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        Objects.requireNonNull(cursor).moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        String imagePath = cursor.getString(idx);
-        cursor.close();
+        String imagePath;
+        try{
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            Objects.requireNonNull(cursor).moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            imagePath = cursor.getString(idx);
+            cursor.close();
+        }catch (Exception e){
+            Log.w(TAG_DEBUG, "ERROR MESSAGE: " + e.getMessage());
+            CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
+            imagePath = "";
+        }
         return imagePath;
     }
 
@@ -175,9 +185,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      */
     private void addBalloon() {
         String durationString = duration.getText().toString();
-        if(durationString.equals("")){
+        if (durationString.equals("")) {
             CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
-        }else{
+        } else {
             Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString())
                     .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString())
                     .setDuration(Integer.parseInt(durationString));
@@ -228,7 +238,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             imageView.setImageURI(imageUri);
             imagePath = getFilePath(imageUri);
             Log.w(TAG_DEBUG, "imagePath: " + imagePath);
-        }  else {
+        } else {
             Log.w(TAG_DEBUG, "ERROR there is no other request code type");
         }
     }
@@ -251,7 +261,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
             imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
-        }else{
+        } else {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }

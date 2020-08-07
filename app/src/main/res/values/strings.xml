@@ -31,7 +31,7 @@
     <string name="button_previous">Previous</string>
     <string name="button_save">Save</string>
     <string name="button_save_locally">Save locally</string>
-    <string name="button_save_on_google_driver">Save on Google Drive</string>
+    <string name="button_save_on_google_driver">\u0020 Save on Drive (Max 5MB) \u0020</string>
     <string name="button_next">Next</string>
     <string name="button_location">Location</string>
     <string name="button_movements">Movements</string>
@@ -79,6 +79,7 @@
     <string name="example_latitude_longitude_altitude">0.000000</string>
     <string name="altitude">Altitude</string>
     <string name="duration">Duration</string>
+    <string name="seconds">s</string>
     <string name="duration_example">3</string>
     <string name="heading">Heading</string>
     <string name="heading_example">0.000000</string>

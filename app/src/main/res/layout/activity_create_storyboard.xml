@@ -160,7 +160,7 @@
 
     <Button
         android:id="@+id/butt_save_on_google_drive"
-        android:layout_width="213dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="112dp"
@@ -178,7 +178,7 @@
         android:id="@+id/butt_delete"
         android:layout_width="0dp"
         android:layout_height="37dp"
-        android:layout_marginStart="600dp"
+        android:layout_marginStart="570dp"
         android:layout_marginEnd="23dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"

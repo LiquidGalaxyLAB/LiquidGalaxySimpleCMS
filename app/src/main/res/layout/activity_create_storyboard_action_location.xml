@@ -87,13 +87,13 @@
             android:layout_height="wrap_content"
             android:minWidth="150dp"
             android:layout_marginStart="250dp"
-            android:text="@string/latitude"
+            android:text="@string/longitude"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             />
 
         <EditText
-            android:id="@+id/video_url"
+            android:id="@+id/longitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="244dp"
@@ -109,7 +109,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="37.8120"
+            android:text="-122.4783"
             />
 
         <TextView
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:minWidth="150dp"
             android:layout_marginStart="100dp"
-            android:text="@string/longitude"
+            android:text="@string/latitude"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:fontFamily="@font/roboto"
@@ -126,7 +126,7 @@
 
 
         <EditText
-            android:id="@+id/longitude"
+            android:id="@+id/latitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="244dp"
@@ -142,7 +142,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="-122.4783"/>
+            android:text="37.8120" />
 
     </LinearLayout>
 
@@ -209,6 +209,16 @@
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
             android:text="@string/action_default_time_location"/>
+
+        <TextView
+            android:id="@+id/text_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seconds"
+            android:fontFamily="@font/roboto"
+            android:textAlignment="center"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/hint_text_font_size" />
 
     </LinearLayout>
 

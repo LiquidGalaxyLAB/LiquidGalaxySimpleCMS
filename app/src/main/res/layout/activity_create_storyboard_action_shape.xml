@@ -106,7 +106,7 @@
         android:id="@+id/duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="452dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="426dp"
         android:autofillHints="@string/example_latitude_longitude_altitude"
         android:background="@drawable/rectangle_insert_url"
@@ -122,6 +122,20 @@
         android:textColor="@color/textColorClick"
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/text_seconds" />
+
+    <TextView
+        android:id="@+id/text_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="450dp"
+        android:layout_marginBottom="419dp"
+        android:text="@string/seconds"
+        android:fontFamily="@font/roboto"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
