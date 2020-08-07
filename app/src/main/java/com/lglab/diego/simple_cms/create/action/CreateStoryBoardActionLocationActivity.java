@@ -9,8 +9,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -32,16 +35,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * This class is in charge of getting the information of location action
  */
-public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
+public class CreateStoryBoardActionLocationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
     //private static final String TAG_DEBUG = "CreateStoryBoardActionLocationActivity";
 
-    private EditText file_name, longitude, latitude, altitude, duration, heading, tilt, range, altitude_mode;
+    private EditText file_name, longitude, latitude, altitude, duration, heading, tilt, range;
+    private Spinner altitudeModeSpinner;
     private TextView connectionStatus, imageAvailable;
 
     private Handler handler = new Handler();
     private boolean isSave = false;
     private int position = -1;
+    private ArrayAdapter<CharSequence> spinnerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +61,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         heading = findViewById(R.id.heading);
         tilt = findViewById(R.id.tilt);
         range = findViewById(R.id.range);
-        altitude_mode = findViewById(R.id.altitude_mode);
+        altitudeModeSpinner = findViewById(R.id.altitude_mode);
         connectionStatus = findViewById(R.id.connection_status);
         imageAvailable = findViewById(R.id.admin_password);
 
@@ -64,6 +69,13 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);
+
+
+        spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.elevation_types, R.layout.spinner_text);
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        altitudeModeSpinner.setAdapter(spinnerAdapter);
+        altitudeModeSpinner.setOnItemSelectedListener(this);
 
         Intent intent = getIntent();
         POI poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
@@ -107,7 +119,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         heading.setText(String.valueOf(poi.getPoiCamera().getHeading()));
         tilt.setText(String.valueOf(poi.getPoiCamera().getTilt()));
         range.setText(String.valueOf(poi.getPoiCamera().getRange()));
-        altitude_mode.setText(String.valueOf(poi.getPoiCamera().getAltitudeMode()));
+        altitudeModeSpinner.setSelection(spinnerAdapter.getPosition(String.valueOf(poi.getPoiCamera().getAltitudeMode())));
     }
 
     /**
@@ -124,7 +136,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         heading.setText(sharedPreferences.getString(ConstantPrefs.HEADING.name(), ""));
         tilt.setText(sharedPreferences.getString(ConstantPrefs.TILT.name(), ""));
         range.setText(sharedPreferences.getString(ConstantPrefs.RANGE.name(), ""));
-        altitude_mode.setText(sharedPreferences.getString(ConstantPrefs.ALTITUDE_MODE.name(), ""));
+        altitudeModeSpinner.setSelection(spinnerAdapter.getPosition(sharedPreferences.getString(ConstantPrefs.ALTITUDE_MODE.name(), "")));
     }
 
     /**
@@ -153,8 +165,8 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         String headingText = heading.getText().toString();
         String tiltText = tilt.getText().toString();
         String rangeText = range.getText().toString();
-        String altitudeModeText = altitude_mode.getText().toString();
-        if(verificationData(latitudeText, longitudeText, altitudeText, durationText, headingText, tiltText, rangeText, altitudeModeText)){
+        String altitudeModeText = altitudeModeSpinner.getSelectedItem().toString();
+        if(verificationData(latitudeText, longitudeText, altitudeText, durationText, headingText, tiltText, rangeText)){
             saveData(latitudeText, longitudeText, altitudeText, durationText, headingText, tiltText, rangeText, altitudeModeText);
             AtomicBoolean isConnected = new AtomicBoolean(false);
             LGConnectionTest.testPriorConnection(this, isConnected);
@@ -209,9 +221,9 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
         String headingText = heading.getText().toString();
         String tiltText = tilt.getText().toString();
         String rangeText = range.getText().toString();
-        String altitudeModeText = altitude_mode.getText().toString();
+        String altitudeModeText = altitudeModeSpinner.getSelectedItem().toString();
         if(verificationData(latitudeText, longitudeText, altitudeText, durationText, headingText,
-                tiltText, rangeText, altitudeModeText)){
+                tiltText, rangeText)){
             String fileNameText = file_name.getText().toString();
             if(!fileNameText.equals("")){
                 saveData(latitudeText, longitudeText, altitudeText, durationText, headingText, tiltText, rangeText, altitudeModeText);
@@ -271,10 +283,9 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
      * @param headingText heading
      * @param tiltText tilt
      * @param rangeText range
-     * @param altitudeModeText altitude mode
      * @return false if a camp is empty
      */
-    private boolean verificationData(String latitudeText, String longitudeText, String altitudeText, String durationText, String headingText, String tiltText, String rangeText, String altitudeModeText) {
+    private boolean verificationData(String latitudeText, String longitudeText, String altitudeText, String durationText, String headingText, String tiltText, String rangeText) {
         if(latitudeText.equals("")){
             CustomDialogUtility.showDialog(CreateStoryBoardActionLocationActivity.this,  getResources().getString(R.string.activity_create_location_missing_latitude_field_error));
             return false;
@@ -308,12 +319,16 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity {
                     getResources().getString(R.string.activity_create_location_missing_range_field_error));
             return false;
         }
-        if(altitudeModeText.equals("")){
-            CustomDialogUtility.showDialog(CreateStoryBoardActionLocationActivity.this,
-                    getResources().getString(R.string.activity_create_location_missing_altitude_mode_field_error));
-            return false;
-        }
         return  true;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

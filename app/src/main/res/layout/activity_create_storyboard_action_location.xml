@@ -335,24 +335,20 @@
             android:textColor="@color/textColorClick"
             android:textSize="@dimen/primary_text_font_size" />
 
-        <EditText
+        <Spinner
             android:id="@+id/altitude_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="244dp"
-            android:autofillHints="@string/heading_example"
-            android:background="@drawable/rectangle_insert_url"
+            android:background="@drawable/spinner_background"
             android:fontFamily="@font/roboto_thin"
-            android:hint="@string/altitude_mode_example"
             android:inputType="text"
             android:maxLength="30"
             android:singleLine="true"
             android:textAlignment="center"
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/primary_text_font_size"
-            android:textColor="@color/textColorClick"
-            android:imeOptions="actionDone"
-            android:text="clampToGround"/>
+            android:textColor="@color/textColorClick" />
 
     </LinearLayout>
 

@@ -210,15 +210,16 @@
 
 
 
-    <string-array name="actions">
-        <item>Actions</item>
-        <item>Add Graphics</item>
-        <item>Add Shapes</item>
-        <item>Add Movements</item>
-        <item>Add Description</item>
-        <item>Set Timer</item>
-        <item>Add location</item>
+    //Elevation Types
+    <string-array name="elevation_types">
+        <item>absolute</item>
+        <item>clampToGround</item>
+        <item>clampToSeaFloor</item>
+        <item>relativeToGround</item>
+        <item>relativeToSeaFloor</item>
     </string-array>
+
+
     <dimen name="primary_text_font_size">20sp</dimen>
     <dimen name="button_text_font_size">23sp</dimen>
     <dimen name="button_main_text_font_size">25sp</dimen>
