@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.api.client.http.ByteArrayContent;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionBalloonActivity;
 import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionLocationActivity;
@@ -43,6 +45,7 @@ import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +58,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     private static final String TAG_DEBUG = "CreateStoryBoardActivity";
     private static final int PERMISSION_CODE = 1000;
+    private static final long MAX_SIZE = 5242880;
 
     private RecyclerView mRecyclerView;
     List<Action> actions = new ArrayList<>();
@@ -67,7 +71,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     private EditText storyBoardName;
     private Button buttCreate, buttTest, buttStopTest;
-    private TextView connectionStatus, imageAvailable;
+    private TextView connectionStatus, imageAvailable, sizeFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         View topBar = findViewById(R.id.top_bar);
         buttCreate = topBar.findViewById(R.id.butt_create_menu);
         storyBoardName = findViewById(R.id.text_admin_password);
+        sizeFile = findViewById(R.id.size_file);
 
 
         buttTest = findViewById(R.id.butt_test);
@@ -402,6 +407,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             currentStoryBoardGoogleDriveID = null;
             storyBoardName.setText("");
             initRecyclerView();
+            setSizeFile();
             dialog.dismiss();
         });
         cancel.setOnClickListener(v1 -> dialog.dismiss());
@@ -410,9 +416,41 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     @Override
     protected void onResume() {
+        super.onResume();
         loadData();
         rePaintRecyclerView();
-        super.onResume();
+        setSizeFile();
+    }
+
+    /**
+     * Set the current file size
+     */
+    private void setSizeFile() {
+        com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+        storyBoard.setActions(actions);
+        if(actions.size() == 0) {
+            String message = getResources().getString(R.string.size_file) + 0 + " MB";
+            sizeFile.setText(message);
+            sizeFile.setTextColor(Color.BLACK);
+        }else{
+            try {
+                JSONObject jsonStoryboard = storyBoard.pack();
+                ByteArrayContent contentStream = ByteArrayContent.fromString("application/json", jsonStoryboard.toString());
+                long length = contentStream.getLength();
+                long megaBytes = length/1048576;
+                if(length < MAX_SIZE){
+                    DecimalFormat df = new DecimalFormat("####0.00");
+                    String message = getResources().getString(R.string.size_file) + df.format(megaBytes) + " MB" ;
+                    sizeFile.setText(message);
+                    sizeFile.setTextColor(Color.BLACK);
+                }else{
+                    sizeFile.setText(getResources().getString(R.string.message_error_file_size_5MB));
+                    sizeFile.setTextColor(Color.RED);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
