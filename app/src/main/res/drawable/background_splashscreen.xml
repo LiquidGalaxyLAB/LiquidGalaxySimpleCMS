@@ -7,5 +7,4 @@
         <bitmap android:src="@drawable/logo_liquid_galaxy"
             android:gravity="center"/>
     </item>
-
 </layer-list>

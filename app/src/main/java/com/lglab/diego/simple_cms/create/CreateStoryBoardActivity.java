@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionLocationAc
 import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionMovementActivity;
 import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionShapeActivity;
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
@@ -49,6 +51,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This activity is in charge of creating the storyboards with the respective different actions
@@ -67,6 +70,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     private long currentStoryBoardId = Long.MIN_VALUE;
     private String currentStoryBoardGoogleDriveID = null;
     private TestStoryboardThread testStoryboardThread = null;
+    private Handler handler = new Handler();
+
 
 
     private EditText storyBoardName;
@@ -193,11 +198,33 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      * Test the actions of the storyboard
      */
     private void testStoryBoard() {
-        CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
-        testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest);
-        testStoryboardThread.start();
-        buttTest.setVisibility(View.INVISIBLE);
-        buttStopTest.setVisibility(View.VISIBLE);
+        AtomicBoolean isConnected = new AtomicBoolean(false);
+        LGConnectionTest.testPriorConnection(this, isConnected);
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        handler.postDelayed(() -> {
+            if (isConnected.get()) {
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
+                testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest);
+                testStoryboardThread.start();
+                buttTest.setVisibility(View.INVISIBLE);
+                buttStopTest.setVisibility(View.VISIBLE);
+            }
+            loadConnectionStatus(sharedPreferences);
+        }, 1200);
+    }
+
+    /**
+     * Set the connection status on the view
+     */
+    private void loadConnectionStatus(SharedPreferences sharedPreferences) {
+        boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
+        if (isConnected) {
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
+            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
+        } else {
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
+            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ package com.lglab.diego.simple_cms.web_scraping;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
+import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
+import com.lglab.diego.simple_cms.create.TestStoryboardThread;
+import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
@@ -52,7 +56,7 @@ public class WebScraping extends TobBarActivity implements
     private WebScrapingRecyclerAdapter adapter;
     private List<InfoScraping> infoScrapingList = new ArrayList<>();
     private TourGDGThread tourGDG = null;
-
+    private Handler handler = new Handler();
 
     private TextView connectionStatus, imageAvailable;
     private TextView textViewEventName, textViewLocation, textViewDate, textLengthCommunity;
@@ -120,11 +124,19 @@ public class WebScraping extends TobBarActivity implements
     }
 
     private void tour() {
-        CustomDialogUtility.showDialog(WebScraping.this, "Starting the GDG TOUR");
-        tourGDG = new TourGDGThread(infoScrapingList, WebScraping.this, buttTour, buttStopTour);
-        tourGDG.start();
-        buttTour.setVisibility(View.INVISIBLE);
-        buttStopTour.setVisibility(View.VISIBLE);
+        AtomicBoolean isConnected = new AtomicBoolean(false);
+        LGConnectionTest.testPriorConnection(this, isConnected);
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        handler.postDelayed(() -> {
+            if (isConnected.get()) {
+                CustomDialogUtility.showDialog(WebScraping.this, "Starting the GDG TOUR");
+                tourGDG = new TourGDGThread(infoScrapingList, WebScraping.this, buttTour, buttStopTour);
+                tourGDG.start();
+                buttTour.setVisibility(View.INVISIBLE);
+                buttStopTour.setVisibility(View.VISIBLE);
+            }
+            loadConnectionStatus(sharedPreferences);
+        }, 1200);
     }
 
     private void stopTour() {

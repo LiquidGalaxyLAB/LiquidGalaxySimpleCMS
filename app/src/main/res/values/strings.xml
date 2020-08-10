@@ -140,7 +140,7 @@
 
     //Messages
     <string name="activity_connection_success">You are now connected to Liquid Galaxy</string>
-    <string name="activity_connection_error">It was not possible to connect to Liquid Galaxy</string>
+    <string name="activity_connection_error">It was not possible to connect to Liquid Galaxy. \n Please, go to the tab connect and try again.</string>
     <string name="activity_connection_host_port_error">The format for the host and port is not valid. \n For Example, 0.0.0.0:22 is a valid format.</string>
     <string name="activity_create_location_missing_field_error">Please, fill in all the fields</string>
     <string name="activity_create_location_missing_file_name">Please, fill the location name field</string>
