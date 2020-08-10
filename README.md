@@ -24,7 +24,7 @@ There are 2 forms to install the project.
 
 ### First
 
-It is possible to download the last apk in Releases or [clicking in here](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/releases/download/0.2/SimpleCMS-0.2.apk). After download it in your tablet, go to the where the project has been download it. For example, My Files-> Download History and click on the apk. 
+It is possible to download the last apk in Releases or [clicking in here](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/releases/download/0.2/SimpleCMS-0.2.apk). After download in your tablet, go to the where the project has been downloaded. For example, My Files-> Downloaded History and click on the apk. 
 
 #### Remember
 
@@ -32,6 +32,6 @@ After clicking on the apk, the tablet could ask for permissions. Give the permis
 
 ### Second
 
-Download the project locally. Afterwards, open the project using Android Studio. Then, connect a device or emulator and click on the run button. For instructions on how to do this, [check out the Android Developers official guide](https://developer.android.com/training/basics/firstapp/running-app)
+Downloaded the project locally. Afterwards, open the project using Android Studio. Then, connect a device or emulator and click on the run button. For instructions on how to do this, [check out the Android Developers official guide](https://developer.android.com/training/basics/firstapp/running-app)
 
 
