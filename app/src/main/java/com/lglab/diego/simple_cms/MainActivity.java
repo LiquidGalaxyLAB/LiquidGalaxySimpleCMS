@@ -108,8 +108,7 @@ public class MainActivity extends TobBarActivity {
         editor.putString(ConstantPrefs.USER_PASSWORD.name(), passwordText);
 
         if (!isValidHostNPort(hostPort)) {
-            String message = getResources().getString(R.string.activity_connection_host_port_error);
-            CustomDialogUtility.showDialog(MainActivity.this, message);
+            CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_host_port_error));
             editor.apply();
             return;
         }

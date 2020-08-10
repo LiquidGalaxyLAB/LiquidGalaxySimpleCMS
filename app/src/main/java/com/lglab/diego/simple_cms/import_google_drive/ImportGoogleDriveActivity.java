@@ -283,6 +283,9 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
     public void onNoteClick(int position) {
         StoryBoard selected = storyBoards.get(position);
         if(isSignedIn()){
+            Dialog dialog = CustomDialogUtility.getDialog(ImportGoogleDriveActivity.this,
+                    getResources().getString(R.string.message_downloading_file));
+            dialog.show();
             GoogleDriveManager.DriveServiceHelper.readFile(selected.getStoryBoardFileId()).addOnSuccessListener((result) -> {
                 SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
                 editor.putString(ConstantPrefs.STORY_BOARD_JSON.name(), result.second);
@@ -290,6 +293,7 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
                 Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
                 intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name(), selected.getStoryBoardFileId());
                 startActivity(intent);
+                dialog.dismiss();
             });
         }else{
             requestSignIn();

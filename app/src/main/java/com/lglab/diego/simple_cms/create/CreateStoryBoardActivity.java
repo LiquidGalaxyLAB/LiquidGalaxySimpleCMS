@@ -287,10 +287,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CODE);
                 } else {
-                    Log.w(TAG_DEBUG, "GOOD");
                     packSaveStoryboard();
                 }
-
             }
         } else {
             CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,

@@ -1,5 +1,6 @@
 package com.lglab.diego.simple_cms.create;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.util.Log;
 
@@ -145,23 +146,28 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
      * Export the file and save it in google drive
      */
     public void setFileGoogleDrive(){
-
+        Dialog dialog = CustomDialogUtility.getDialog(ExportGoogleDriveActivity.this,
+                getResources().getString(R.string.message_uploading_file));
+        dialog.show();
         if(fileId == null) {
             GoogleDriveManager.DriveServiceHelper.createFile(jsonNameToUpload)
                     .addOnSuccessListener((result) -> GoogleDriveManager.DriveServiceHelper.saveFile(result, jsonNameToUpload, jsonToUpload, activity)
                             .addOnFailureListener(exception -> {
+                                dialog.dismiss();
                                 CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                         getResources().getString(R.string.message_failed_upload));
                                 this.jsonToUpload = null;
                                 this.jsonNameToUpload = null;
                             })
                             .addOnSuccessListener(result2 -> {
+                                dialog.dismiss();
                                 CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                         getResources().getString(R.string.message_success_upload));
                                 this.jsonToUpload = null;
                                 this.jsonNameToUpload = null;
                             }))
                     .addOnFailureListener(exception -> {
+                        dialog.dismiss();
                         CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                 getResources().getString(R.string.message_failed_upload));
                         this.jsonToUpload = null;
@@ -170,12 +176,14 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
         }else{
             GoogleDriveManager.DriveServiceHelper.saveFile(fileId, jsonNameToUpload, jsonToUpload, activity)
                     .addOnSuccessListener((result) -> {
+                        dialog.dismiss();
                         CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                 getResources().getString(R.string.message_success_upload));
                         this.jsonToUpload = null;
                         this.jsonNameToUpload = null;
                     })
                     .addOnFailureListener((result) -> {
+                        dialog.dismiss();
                         Log.w(TAG_DEBUG, "RESULT ERROR:" + result.getMessage());
                         CustomDialogUtility.showDialog(ExportGoogleDriveActivity.this,
                                 getResources().getString(R.string.message_failed_upload));

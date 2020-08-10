@@ -172,6 +172,8 @@
     <string name="message_update_web_scraping">You need first to select a option to download the data</string>
     <string name="message_downloading_data_tcs">Downloading data from Tech Conference Spain</string>
     <string name="message_downloading_data_gdg">Downloading data from GDG</string>
+    <string name="message_downloading_file">Downloading File</string>
+    <string name="message_uploading_file">Uploading File</string>
 
     //Google Drive
     <string name="message_google_drive_success_log_in">Searching files from Google Drive</string>

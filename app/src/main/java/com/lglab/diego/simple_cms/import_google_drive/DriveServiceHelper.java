@@ -187,23 +187,11 @@ public class DriveServiceHelper {
             String pageToken = null;
             do {
                 FileList result = mDriveService.files().list()
-                        .setQ("'"+ FOLDER_ID + "' in parents and mimeType = 'application/json'")
+                        .setQ("'"+ FOLDER_ID + "' in parents and mimeType = 'application/json' and trashed = false")
                         .setSpaces("drive")
                         .setFields("nextPageToken, files(id, name)")
                         .setPageToken(pageToken)
                         .execute();
-
-
-                Log.w(TAG_DEBUG, "FILELIST KIND: " + result.getKind());
-                Log.w(TAG_DEBUG, "FILELIST INCOMPLET SEARCH: " + result.getIncompleteSearch());
-                Log.w(TAG_DEBUG, "FILELIST INCOMPLET SIZE: " + result.getFiles().size());
-
-
-                for (File file: result.getFiles()) {
-                    Log.w(TAG_DEBUG, "FILE ID: " + file.getId());
-                    Log.w(TAG_DEBUG, "FILE NAME: " + file.getName());
-
-                }
 
                 fileList.addAll(result.getFiles());
                 pageToken = result.getNextPageToken();
