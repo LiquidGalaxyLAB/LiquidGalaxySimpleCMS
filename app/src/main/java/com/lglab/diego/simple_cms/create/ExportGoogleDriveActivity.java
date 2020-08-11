@@ -113,7 +113,8 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
         GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener(googleAccount -> {
                     Log.w(TAG_DEBUG, "Signed in as " + googleAccount.getEmail());
-                    CustomDialogUtility.showDialog(this,"Signed in as " + googleAccount.getEmail());
+                    Dialog dialog = CustomDialogUtility.getDialog(ExportGoogleDriveActivity.this,"Signed in as " + googleAccount.getEmail());
+                    dialog.show();
 
                     // Use the authenticated account to sign in to the Drive service.
                     GoogleAccountCredential credential =
@@ -125,6 +126,7 @@ public class ExportGoogleDriveActivity extends TobBarActivity {
                             .build();
 
                     GoogleDriveManager.DriveServiceHelper = new DriveServiceHelper(googleDriveService);
+                    dialog.dismiss();
                     setFileGoogleDrive();
                 })
                 .addOnFailureListener(exception ->  {

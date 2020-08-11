@@ -451,13 +451,13 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      * Set the current file size
      */
     private void setSizeFile() {
-        com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-        storyBoard.setActions(actions);
         if(actions.size() == 0) {
             String message = getResources().getString(R.string.size_file) + 0 + " MB";
             sizeFile.setText(message);
             sizeFile.setTextColor(Color.BLACK);
         }else{
+            com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+            storyBoard.setActions(actions);
             try {
                 JSONObject jsonStoryboard = storyBoard.pack();
                 ByteArrayContent contentStream = ByteArrayContent.fromString("application/json", jsonStoryboard.toString());
