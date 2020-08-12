@@ -70,7 +70,6 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="Prueba"
             />
 
 
@@ -109,7 +108,6 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="-122.4783"
             />
 
         <TextView
@@ -142,7 +140,7 @@
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
-            android:text="37.8120" />
+            />
 
     </LinearLayout>
 
@@ -178,8 +176,7 @@
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
-            android:imeOptions="actionDone"
-            android:text="2.0"/>
+            android:imeOptions="actionDone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -198,7 +195,7 @@
             android:autofillHints="@string/example_latitude_longitude_altitude"
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto_thin"
-            android:hint="@string/duration_example"
+            android:hint="@string/action_default_time_location"
             android:inputType="number"
             android:maxLength="30"
             android:minWidth="244dp"
@@ -207,8 +204,7 @@
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
-            android:imeOptions="actionDone"
-            android:text="@string/action_default_time_location"/>
+            android:imeOptions="actionDone" />
 
         <TextView
             android:id="@+id/text_seconds"
@@ -254,8 +250,7 @@
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
-            android:imeOptions="actionDone"
-            android:text="10"/>
+            android:imeOptions="actionDone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -283,8 +278,7 @@
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
-            android:imeOptions="actionDone"
-            android:text="90.0"/>
+            android:imeOptions="actionDone" />
 
     </LinearLayout>
 
@@ -322,8 +316,7 @@
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/primary_text_font_size"
             android:textColor="@color/textColorClick"
-            android:imeOptions="actionDone"
-            android:text="10"/>
+            android:imeOptions="actionDone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -371,7 +364,8 @@
             android:text="@string/button_test"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/button_text_font_size" />
+            android:textSize="@dimen/button_text_font_size"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/butt_delete"
@@ -387,7 +381,8 @@
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/button_text_font_size"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/butt_cancel"
@@ -402,7 +397,8 @@
             android:text="@string/button_cancel"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/button_text_font_size" />
+            android:textSize="@dimen/button_text_font_size"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/butt_add"
@@ -417,7 +413,8 @@
             android:text="@string/button_add"
             android:textAllCaps="false"
             android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/button_text_font_size" />
+            android:textSize="@dimen/button_text_font_size"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 

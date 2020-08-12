@@ -21,61 +21,26 @@
 
 
     <TextView
-        android:id="@+id/image_text"
-        android:layout_width="650dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="400dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/roboto"
-        android:gravity="center_horizontal|top"
-        android:text="@string/image_not_available_on_screen"
-        android:textAlignment="center"
-        android:textColor="@color/textColorClick"
-        android:textSize="@dimen/simple_cms"
-        app:layout_constraintBottom_toTopOf="@+id/text_based_kevin"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <TextView
         android:id="@+id/connection_status"
         android:layout_width="37dp"
         android:layout_height="37dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="78dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
         app:layout_constraintBottom_toTopOf="@+id/text_view_city"
-        app:layout_constraintEnd_toEndOf="@+id/image_text"
+        app:layout_constraintEnd_toEndOf="@+id/text_based_kevin"
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/butt_gdg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="112dp"
-        android:layout_marginBottom="536dp"
-        android:background="@drawable/button_primary"
-        android:elevation="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:minWidth="200dp"
-        android:minHeight="80dp"
-        android:text="@string/button_gdg"
-        android:textAllCaps="false"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/button_text_font_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintVertical_bias="0.555" />
 
     <TextView
         android:id="@+id/text_based_kevin"
         android:layout_width="650dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="400dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
         android:text="@string/text_based_kevin"
@@ -83,7 +48,9 @@
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintBottom_toTopOf="@+id/text_view_city"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:layout_constraintVertical_bias="0.763" />
 
     <TextView
         android:id="@+id/text_view_event_name"
@@ -96,7 +63,6 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/my_recycler_view"
         app:layout_constraintEnd_toEndOf="@id/text_view_city" />
 
@@ -111,7 +77,6 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/my_recycler_view"
         app:layout_constraintEnd_toEndOf="@id/text_view_country" />
 
@@ -126,7 +91,6 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/my_recycler_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -156,7 +120,6 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/butt_tour"
         app:layout_constraintEnd_toEndOf="parent" />
 

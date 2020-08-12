@@ -92,12 +92,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.duration = balloon.duration;
     }
 
-    public static Balloon getBalloon(com.lglab.diego.simple_cms.db.entity.Balloon actionDB) {
-        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
-        Uri imageUri = actionDB.imageUriBalloon != null ? Uri.parse(actionDB.imageUriBalloon) : null;
-        return  new Balloon(actionDB.actionId, poi, actionDB.descriptionBalloon, imageUri,
-                actionDB.imagePathBalloon, actionDB.videoPathBalloon, actionDB.durationBalloon);
-    }
 
     public POI getPoi() {
         return poi;
@@ -169,6 +163,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         if(imagePath != null){
             encodedImage = encodeFileToBase64Binary();
         }
+        if(encodedImage == null) encodedImage = "";
         Log.w(TAG_DEBUG, "encodedImage: " + encodedImage);
         obj.put("encodedImage", encodedImage);
 

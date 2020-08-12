@@ -45,18 +45,17 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
     private List<InfoScraping> infoScrapings;
     private List<InfoScraping> infoScrapingsFull;
     private WebScrapingRecyclerAdapter.OnNoteListener mOnNoteListener;
-    private TextView connectionStatus, imageAvailable;
+    private TextView connectionStatus;
 
 
     WebScrapingRecyclerAdapter(AppCompatActivity activity, List<InfoScraping> infoScrapings,
                                WebScrapingRecyclerAdapter.OnNoteListener onNoteListener,
-                               TextView connectionStatus, TextView imageAvailable) {
+                               TextView connectionStatus) {
         this.activity = activity;
         this.infoScrapings = infoScrapings;
         infoScrapingsFull = new ArrayList<>(infoScrapings);
         this.mOnNoteListener = onNoteListener;
         this.connectionStatus = connectionStatus;
-        this.imageAvailable = imageAvailable;
     }
 
     @NonNull
@@ -173,10 +172,8 @@ public class WebScrapingRecyclerAdapter extends RecyclerView.Adapter<WebScraping
             boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
             if (isConnected) {
                 connectionStatus.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_status_connection_green));
-                imageAvailable.setText(activity.getResources().getString(R.string.image_available_on_screen));
             }else{
                 connectionStatus.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_status_connection_red));
-                imageAvailable.setText(activity.getResources().getString(R.string.image_not_available_on_screen));
             }
         }
 

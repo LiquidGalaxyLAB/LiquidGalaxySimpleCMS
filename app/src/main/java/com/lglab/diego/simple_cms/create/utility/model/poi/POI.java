@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 import com.lglab.diego.simple_cms.create.utility.IJsonPacker;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
-import com.lglab.diego.simple_cms.db.entity.poi.SimplePOI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,24 +65,6 @@ public class POI extends Action implements IJsonPacker, Parcelable {
         super(poi.getId(), ActionIdentifier.LOCATION_ACTIVITY.getId());
         this.poiLocation = poi.poiLocation;
         this.poiCamera = poi.poiCamera;
-    }
-
-    public static POI getPOI(com.lglab.diego.simple_cms.db.entity.poi.POI poi) {
-        POILocation poiLocation = new POILocation(poi.namePOI, poi.longitudePOI,
-                poi.latitudePOI, poi.altitudePOI);
-        POICamera poiCamera = new POICamera(poi.headingPOI, poi.tiltPOI,
-                poi.rangePOI, poi.altitudeModePOI, poi.durationPOI
-        );
-        return new POI(poi.actionId, poiLocation, poiCamera);
-    }
-
-    public static POI getSimplePOI(long id, SimplePOI simplePOI) {
-        POILocation poiLocation = new POILocation(simplePOI.namePOI, simplePOI.longitudePOI,
-                simplePOI.latitudePOI, simplePOI.altitudePOI);
-        POICamera poiCamera = new POICamera(simplePOI.headingPOI, simplePOI.tiltPOI,
-                simplePOI.rangePOI, simplePOI.altitudeModePOI, simplePOI.durationPOI
-        );
-        return new POI(id, poiLocation, poiCamera);
     }
 
 

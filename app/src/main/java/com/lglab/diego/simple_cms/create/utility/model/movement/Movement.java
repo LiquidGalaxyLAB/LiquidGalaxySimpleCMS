@@ -71,11 +71,6 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.duration = movement.duration;
     }
 
-    public static Movement getMovement(com.lglab.diego.simple_cms.db.entity.Movement actionDB) {
-        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
-        return new Movement(actionDB.actionId, poi, actionDB.newHeading, actionDB.newTilt, actionDB.isOrbitMode, actionDB.duration);
-    }
-
     public POI getPoi() {
         return poi;
     }

@@ -187,7 +187,7 @@ public class MainActivity extends TobBarActivity {
             if (dialog.isShowing()){
                 LGConnectionManager.getInstance().removeCommandFromLG(lgCommand);
                 dialog.dismiss();
-                CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_error));
+                CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_error_connect));
                 SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
                 editor.apply();

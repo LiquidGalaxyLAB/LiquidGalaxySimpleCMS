@@ -5,14 +5,12 @@ import androidx.room.PrimaryKey;
 
 
 /**
- * This class represent an Action in the DB
+ * This class represent a StoryBoard in the DB
  */
 @Entity
-public class Action {
+public class StoryBoardDB {
 
     @PrimaryKey(autoGenerate = true)
-    public long actionId;
-    public long actionStoryBoardID;
-    public int type;
-
+    public long storyBoardId;
+    public String name;
 }

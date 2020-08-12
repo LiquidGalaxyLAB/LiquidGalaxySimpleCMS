@@ -71,11 +71,6 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         this.duration = shape.duration;
     }
 
-    public static Shape getShape(com.lglab.diego.simple_cms.db.entity.shape.Shape actionDB) {
-        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
-        List<Point> points = Point.getPoints(actionDB.points);
-        return new Shape(actionDB.actionId, points, actionDB.isExtrude, poi, actionDB.duration);
-    }
 
 
     public List getPoints() {

@@ -1,5 +1,6 @@
 package com.lglab.diego.simple_cms.web_scraping;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,8 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
-import com.lglab.diego.simple_cms.create.TestStoryboardThread;
 import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
@@ -34,7 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,8 +60,8 @@ public class WebScraping extends TobBarActivity implements
     private TourGDGThread tourGDG = null;
     private Handler handler = new Handler();
 
-    private TextView connectionStatus, imageAvailable;
-    private TextView textViewEventName, textViewLocation, textViewDate, textLengthCommunity;
+    private TextView connectionStatus;
+    private TextView textLengthCommunity;
     private Button buttScraping, buttTour, buttStopTour;
 
     @Override
@@ -71,15 +73,10 @@ public class WebScraping extends TobBarActivity implements
         buttScraping = topBar.findViewById(R.id.butt_scraping);
         buttTour = findViewById(R.id.butt_tour);
         buttStopTour = findViewById(R.id.butt_stop_tour);
-        Button buttGDG = findViewById(R.id.butt_gdg);
         Button buttUpdate = findViewById(R.id.butt_refresh);
         mRecyclerView = findViewById(R.id.my_recycler_view);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.image_text);
-        textViewEventName = findViewById(R.id.text_view_event_name);
-        textViewLocation = findViewById(R.id.text_view_city);
-        textViewDate = findViewById(R.id.text_view_country);
         textLengthCommunity = findViewById(R.id.text_length_community);
         EditText actionSearch = findViewById(R.id.action_search);
 
@@ -104,7 +101,6 @@ public class WebScraping extends TobBarActivity implements
 
         changeButtonClickableBackgroundColor();
 
-        buttGDG.setOnClickListener(view -> scrappingGDG());
         buttUpdate.setOnClickListener(view -> updateScraping());
     }
 
@@ -119,7 +115,7 @@ public class WebScraping extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        adapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this, connectionStatus, imageAvailable);
+        adapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this, connectionStatus);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -149,24 +145,11 @@ public class WebScraping extends TobBarActivity implements
      * Refresh the scraping
      */
     private void updateScraping() {
-        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
-        int refreshWebScraping = sharedPreferences.getInt(Constant.REFRESH_WEB_SCRAPING.name(), 0);
-        if (refreshWebScraping == 2) {
-            scrappingGDG();
-        } else {
-            CustomDialogUtility.showDialog(WebScraping.this, getResources().getString(R.string.message_update_web_scraping));
-        }
-    }
-
-    /**
-     * Create the connection to the Google Meet GDG
-     */
-    private void scrappingGDG() {
-        CustomDialogUtility.showDialog(WebScraping.this, getResources().getString(R.string.message_downloading_data_gdg));
+        Dialog dialog = CustomDialogUtility.getDialog(WebScraping.this, getResources().getString(R.string.message_downloading_data_gdg));
+        dialog.show();
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 2);
         editor.apply();
-        setTableTitle(2);
         new Thread(() -> {
             try {
                 chargeData();
@@ -183,6 +166,7 @@ public class WebScraping extends TobBarActivity implements
                 infoScraping.setInfoScrappingList(infoScrapingList);
                 editor.putString(Constant.INFO_WEB_SCRAPING.name(), infoScraping.pack().toString());
                 editor.apply();
+                dialog.dismiss();
             } catch (IOException e) {
                 CustomDialogUtility.showDialog(this, getResources().getString(R.string.message_error_connection));
                 Log.w(TAG_DEBUG, "WEB SCRAPPING EXCEPTION: " + e.getMessage());
@@ -230,18 +214,10 @@ public class WebScraping extends TobBarActivity implements
         loadPreviousData();
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         loadConnectionStatus(sharedPreferences);
-        setUI(sharedPreferences);
+        setLengthCommunity();
         initRecyclerView();
     }
 
-    /**
-     * Set UI when resume the activity
-     */
-    private void setUI(SharedPreferences sharedPreferences) {
-        int refreshWebScraping = sharedPreferences.getInt(Constant.REFRESH_WEB_SCRAPING.name(), 0);
-        setTableTitle(refreshWebScraping);
-        setLengthCommunity();
-    }
 
     /**
      * Set the length text
@@ -249,21 +225,8 @@ public class WebScraping extends TobBarActivity implements
     private void setLengthCommunity() {
         String length = "There is " + infoScrapingList.size() + " communities";
         textLengthCommunity.setText(length);
-        textLengthCommunity.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Set the titles of the recycler view
-     *
-     * @param refreshWebScraping the type of info download it
-     */
-    private void setTableTitle(int refreshWebScraping) {
-        if (refreshWebScraping != 0) {
-            textViewEventName.setVisibility(View.VISIBLE);
-            textViewLocation.setVisibility(View.VISIBLE);
-            textViewDate.setVisibility(View.VISIBLE);
-        }
-    }
 
     /**
      * Load the previous web scrapping to the recyclerview
@@ -280,6 +243,36 @@ public class WebScraping extends TobBarActivity implements
             } catch (JSONException jsonException) {
                 Log.w(TAG_DEBUG, "ERROR CONVERTING JSON: " + jsonException.getMessage());
             }
+        }else{
+            readFileCache();
+        }
+    }
+
+    private void readFileCache(){
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(getAssets().open("gdg.txt"), StandardCharsets.UTF_8));
+
+            StringBuilder string = new StringBuilder();
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                string.append(mLine);
+            }
+            InfoScrapingList infoScraping = new InfoScrapingList();
+            JSONObject jsonInfoWebScraping = new JSONObject(string.toString());
+            infoScraping.unpack(jsonInfoWebScraping);
+            infoScrapingList = infoScraping.getInfoScrappingList();
+        } catch (IOException | JSONException e) {
+            Log.w(TAG_DEBUG, "ERROR READING FILE: " + e.getMessage());
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.w(TAG_DEBUG, "ERROR CLOSING: " + e.getMessage());
+                }
+            }
         }
     }
 
@@ -291,10 +284,8 @@ public class WebScraping extends TobBarActivity implements
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         } else {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 

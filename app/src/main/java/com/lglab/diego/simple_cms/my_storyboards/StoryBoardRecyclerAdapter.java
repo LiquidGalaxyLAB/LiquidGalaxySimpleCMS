@@ -15,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.db.AppDatabase;
+import com.lglab.diego.simple_cms.db.entity.StoryBoardDB;
 
 import java.util.List;
 
@@ -29,12 +29,12 @@ public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRe
 
 
     private AppCompatActivity activity;
-    private List<StoryBoard> storyBoards;
+    private List<StoryBoardDB> storyBoardsDB;
     private StoryBoardRecyclerAdapter.OnNoteListener mOnNoteListener;
 
-    StoryBoardRecyclerAdapter(AppCompatActivity activity, List<StoryBoard> storyBoards, StoryBoardRecyclerAdapter.OnNoteListener onNoteListener) {
+    StoryBoardRecyclerAdapter(AppCompatActivity activity, List<StoryBoardDB> storyBoardsDB, StoryBoardRecyclerAdapter.OnNoteListener onNoteListener) {
         this.activity = activity;
-        this.storyBoards = storyBoards;
+        this.storyBoardsDB = storyBoardsDB;
         this.mOnNoteListener = onNoteListener;
     }
 
@@ -48,13 +48,13 @@ public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRe
     @Override
     public void onBindViewHolder(@NonNull StoryBoardRecyclerAdapter.ViewHolder holder, int position) {
         Log.w(TAG_DEBUG, "onBindViewHolder called");
-        StoryBoard currentItem = storyBoards.get(position);
-        holder.fileNameText.setText(currentItem.getName());
+        StoryBoardDB currentItem = storyBoardsDB.get(position);
+        holder.fileNameText.setText(currentItem.name);
     }
 
     @Override
     public int getItemCount() {
-        return storyBoards.size();
+        return storyBoardsDB.size();
     }
 
 
@@ -108,9 +108,9 @@ public class StoryBoardRecyclerAdapter extends RecyclerView.Adapter<StoryBoardRe
             dialog.show();
             ok.setOnClickListener(v1 -> {
                 AppDatabase db = AppDatabase.getAppDatabase(itemView.getContext());
-                StoryBoard storyBoard = storyBoards.get(getAdapterPosition());
-                db.storyBoardDao().deleteStoryBoardFormRecyclerView(com.lglab.diego.simple_cms.db.entity.StoryBoard.getStoryBoardDBModel(storyBoard));
-                storyBoards.remove(getAdapterPosition());
+                StoryBoardDB storyBoardDB = storyBoardsDB.get(getAdapterPosition());
+                db.storyBoardDao().deleteStoryBoardDBWithJson(storyBoardDB);
+                storyBoardsDB.remove(getAdapterPosition());
                 notifyItemRemoved(getAdapterPosition());
                 dialog.dismiss();
             });

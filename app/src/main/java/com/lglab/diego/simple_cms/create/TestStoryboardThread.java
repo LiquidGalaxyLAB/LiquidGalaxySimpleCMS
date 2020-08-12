@@ -24,13 +24,18 @@ public class TestStoryboardThread implements Runnable {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private List<Action> actions;
     private AppCompatActivity activity;
-    private Button buttTest, buttStop;
+    private Button buttTest, buttStopTest, buttDemo, buttDemoStop;
+    private final boolean isDemo;
 
-    TestStoryboardThread(List<Action> actions, AppCompatActivity activity, Button buttTest, Button buttStop){
+    TestStoryboardThread(List<Action> actions, AppCompatActivity activity, Button buttTest,
+                         Button buttStopTest, Button buttDemo, Button buttDemoStop, boolean isDemo){
         this.actions = actions;
         this.activity = activity;
         this.buttTest = buttTest;
-        this.buttStop = buttStop;
+        this.buttStopTest = buttStopTest;
+        this.buttDemo = buttDemo;
+        this.buttDemoStop = buttDemoStop;
+        this.isDemo = isDemo;
     }
 
     void start() {
@@ -89,8 +94,17 @@ public class TestStoryboardThread implements Runnable {
         actionController.cleanShapeKML(500);
         actionController.cleanFileKMLs(500);
         activity.runOnUiThread(() -> {
-            buttTest.setVisibility(View.VISIBLE);
-            buttStop.setVisibility(View.INVISIBLE);
+            if(isDemo){
+                buttDemo.setVisibility(View.VISIBLE);
+                buttDemoStop.setVisibility(View.INVISIBLE);
+                buttTest.setClickable(true);
+                buttStopTest.setClickable(true);
+            }else{
+                buttTest.setVisibility(View.VISIBLE);
+                buttStopTest.setVisibility(View.INVISIBLE);
+                buttDemo.setClickable(true);
+                buttDemoStop.setClickable(true);
+            }
         });
     }
 }

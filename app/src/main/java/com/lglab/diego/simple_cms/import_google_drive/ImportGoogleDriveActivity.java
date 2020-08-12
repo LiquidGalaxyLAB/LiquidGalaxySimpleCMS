@@ -260,7 +260,10 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
                 intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name(), selected.getStoryBoardFileId());
                 startActivity(intent);
                 dialog.dismiss();
-            });
+            }).addOnFailureListener( (result -> {
+                dialog.dismiss();
+                CustomDialogUtility.showDialog(ImportGoogleDriveActivity.this, "It was not possible to download the files");
+            }));
         }else{
             requestSignIn();
         }
