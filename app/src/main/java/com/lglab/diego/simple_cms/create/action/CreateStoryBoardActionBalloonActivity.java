@@ -44,7 +44,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE_IMAGE = 1001;
 
-    private TextView connectionStatus, imageAvailable,
+    private TextView connectionStatus,
             locationName, locationNameTitle;
 
     private EditText description, videoURL, duration;
@@ -63,7 +63,6 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_balloon);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         description = findViewById(R.id.description);
@@ -260,10 +259,8 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         } else {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 }

@@ -45,7 +45,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
     private static final String TAG_DEBUG = "CreateStoryBoardActionShapeActivity";
 */
 
-    private TextView connectionStatus, imageAvailable,
+    private TextView connectionStatus,
             locationName, locationNameTitle;
     private EditText duration;
 
@@ -64,7 +64,6 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_shape);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
@@ -231,10 +230,8 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         }else{
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 

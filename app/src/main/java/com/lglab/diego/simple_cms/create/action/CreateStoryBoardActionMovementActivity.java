@@ -36,7 +36,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
     //private static final String TAG_DEBUG = "CreateStoryBoardActionMovementActivity";
 
     private TextView seekBarValueHeading, seekBarValueTilt,
-            oldHeading, oldTilt, connectionStatus, imageAvailable,
+            oldHeading, oldTilt, connectionStatus,
             locationName, locationNameTitle;
     private EditText duration;
     private SeekBar seekBarHeading, seekBarTilt;
@@ -57,7 +57,6 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         oldHeading = findViewById(R.id.old_heading);
         oldTilt = findViewById(R.id.old_tilt);
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
@@ -249,10 +248,8 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         }else{
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 }

@@ -41,7 +41,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
 
     private EditText file_name, longitude, latitude, altitude, duration, heading, tilt, range;
     private Spinner altitudeModeSpinner;
-    private TextView connectionStatus, imageAvailable;
+    private TextView connectionStatus;
 
     private Handler handler = new Handler();
     private boolean isSave = false;
@@ -63,7 +63,6 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
         range = findViewById(R.id.range);
         altitudeModeSpinner = findViewById(R.id.altitude_mode);
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
 
         Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
@@ -147,10 +146,8 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         }else{
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 

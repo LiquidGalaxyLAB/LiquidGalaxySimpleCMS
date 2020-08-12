@@ -84,7 +84,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     private EditText storyBoardName;
     private Button buttCreate, buttTest, buttStopTest, buttDemo, buttDemoStop;
-    private TextView connectionStatus, imageAvailable, sizeFile;
+    private TextView connectionStatus, sizeFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
         View topBar = findViewById(R.id.top_bar);
         buttCreate = topBar.findViewById(R.id.butt_create_menu);
-        storyBoardName = findViewById(R.id.text_admin_password);
+        storyBoardName = findViewById(R.id.text_name);
         sizeFile = findViewById(R.id.size_file);
 
 
@@ -112,7 +112,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         Button buttSaveGoogleDrive = findViewById(R.id.butt_save_on_google_drive);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
 
         //Charging data for other activities
         //MyStoryboards
@@ -305,10 +304,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         } else {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
-            imageAvailable.setText(getResources().getString(R.string.image_not_available_on_screen));
         }
     }
 
@@ -566,7 +563,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
         }
     }
 

@@ -12,40 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="100dp">
 
         <TextView
-            android:id="@+id/admin_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="635dp"
             android:layout_marginStart="300dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/image_not_available_on_screen"
-            android:textAlignment="center"
-            android:textColor="@color/textColorClick"
-            android:textSize="@dimen/simple_cms" />
-
-        <TextView
-            android:id="@+id/connection_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
-            android:layout_marginStart="-50dp"
-            android:background="@drawable/ic_status_connection_red"
-            android:fontFamily="@font/roboto" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="60dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="350dp"
             android:fontFamily="@font/roboto"
             android:text="@string/location_name"
             android:textColor="@color/textColorClick"
@@ -71,6 +43,15 @@
             android:textColor="@color/textColorClick"
             android:imeOptions="actionDone"
             />
+
+        <TextView
+            android:id="@+id/connection_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1dp"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/ic_status_connection_red"
+            android:fontFamily="@font/roboto" />
 
 
     </LinearLayout>

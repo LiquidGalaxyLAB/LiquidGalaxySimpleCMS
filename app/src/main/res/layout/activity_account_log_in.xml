@@ -45,13 +45,13 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toBottomOf="@+id/text_admin_password"
-        app:layout_constraintEnd_toStartOf="@+id/text_admin_password"
+        app:layout_constraintBottom_toBottomOf="@+id/text_name"
+        app:layout_constraintEnd_toStartOf="@+id/text_name"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/text_admin_password"
+        android:id="@+id/text_name"
         android:layout_width="302dp"
         android:layout_height="35dp"
         android:layout_marginTop="0dp"
@@ -87,7 +87,7 @@
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_admin_password"
+        app:layout_constraintTop_toBottomOf="@+id/text_name"
         app:layout_constraintVertical_bias="0.412" />
 
     <Button
@@ -121,8 +121,8 @@
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/text_admin_password"
-        app:layout_constraintEnd_toStartOf="@+id/text_admin_password"
+        app:layout_constraintBottom_toBottomOf="@+id/text_name"
+        app:layout_constraintEnd_toStartOf="@+id/text_name"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -181,7 +181,7 @@
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_admin_password" />
+        app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
     <TextView
         android:id="@+id/confirm_new_admin_password"
