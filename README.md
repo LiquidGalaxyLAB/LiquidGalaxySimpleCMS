@@ -18,7 +18,7 @@ On the other hand, Simple CMS downloads community names, city, country and locat
 ## Deployment
 
 ### IMPORTANT
-The min android is <strong>8.0 (API level 26)</strong>. Also, remember to install the USB of OEM controllers of your tablet (for windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb).
+In order to run the project, it requires Android 8.0 Oreo and up, also, you should have at least a 10-inch tablet. Finally, remember to install the USB of OEM controllers of your tablet (for windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb).
 
 There are 2 ways to install the project.
 
