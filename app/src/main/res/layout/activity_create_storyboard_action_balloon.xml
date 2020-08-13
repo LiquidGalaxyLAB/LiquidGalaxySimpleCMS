@@ -61,7 +61,7 @@
             android:id="@+id/description"
             android:layout_width="420dp"
             android:layout_height="300dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginEnd="56dp"
             android:autofillHints="@string/hint_insert_text"
             android:background="@drawable/rectangle_insert_url"
             android:fontFamily="@font/roboto"
@@ -199,7 +199,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <Button

@@ -64,6 +64,7 @@
     <string name="menu_connect">Connect</string>
     <string name="menu_external_api">External API</string>
     <string name="menu_account">Account</string>
+    <string name="menu_about">About</string>
 
     <string name="account_username">Username</string>
     <string name="account_password">Password</string>
@@ -131,11 +132,14 @@
     <string name="tittle_import_google_drive">Import</string>
     <string name="tittle_connect">Connect</string>
     <string name="tittle_account">Account</string>
+    <string name="tittle_about">About</string>
+    <string name="tittle_web_scraping">Web Scraping</string>
     <string name="tittle_main_activity">Main Activity</string>
     <string name="toast">Toast</string>
 
     //Image Label
     <string name="label_logo">Logo Liquid Galaxy</string>
+    <string name="logos">partner logos</string>
     <string name="tittle_TobBar">Topbar</string>
 
 
@@ -215,6 +219,11 @@
     <string name="text_based_kevin">Based on Kevin Simper\'s gdgsearch.com \n https://github.com/kevinsimper/gdg-search</string>
     <string name="text_empty">empty</string>
     <string name="text_search">Type and Search</string>
+
+    //About
+    <string name="my_name">Diego Riveros</string>
+    <string name="linked_id">https://www.linkedin.com/in/diego-riveros-121b22181/</string>
+    <string name="github_account">https://github.com/dfriveros11</string>
 
 
 

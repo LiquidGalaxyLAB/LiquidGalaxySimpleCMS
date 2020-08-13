@@ -100,8 +100,24 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintBaseline_toBaselineOf="@+id/butt_scraping"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/butt_about"
         app:layout_constraintStart_toEndOf="@+id/butt_scraping"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/butt_about"
+        android:layout_width="0dp"
+        android:layout_height="86dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/roboto"
+        android:onClick="buttAbout"
+        android:text="@string/menu_about"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/butt_account"
         tools:ignore="ButtonStyle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
