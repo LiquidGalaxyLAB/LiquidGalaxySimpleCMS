@@ -46,8 +46,8 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 */
 
     private TextView connectionStatus,
-            locationName, locationNameTitle;
-    private EditText duration;
+            locationName, locationNameTitle, textPositionSave;
+    private EditText duration, positionSave;
 
     private RecyclerView mRecyclerView;
     List<Point> points = new ArrayList<>();
@@ -56,6 +56,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
     private POI poi;
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
     private SwitchCompat switchCompatExtrude;
 
     @Override
@@ -67,6 +68,9 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
+        positionSave = findViewById(R.id.position_save);
+        textPositionSave = findViewById(R.id.text_position_save);
+
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
         switchCompatExtrude = findViewById(R.id.switch_button);
@@ -83,9 +87,23 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         if (poi != null) {
             setTextView();
+        }else{
+            locationName.setVisibility(View.VISIBLE);
+            locationNameTitle.setVisibility(View.VISIBLE);
+            locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
         }
 
         Shape shape = intent.getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
+        int positionValue;
+        if(position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
         if (shape != null) {
             position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
@@ -195,7 +213,9 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             Intent returnInfoIntent = new Intent();
             returnInfoIntent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), shape);
             returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                    Integer.parseInt(positionSave.getText().toString()) - 1);
+            returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
             setResult(Activity.RESULT_OK, returnInfoIntent);
             finish();
         }

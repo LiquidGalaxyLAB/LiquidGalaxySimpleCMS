@@ -29,7 +29,7 @@ public class CustomDialogUtility {
 
 
     /**
-     * It gives a dialog
+     * It gives a dialog without Buttons
      * @param activity The activity where is call
      * @param message The message to pop up
      * @return The Dialog
@@ -45,6 +45,10 @@ public class CustomDialogUtility {
         textMessage.setTextSize(23);
         textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
         builder.setView(v);
-        return builder.create();
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
     }
+
+
 }

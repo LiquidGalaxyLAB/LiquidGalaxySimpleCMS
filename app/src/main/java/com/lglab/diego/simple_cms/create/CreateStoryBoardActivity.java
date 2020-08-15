@@ -50,10 +50,6 @@ import com.lglab.diego.simple_cms.utility.ConstantPrefs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,17 +69,15 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     private RecyclerView mRecyclerView;
     List<Action> actions = new ArrayList<>();
-    private POI currentPoi;
-    private int currentPoiPosition;
+    private boolean isPOI = false;
     private long currentStoryBoardId = Long.MIN_VALUE;
     private String currentStoryBoardGoogleDriveID = null;
     private TestStoryboardThread testStoryboardThread = null;
     private Handler handler = new Handler();
 
 
-
     private EditText storyBoardName;
-    private Button buttCreate, buttTest, buttStopTest, buttDemo, buttDemoStop;
+    private Button buttCreate, buttTest, buttStopTest;
     private TextView connectionStatus, sizeFile;
 
     @Override
@@ -101,8 +95,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
         buttTest = findViewById(R.id.butt_test);
         buttStopTest = findViewById(R.id.butt_stop);
-        buttDemo = findViewById(R.id.butt_demo);
-        buttDemoStop = findViewById(R.id.butt_demo_stop);
         Button buttLocation = findViewById(R.id.butt_location);
         Button buttMovements = findViewById(R.id.butt_movements);
         Button buttBalloon = findViewById(R.id.butt_balloon);
@@ -120,14 +112,14 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         //Google Drive
         currentStoryBoardGoogleDriveID = getIntent().getStringExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name());
 
-        if (storyboardID != Long.MIN_VALUE){
+        if (storyboardID != Long.MIN_VALUE) {
             currentStoryBoardId = storyboardID;
             chargeStoryBoard();
-        } else if(currentStoryBoardGoogleDriveID != null){
+        } else if (currentStoryBoardGoogleDriveID != null) {
             SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
             String storyBoardJson = sharedPreferences.getString(ConstantPrefs.STORY_BOARD_JSON.name(), "");
             chargeStoryBoardJson(storyBoardJson);
-        }else{
+        } else {
             loadDataJson();
         }
 
@@ -139,33 +131,33 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
         buttMovements.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionMovementActivity.class);
-            if (currentPoi == null) {
+            if (!isPOI) {
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_movement));
             } else {
-                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), currentPoi);
+                intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
                 startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
             }
         });
 
         buttBalloon.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
-            if (currentPoi == null) {
+            if (!isPOI) {
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_balloon));
             } else {
-                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), currentPoi);
+                intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
                 startActivityForResult(intent, ActionIdentifier.BALLOON_ACTIVITY.getId());
             }
         });
 
         buttShapes.setOnClickListener((view) -> {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionShapeActivity.class);
-            if (currentPoi == null) {
+            if (!isPOI) {
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_shape));
             } else {
-                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), currentPoi);
+                intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
                 startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
             }
         });
@@ -176,13 +168,9 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
         buttSaveGoogleDrive.setOnClickListener((view) -> saveStoryboardGoogleDrive());
 
-        buttTest.setOnClickListener((view) -> testStoryboard(new ArrayList<>(), false));
+        buttTest.setOnClickListener((view) -> testStoryboard());
 
         buttStopTest.setOnClickListener((view -> stopTestStoryBoard()));
-
-        buttDemo.setOnClickListener(view -> runDemo());
-
-        buttDemoStop.setOnClickListener(view -> stopDemo());
 
         initRecyclerView();
 
@@ -194,16 +182,16 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         String storyBoardJson = sharedPreferences.getString(ConstantPrefs.STORY_BOARD_JSON.name(), "");
         if (!storyBoardJson.equals("")) {
             try {
-                com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
+                StoryBoard storyBoard = new StoryBoard();
                 JSONObject jsonStoryBoard = new JSONObject(storyBoardJson);
                 storyBoard.unpack(jsonStoryBoard);
                 List<Action> actionsSaved = storyBoard.getActions();
                 storyBoardName.setText(storyBoard.getName());
+                isPOI = false;
                 if (actionsSaved.size() > 0) {
                     actions = actionsSaved;
-                    currentPoi = (POI) actions.get(0);
+                    isPOI = true;
                 }
-                currentPoiPosition = 0;
                 currentStoryBoardGoogleDriveID = storyBoard.getStoryBoardFileId();
                 currentStoryBoardId = storyBoard.getStoryBoardId();
             } catch (JSONException jsonException) {
@@ -213,78 +201,25 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     }
 
     /**
-     * Run the demo that is pre saved
-     */
-    private void runDemo() {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getAssets().open("demo.txt"), StandardCharsets.UTF_8));
-
-            StringBuilder string = new StringBuilder();
-            String mLine;
-            while ((mLine = reader.readLine()) != null) {
-                string.append(mLine);
-            }
-            com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-            JSONObject jsonStoryBoard = new JSONObject(string.toString());
-            storyBoard.unpack(jsonStoryBoard);
-            List<Action> actionsSaved = storyBoard.getActions();
-            testStoryboard(actionsSaved, true);
-        } catch (IOException | JSONException e) {
-            Log.w(TAG_DEBUG, "ERROR READING FILE: " + e.getMessage());
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.w(TAG_DEBUG, "ERROR CLOSING: " + e.getMessage());
-                }
-            }
-        }
-    }
-
-    /**
      * Test the connection and then do the tour
-     * @param actionsSaved The list of actions or null if is a test
      */
-    private void testStoryboard(List<Action> actionsSaved, boolean isDemo) {
+    private void testStoryboard() {
         AtomicBoolean isConnected = new AtomicBoolean(false);
         LGConnectionTest.testPriorConnection(this, isConnected);
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
-        if(!isDemo) actionsSaved.addAll(actions);
         handler.postDelayed(() -> {
             if (isConnected.get()) {
-                testStoryboardThread = new TestStoryboardThread(actionsSaved, CreateStoryBoardActivity.this, buttTest, buttStopTest, buttDemo, buttDemoStop, isDemo);
+                testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest);
                 testStoryboardThread.start();
-                if(isDemo){
-                    CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Running Demo");
-                    buttDemo.setVisibility(View.INVISIBLE);
-                    buttDemoStop.setVisibility(View.VISIBLE);
-                    buttTest.setClickable(false);
-                    buttStopTest.setClickable(false);
-                }else{
                     CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
                     buttTest.setVisibility(View.INVISIBLE);
                     buttStopTest.setVisibility(View.VISIBLE);
-                    buttDemo.setClickable(false);
-                    buttDemoStop.setClickable(false);
-                }
+
             }
             loadConnectionStatus(sharedPreferences);
         }, 1200);
     }
 
-    /**
-     * Stop the demo
-     */
-    private void stopDemo() {
-        testStoryboardThread.stop();
-        buttDemo.setVisibility(View.VISIBLE);
-        buttDemoStop.setVisibility(View.INVISIBLE);
-        buttTest.setClickable(true);
-        buttStopTest.setClickable(true);
-    }
 
     /**
      * Stop the testing of the storyboard
@@ -293,8 +228,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         testStoryboardThread.stop();
         buttTest.setVisibility(View.VISIBLE);
         buttStopTest.setVisibility(View.INVISIBLE);
-        buttDemo.setClickable(true);
-        buttDemoStop.setClickable(true);
     }
 
     /**
@@ -323,8 +256,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             storyBoard.unpackStoryBoard(jsonStoryBoard, getApplicationContext());
             actions = storyBoard.getActions();
             storyBoardName.setText(storyBoard.getName());
-            currentPoi = (POI) actions.get(0);
-            currentPoiPosition = 0;
+            isPOI = actions.size() > 0;
         } catch (JSONException jsonException) {
             Log.w(TAG_DEBUG, "ERROR CONVERTING JSON: " + jsonException);
         }
@@ -382,7 +314,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     }
 
     private void packSaveStoryboard() {
-        try{
+        try {
             String name = storyBoardName.getText().toString();
             com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
             storyBoard.setStoryBoardFileId(currentStoryBoardGoogleDriveID);
@@ -390,7 +322,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             storyBoard.setActions(actions);
             JSONObject jsonStoryboard = storyBoard.pack();
             requestSignIn(jsonStoryboard.toString(), storyBoard.getNameForExporting(), currentStoryBoardGoogleDriveID, this);
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             Log.w(TAG_DEBUG, "JSON ERROR: " + e.getMessage());
         }
     }
@@ -407,11 +339,11 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             try {
                 AppDatabase db = AppDatabase.getAppDatabase(this);
                 if (currentStoryBoardId != Long.MIN_VALUE) {
-                    try{
+                    try {
                         db.storyBoardDao().updateStoryBoard(currentStoryBoardId, getStringStoryboard(name));
                         CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                                 getResources().getString(R.string.alert_update_story_board));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.w(TAG_DEBUG, "Create a new Storyboard");
                         saveStoryBoardRoom(name, db);
                         CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
@@ -479,8 +411,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         dialog.show();
         ok.setOnClickListener(v1 -> {
             actions = new ArrayList<>();
-            currentPoi = null;
-            currentPoiPosition = 0;
+            isPOI = actions.size() > 0;
             currentStoryBoardId = Long.MIN_VALUE;
             currentStoryBoardGoogleDriveID = null;
             storyBoardName.setText("");
@@ -504,24 +435,26 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      * Set the current file size
      */
     private void setSizeFile() {
-        if(actions.size() == 0) {
+        if (actions.size() == 0) {
+            isPOI = false;
             String message = getResources().getString(R.string.size_file) + 0 + " MB";
             sizeFile.setText(message);
             sizeFile.setTextColor(Color.BLACK);
-        }else{
+        } else {
+            isPOI = true;
             com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
             storyBoard.setActions(actions);
             try {
                 JSONObject jsonStoryboard = storyBoard.pack();
                 ByteArrayContent contentStream = ByteArrayContent.fromString("application/json", jsonStoryboard.toString());
                 long length = contentStream.getLength();
-                long megaBytes = length/1048576;
-                if(length < MAX_SIZE){
+                long megaBytes = length / 1048576;
+                if (length < MAX_SIZE) {
                     DecimalFormat df = new DecimalFormat("####0.00");
-                    String message = getResources().getString(R.string.size_file) + df.format(megaBytes) + " MB" ;
+                    String message = getResources().getString(R.string.size_file) + df.format(megaBytes) + " MB";
                     sizeFile.setText(message);
                     sizeFile.setTextColor(Color.BLACK);
-                }else{
+                } else {
                     sizeFile.setText(getResources().getString(R.string.message_error_file_size_5MB));
                     sizeFile.setTextColor(Color.RED);
                 }
@@ -533,9 +466,10 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     @Override
     protected void onPause() {
+        if(testStoryboardThread != null) stopTestStoryBoard();
+        testStoryboardThread = null;
         try {
             com.lglab.diego.simple_cms.create.utility.model.StoryBoard storyBoard = new com.lglab.diego.simple_cms.create.utility.model.StoryBoard();
-            Log.w(TAG_DEBUG, "GOOGLE ID: " + currentStoryBoardGoogleDriveID);
             storyBoard.setStoryBoardFileId(currentStoryBoardGoogleDriveID);
             storyBoard.setStoryBoardId(currentStoryBoardId);
             storyBoard.setName(storyBoardName.getText().toString());
@@ -617,13 +551,17 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
         } else {
             Shape shape = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
-            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            if (isSave) {
-                if (position != -1) {
-                    actions.set(position, shape);
-                }
-            } else {
-                actions.add(shape);
+            int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+            if(position > actions.size()) position = actions.size();
+            POI poi = findLastPOI(position);
+            if (shape != null && poi != null) {
+                shape.setPoi(poi);
+            }
+            if (position >= 0) {
+                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+                if (isSave && position < lastPosition) lastPosition++;
+                actions.add(position, shape);
+                if (isSave) actions.remove(lastPosition);
             }
         }
     }
@@ -660,13 +598,17 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
         } else {
             Movement movement = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
-            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            if (isSave) {
-                if (position != -1) {
-                    actions.set(position, movement);
-                }
-            } else {
-                actions.add(movement);
+            int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+            if(position > actions.size()) position = actions.size();
+            POI poi = findLastPOI(position);
+            if (movement != null && poi != null) {
+                movement.setPoi(poi);
+            }
+            if (position >= 0) {
+                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+                if (isSave && position < lastPosition) lastPosition++;
+                actions.add(position, movement);
+                if (isSave) actions.remove(lastPosition);
             }
         }
     }
@@ -685,15 +627,30 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
         } else {
             Balloon balloon = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
+            int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+            if(position > actions.size()) position = actions.size();
+            POI poi = findLastPOI(position);
+            if (balloon != null && poi != null) {
+                balloon.setPoi(poi);
+            }
             boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            if (isSave) {
-                if (position != -1) {
-                    actions.set(position, balloon);
-                }
-            } else {
-                actions.add(balloon);
+            if (isSave && position < lastPosition) lastPosition++;
+            actions.add(position, balloon);
+            if (isSave) actions.remove(lastPosition);
+        }
+    }
+
+    private POI findLastPOI(int position){
+        Action action;
+        POI poi = null;
+        for(int i = (position - 1); 0 <= i; i--){
+            action = actions.get(i);
+            if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()){
+                poi =  (POI) action;
+                break;
             }
         }
+        return poi;
     }
 
     /**
@@ -703,23 +660,20 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      */
     private void deletePOI(int position) {
         Action action;
+        isPOI = false;
         ArrayList<Action> newActions = new ArrayList<>();
-        POI newCurrent = null;
-        int newPosition = 0;
         int startNewPoi = -1;
         for (int i = 0; i < position; i++) {
             action = actions.get(i);
             newActions.add(action);
             if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
-                newCurrent = (POI) action;
-                newPosition = i;
+                isPOI = true;
             }
         }
         for (int i = position + 1; i < actions.size(); i++) {
             if (actions.get(i).getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
                 startNewPoi = i;
-                newCurrent = (POI) actions.get(i);
-                newPosition = i;
+                isPOI = true;
                 newActions.add(actions.get(i));
                 break;
             }
@@ -729,12 +683,9 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             action = actions.get(i);
             newActions.add(action);
             if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) {
-                newCurrent = (POI) action;
-                newPosition = i;
+                isPOI = true;
             }
         }
-        currentPoi = newCurrent;
-        currentPoiPosition = newPosition;
         actions.clear();
         actions.addAll(newActions);
     }
@@ -747,26 +698,32 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      */
     private void savePOI(@NonNull Intent data, int position) {
         POI poi = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
-        boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-        if (isSave) {
-            if (position != -1) {
-                actions.set(position, poi);
-                if (currentPoiPosition == position) currentPoi = poi;
-                Action action;
-                for (int i = position + 1; i < actions.size(); i++) {
-                    action = actions.get(i);
-                    if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
-                    if (action.getType() == ActionIdentifier.MOVEMENT_ACTIVITY.getId()) {
-                        Movement movement = (Movement) action;
-                        movement.setPoi(poi);
-                        actions.set(i, movement);
-                    }
+        if (position >= actions.size()) {
+            actions.add(poi);
+        } else if (position >= 0) {
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+            if (isSave && position < lastPosition) lastPosition++;
+            actions.add(position, poi);
+            if (isSave) actions.remove(lastPosition);
+            Action action;
+            for (int i = position + 1; i < actions.size(); i++) {
+                action = actions.get(i);
+                if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
+                if (action.getType() == ActionIdentifier.MOVEMENT_ACTIVITY.getId()) {
+                    Movement movement = (Movement) action;
+                    movement.setPoi(poi);
+                    actions.set(i, movement);
+                } else if (action.getType() == ActionIdentifier.BALLOON_ACTIVITY.getId()) {
+                    Balloon balloon = (Balloon) action;
+                    balloon.setPoi(poi);
+                    actions.set(i, balloon);
+                } else if (action.getType() == ActionIdentifier.SHAPES_ACTIVITY.getId()) {
+                    Shape shape = (Shape) action;
+                    shape.setPoi(poi);
+                    actions.set(i, shape);
                 }
             }
-        } else {
-            actions.add(poi);
-            currentPoi = poi;
-            currentPoiPosition = position;
         }
     }
 
@@ -784,21 +741,29 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionLocationActivity.class);
             intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), (POI) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.LAST_POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.ACTION_SIZE.name(), actions.size());
             startActivityForResult(intent, ActionIdentifier.LOCATION_ACTIVITY.getId());
         } else if (selected instanceof Movement) {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionMovementActivity.class);
             intent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), (Movement) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.LAST_POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.ACTION_SIZE.name(), actions.size());
             startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
         } else if (selected instanceof Balloon) {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionBalloonActivity.class);
             intent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), (Balloon) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.LAST_POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.ACTION_SIZE.name(), actions.size());
             startActivityForResult(intent, ActionIdentifier.BALLOON_ACTIVITY.getId());
         } else if (selected instanceof Shape) {
             Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActionShapeActivity.class);
             intent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), (Shape) selected);
             intent.putExtra(ActionIdentifier.POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.LAST_POSITION.name(), position);
+            intent.putExtra(ActionIdentifier.ACTION_SIZE.name(), actions.size());
             startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
         } else {
             Log.w(TAG_DEBUG, "ERROR EDIT");

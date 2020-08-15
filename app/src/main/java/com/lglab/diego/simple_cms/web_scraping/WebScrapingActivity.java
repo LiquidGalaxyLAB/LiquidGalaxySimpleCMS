@@ -42,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class WebScraping extends TobBarActivity implements
+public class WebScrapingActivity extends TobBarActivity implements
         WebScrapingRecyclerAdapter.OnNoteListener {
 
     private static final String TAG_DEBUG = "WebScraping";
@@ -115,7 +115,7 @@ public class WebScraping extends TobBarActivity implements
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        adapter = new WebScrapingRecyclerAdapter(WebScraping.this, infoScrapingList, WebScraping.this, connectionStatus);
+        adapter = new WebScrapingRecyclerAdapter(WebScrapingActivity.this, infoScrapingList, WebScrapingActivity.this, connectionStatus);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -125,8 +125,8 @@ public class WebScraping extends TobBarActivity implements
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         handler.postDelayed(() -> {
             if (isConnected.get()) {
-                CustomDialogUtility.showDialog(WebScraping.this, "Starting the GDG TOUR");
-                tourGDG = new TourGDGThread(infoScrapingList, WebScraping.this, buttTour, buttStopTour);
+                CustomDialogUtility.showDialog(WebScrapingActivity.this, "Starting the GDG TOUR");
+                tourGDG = new TourGDGThread(infoScrapingList, WebScrapingActivity.this, buttTour, buttStopTour);
                 tourGDG.start();
                 buttTour.setVisibility(View.INVISIBLE);
                 buttStopTour.setVisibility(View.VISIBLE);
@@ -145,7 +145,7 @@ public class WebScraping extends TobBarActivity implements
      * Refresh the scraping
      */
     private void updateScraping() {
-        Dialog dialog = CustomDialogUtility.getDialog(WebScraping.this, getResources().getString(R.string.message_downloading_data_gdg));
+        Dialog dialog = CustomDialogUtility.getDialog(WebScrapingActivity.this, getResources().getString(R.string.message_downloading_data_gdg));
         dialog.show();
         SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
         editor.putInt(Constant.REFRESH_WEB_SCRAPING.name(), 2);

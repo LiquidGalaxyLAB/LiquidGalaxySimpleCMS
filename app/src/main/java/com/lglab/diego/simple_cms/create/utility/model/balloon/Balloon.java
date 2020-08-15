@@ -154,7 +154,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
 
         obj.put("balloon_id", this.getId());
         obj.put("type", this.getType());
-        obj.put("place_mark_poi", poi.pack());
+        if(poi != null) obj.put("place_mark_poi", poi.pack());
         obj.put("description", description);
         obj.put("image_uri", imageUri != null ? imageUri.toString(): "");
         obj.put("image_path", imagePath != null ? imagePath: "");
@@ -197,7 +197,11 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.setType(obj.getInt("type"));
 
         POI newPoi = new POI();
-        poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        try{
+            poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        }catch (JSONException JSONException){
+            poi = null;
+        }
 
         description = obj.getString("description");
         String uri = obj.getString("image_uri");
@@ -215,7 +219,11 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.setType(obj.getInt("type"));
 
         POI newPoi = new POI();
-        poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        try{
+            poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        }catch (JSONException JSONException){
+            poi = null;
+        }
 
         description = obj.getString("description");
         String uri = obj.getString("image_uri");

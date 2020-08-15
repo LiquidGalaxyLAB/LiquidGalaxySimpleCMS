@@ -45,15 +45,16 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private static final int PERMISSION_CODE_IMAGE = 1001;
 
     private TextView connectionStatus,
-            locationName, locationNameTitle;
+            locationName, locationNameTitle, textPositionSave;
 
-    private EditText description, videoURL, duration;
+    private EditText description, videoURL, duration, positionSave;
     private ImageView imageView;
 
     private Handler handler = new Handler();
     private POI poi;
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
     private Uri imageUri;
     private String imagePath;
 
@@ -69,6 +70,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         imageView = findViewById(R.id.image_view);
         videoURL = findViewById(R.id.video_url);
         duration = findViewById(R.id.duration);
+        positionSave = findViewById(R.id.position_save);
+        textPositionSave = findViewById(R.id.text_position_save);
+
 
         Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
@@ -78,13 +82,27 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
+
         if (poi != null) {
             setTextView();
+        }else{
+            locationName.setVisibility(View.VISIBLE);
+            locationNameTitle.setVisibility(View.VISIBLE);
+            locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
         }
 
         Balloon balloon = intent.getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
+        int positionValue;
+        if(position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
         if (balloon != null) {
-            position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
             buttDelete.setVisibility(View.VISIBLE);
@@ -93,9 +111,17 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             description.setText(balloon.getDescription());
             imageUri = balloon.getImageUri();
             if (imageUri != null) {
-                imageView.setImageURI(imageUri);
-                imagePath = getFilePath(imageUri);
+                try{
+                    imagePath = getFilePath(imageUri);
+                    imageView.setImageURI(imageUri);
+                }catch (Exception e){
+                    Log.w(TAG_DEBUG, "ERROR MESSAGE: " + e.getMessage());
+                    CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
+                    imageUri = null;
+                    imagePath = "";
+                }
             }
+
             videoURL.setText(balloon.getVideoPath());
             duration.setText(String.valueOf(balloon.getDuration()));
         }
@@ -193,7 +219,9 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             Intent returnInfoIntent = new Intent();
             returnInfoIntent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), balloon);
             returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                    Integer.parseInt(positionSave.getText().toString()) - 1);
+            returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
             setResult(Activity.RESULT_OK, returnInfoIntent);
             finish();
         }

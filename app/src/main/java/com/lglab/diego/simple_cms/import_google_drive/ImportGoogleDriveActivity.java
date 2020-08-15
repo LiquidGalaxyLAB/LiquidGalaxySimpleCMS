@@ -262,7 +262,7 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
                 dialog.dismiss();
             }).addOnFailureListener( (result -> {
                 dialog.dismiss();
-                CustomDialogUtility.showDialog(ImportGoogleDriveActivity.this, "It was not possible to download the files");
+                CustomDialogUtility.showDialog(ImportGoogleDriveActivity.this, "It was not possible to download the file");
             }));
         }else{
             requestSignIn();

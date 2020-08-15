@@ -67,8 +67,8 @@ public class TourGDGThread implements Runnable {
     }
 
     private void sendInformationLG(GDG gdg, ActionController actionController){
-        POILocation poiLocation = new POILocation(gdg.getName(), gdg.getLongitude(), gdg.getLatitude(), 1000);
-        POICamera poiCamera = new POICamera(10, 0, 1000, "absolute", 4);
+        POILocation poiLocation = new POILocation(gdg.getName(), gdg.getLongitude(), gdg.getLatitude(), 3000);
+        POICamera poiCamera = new POICamera(10, 0, 3000, "absolute", 4);
         POI poi = new POI().setPoiLocation(poiLocation).setPoiCamera(poiCamera);
 
         Balloon balloon = new Balloon();

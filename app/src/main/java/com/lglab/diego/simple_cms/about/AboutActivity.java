@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 
-public class About extends TobBarActivity {
+public class AboutActivity extends TobBarActivity {
 
     private Button buttAbout;
 
@@ -30,4 +30,5 @@ public class About extends TobBarActivity {
     private void changeButtonClickableBackgroundColor() {
         changeButtonClickableBackgroundColor(getApplicationContext(), buttAbout);
     }
+
 }

@@ -37,8 +37,8 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
 
     private TextView seekBarValueHeading, seekBarValueTilt,
             oldHeading, oldTilt, connectionStatus,
-            locationName, locationNameTitle;
-    private EditText duration;
+            locationName, locationNameTitle, textPositionSave;
+    private EditText duration, positionSave;
     private SeekBar seekBarHeading, seekBarTilt;
     private SwitchCompat switchCompatOrbitMode;
 
@@ -46,6 +46,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
     private POI poi;
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +61,10 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
+        positionSave = findViewById(R.id.position_save);
+        textPositionSave = findViewById(R.id.text_position_save);
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         loadConnectionStatus(sharedPreferences);
@@ -78,11 +83,24 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         if(poi != null){
             setTextView();
+        }else{
+            locationName.setVisibility(View.VISIBLE);
+            locationNameTitle.setVisibility(View.VISIBLE);
+            locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
         }
 
         Movement movement = intent.getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
+        int positionValue;
+        if(position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
         if(movement != null){
-            position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
             buttDelete.setVisibility(View.VISIBLE);
@@ -235,7 +253,9 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             Intent returnInfoIntent = new Intent();
             returnInfoIntent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), movement);
             returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                    Integer.parseInt(positionSave.getText().toString()) - 1);
+            returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
             setResult(Activity.RESULT_OK, returnInfoIntent);
             finish();
         }

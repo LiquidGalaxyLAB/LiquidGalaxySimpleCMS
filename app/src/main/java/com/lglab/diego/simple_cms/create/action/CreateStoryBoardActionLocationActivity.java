@@ -39,13 +39,14 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
 
     //private static final String TAG_DEBUG = "CreateStoryBoardActionLocationActivity";
 
-    private EditText file_name, longitude, latitude, altitude, duration, heading, tilt, range;
+    private EditText file_name, longitude, latitude, altitude, duration, heading, tilt, range, positionSave;
     private Spinner altitudeModeSpinner;
     private TextView connectionStatus;
 
     private Handler handler = new Handler();
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
     private ArrayAdapter<CharSequence> spinnerAdapter;
 
     @Override
@@ -61,6 +62,7 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
         heading = findViewById(R.id.heading);
         tilt = findViewById(R.id.tilt);
         range = findViewById(R.id.range);
+        positionSave = findViewById(R.id.position_save);
         altitudeModeSpinner = findViewById(R.id.altitude_mode);
         connectionStatus = findViewById(R.id.connection_status);
 
@@ -79,6 +81,9 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
         Intent intent = getIntent();
         POI poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
         if(poi != null){
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
@@ -87,6 +92,13 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
         }else{
             loadData();
         }
+
+        int positionValue;
+        if(position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
 
         buttCancel.setOnClickListener( (view) ->
             finish()
@@ -232,8 +244,10 @@ public class CreateStoryBoardActionLocationActivity extends AppCompatActivity im
                     Intent returnInfoIntent = new Intent();
                     returnInfoIntent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), poi);
                     returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-                    returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
-                    setResult(Activity.RESULT_OK, returnInfoIntent);
+                    returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
+                    returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                            Integer.parseInt(positionSave.getText().toString()) - 1);
+                setResult(Activity.RESULT_OK, returnInfoIntent);
                     finish();
             } else{
                 CustomDialogUtility.showDialog(CreateStoryBoardActionLocationActivity.this,  getResources().getString(R.string.activity_create_location_missing_file_name));

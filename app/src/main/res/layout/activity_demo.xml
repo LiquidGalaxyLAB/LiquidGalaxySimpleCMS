@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".demo.DemoActivity">
+
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/activity_top_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="142dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/connection_status"
+        android:layout_width="98dp"
+        android:layout_height="89dp"
+        android:background="@drawable/ic_status_connection_red"
+        android:fontFamily="@font/roboto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logos"
+        app:layout_constraintTop_toTopOf="@+id/logos"
+        app:layout_constraintVertical_bias="0.042" />
+
+    <ImageView
+        android:id="@+id/logos"
+        android:layout_width="987dp"
+        android:layout_height="437dp"
+        android:layout_marginBottom="48dp"
+        android:contentDescription="@string/logos"
+        android:src="@drawable/logos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/connection_status"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:layout_constraintVertical_bias="0.388" />
+
+    <Button
+        android:id="@+id/butt_demo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_test"
+        android:elevation="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:onClick="buttDemoRun"
+        android:text="@string/button_demo"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logos" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

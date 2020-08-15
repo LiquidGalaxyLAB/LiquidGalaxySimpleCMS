@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,15 +13,16 @@ import androidx.core.content.ContextCompat;
 
 import com.lglab.diego.simple_cms.MainActivity;
 import com.lglab.diego.simple_cms.R;
-import com.lglab.diego.simple_cms.about.About;
+import com.lglab.diego.simple_cms.about.AboutActivity;
 import com.lglab.diego.simple_cms.account.ConstantsLogInLogOut;
 import com.lglab.diego.simple_cms.account.LogIn;
 import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
+import com.lglab.diego.simple_cms.demo.DemoActivity;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.import_google_drive.ImportGoogleDriveActivity;
 import com.lglab.diego.simple_cms.my_storyboards.MyStoryBoardActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
-import com.lglab.diego.simple_cms.web_scraping.WebScraping;
+import com.lglab.diego.simple_cms.web_scraping.WebScrapingActivity;
 
 
 /**
@@ -88,7 +88,7 @@ public class TobBarActivity extends AppCompatActivity {
      * @param view The view which is call.
      */
     public void buttScraping(View view) {
-        Intent intent = new Intent(getApplicationContext(), WebScraping.class);
+        Intent intent = new Intent(getApplicationContext(), WebScrapingActivity.class);
         startActivity(intent);
     }
 
@@ -107,8 +107,18 @@ public class TobBarActivity extends AppCompatActivity {
      *
      * @param view The view which is call.
      */
+    public void buttDemo(View view) {
+        Intent intent = new Intent(getApplicationContext(), DemoActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Pass form the actual activity to the activity About
+     *
+     * @param view The view which is call.
+     */
     public void buttAbout(View view) {
-        Intent intent = new Intent(getApplicationContext(), About.class);
+        Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
         startActivity(intent);
     }
 

@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="160dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/roboto"
         android:text="@string/location_name"
@@ -81,8 +81,7 @@
         android:id="@+id/text_view_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="450dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/roboto"
         android:text="@string/duration"
         android:textAlignment="center"
@@ -95,10 +94,9 @@
         android:id="@+id/duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
         android:autofillHints="@string/example_latitude_longitude_altitude"
         android:background="@drawable/rectangle_insert_url"
-        android:fontFamily="@font/roboto_thin"
+        android:fontFamily="@font/roboto"
         android:hint="@string/duration_example"
         android:imeOptions="actionDone"
         android:inputType="number"
@@ -119,7 +117,7 @@
         android:id="@+id/text_seconds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="450dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="449dp"
         android:text="@string/seconds"
         android:fontFamily="@font/roboto"
@@ -192,11 +190,11 @@
         android:text="@string/longitude"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/button_main_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/video_url"
+        app:layout_constraintBottom_toTopOf="@+id/latitude"
         app:layout_constraintEnd_toStartOf="@+id/my_recycler_view" />
 
     <TextView
-        android:id="@+id/video_url"
+        android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
@@ -234,6 +232,41 @@
         android:textColor="@color/textColorClick"
         app:layout_constraintBottom_toTopOf="@+id/butt_cancel"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <TextView
+        android:id="@+id/text_position_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/position_save"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/position_save"
+        app:layout_constraintEnd_toStartOf="@+id/position_save" />
+
+    <EditText
+        android:id="@+id/position_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:autofillHints="@string/example_save"
+        android:background="@drawable/rectangle_insert_url"
+        android:digits="0123456789"
+        android:fontFamily="@font/roboto"
+        android:hint="@string/example_save"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="30"
+        android:minWidth="244dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/duration"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_duration" />
 
     <Button
         android:id="@+id/butt_gdg"

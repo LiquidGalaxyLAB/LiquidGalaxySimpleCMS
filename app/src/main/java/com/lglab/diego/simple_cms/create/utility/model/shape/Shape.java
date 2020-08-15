@@ -115,7 +115,7 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
 
         obj.put("shape_id", this.getId());
         obj.put("type", this.getType());
-        obj.put("shape_poi", poi.pack());
+        if(poi != null) obj.put("shape_poi", poi.pack());
         JSONArray jsonPoints = new JSONArray();
         for(int i = 0; i < points.size(); i++){
             jsonPoints.put(((Point) points.get(i)).pack());
@@ -134,7 +134,11 @@ public class Shape extends Action implements IJsonPacker, Parcelable{
         this.setType(obj.getInt("type"));
 
         POI newPoi = new POI();
-        poi =  newPoi.unpack(obj.getJSONObject("shape_poi"));
+        try{
+            poi =  newPoi.unpack(obj.getJSONObject("shape_poi"));
+        }catch (JSONException JSONException){
+            poi = null;
+        }
 
 
         JSONArray jsonPoints =  obj.getJSONArray("jsonPoints");

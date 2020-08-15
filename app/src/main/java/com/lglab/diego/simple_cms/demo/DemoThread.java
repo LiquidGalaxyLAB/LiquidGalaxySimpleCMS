@@ -1,5 +1,6 @@
-package com.lglab.diego.simple_cms.create;
+package com.lglab.diego.simple_cms.demo;
 
+import android.app.Dialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,22 +18,20 @@ import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TestStoryboardThread implements Runnable {
+public class DemoThread implements Runnable {
 
     private static final String TAG_DEBUG = "TestStoryboardThread";
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private List<Action> actions;
     private AppCompatActivity activity;
-    private Button buttTest, buttStopTest;
+    private Dialog dialog;
 
 
-    TestStoryboardThread(List<Action> actions, AppCompatActivity activity, Button buttTest,
-                         Button buttStopTest){
+    DemoThread(List<Action> actions, AppCompatActivity activity, Dialog dialog){
         this.actions = actions;
         this.activity = activity;
-        this.buttTest = buttTest;
-        this.buttStopTest = buttStopTest;
+        this.dialog = dialog;
     }
 
     void start() {
@@ -91,8 +90,7 @@ public class TestStoryboardThread implements Runnable {
         actionController.cleanShapeKML(500);
         actionController.cleanFileKMLs(500);
         activity.runOnUiThread(() -> {
-                buttTest.setVisibility(View.VISIBLE);
-                buttStopTest.setVisibility(View.INVISIBLE);
+            dialog.dismiss();
         });
     }
 }
