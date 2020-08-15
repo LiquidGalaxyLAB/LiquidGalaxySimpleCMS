@@ -473,8 +473,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             try {
                 JSONObject jsonStoryboard = storyBoard.pack();
                 ByteArrayContent contentStream = ByteArrayContent.fromString("application/json", jsonStoryboard.toString());
-                long length = contentStream.getLength();
-                long megaBytes = length / 1048576;
+                double length = (double) contentStream.getLength();
+                double megaBytes = length / 1048576.0;
                 if (length < MAX_SIZE) {
                     DecimalFormat df = new DecimalFormat("####0.00");
                     String message = getResources().getString(R.string.size_file) + df.format(megaBytes) + " MB";
