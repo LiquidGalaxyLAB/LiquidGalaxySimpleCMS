@@ -76,8 +76,8 @@
 
     //Use by all the Create options
     <string name="location_name_title_empty">NA</string>
-    <string name="position_save">Save Position</string>
-    <string name="example_save">Save Position</string>
+    <string name="position_save">Step Position</string>
+    <string name="example_save">Step Position</string>
 
 
 
