@@ -18,36 +18,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/size_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="92dp"
         android:fontFamily="@font/roboto"
         android:gravity="center_horizontal|top"
         android:text="@string/size_file"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
-        app:layout_constraintEnd_toEndOf="@+id/my_recycler_view" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
-        android:layout_width="413dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp"
-        android:background="@color/background"
-        android:minHeight="578dp"
-        android:padding="20dp"
-        android:scrollbars="horizontal"
-        android:textColor="@color/textColorClick"
-        app:layout_constraintBottom_toBottomOf="@+id/butt_delete"
-        app:layout_constraintEnd_toStartOf="@+id/file_name"
-        app:layout_constraintHorizontal_bias="0.22"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/butt_location"
+        app:layout_constraintEnd_toStartOf="@+id/butt_delete"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/butt_test"
+        app:layout_constraintVertical_bias="0.061" />
 
     <Button
         android:id="@+id/butt_test"
@@ -63,16 +50,16 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/butt_stop"
         app:layout_constraintEnd_toStartOf="@+id/butt_delete"
-        app:layout_constraintHorizontal_bias="0.653"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_recycler_view" />
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/butt_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/button_test"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -83,27 +70,30 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/size_file"
         app:layout_constraintEnd_toStartOf="@+id/butt_delete"
-        app:layout_constraintHorizontal_bias="0.653"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:layout_constraintVertical_bias="0.8" />
 
     <TextView
         android:id="@+id/connection_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="172dp"
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
-        app:layout_constraintBaseline_toBaselineOf="@+id/text_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/butt_save_on_google_drive"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:layout_constraintVertical_bias="0.589" />
 
     <EditText
         android:id="@+id/text_name"
         android:layout_width="309dp"
         android:layout_height="28dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="25dp"
         android:autofillHints="@string/example_storyboard_name"
         android:background="@drawable/rectangle_insert_url"
@@ -116,9 +106,11 @@
         android:textColor="@color/textColorClick"
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_test"
         app:layout_constraintBottom_toTopOf="@+id/butt_save_locally"
         app:layout_constraintEnd_toStartOf="@+id/connection_status"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/file_name"
@@ -133,7 +125,6 @@
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintBaseline_toBaselineOf="@+id/text_name"
-        app:layout_constraintBottom_toTopOf="@+id/butt_save_locally"
         app:layout_constraintEnd_toStartOf="@+id/text_name"
         app:layout_constraintHorizontal_bias="0.777"
         app:layout_constraintStart_toEndOf="@+id/butt_location" />
@@ -142,8 +133,8 @@
         android:id="@+id/butt_save_locally"
         android:layout_width="0dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="112dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -151,10 +142,11 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/butt_location"
+        app:layout_constraintBottom_toTopOf="@+id/storyboards_steps_scroll"
         app:layout_constraintEnd_toStartOf="@+id/butt_save_on_google_drive"
         app:layout_constraintStart_toEndOf="@+id/butt_delete"
-        app:layout_constraintTop_toBottomOf="@+id/text_name" />
+        app:layout_constraintTop_toBottomOf="@+id/connection_status"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/butt_save_on_google_drive"
@@ -189,12 +181,47 @@
         app:layout_constraintEnd_toStartOf="@+id/butt_save_locally"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <TextView
+        android:id="@+id/storyboards_steps_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_horizontal|top"
+        android:text="@string/storyboards_steps_scroll"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/information_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/butt_delete"
+        app:layout_constraintVertical_bias="0.833" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="118dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="150dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/background"
+        android:minHeight="578dp"
+        android:padding="20dp"
+        android:scrollbars="horizontal"
+        android:textColor="@color/textColorClick"
+        app:layout_constraintBottom_toTopOf="@+id/butt_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/butt_location"
         android:layout_width="200dp"
         android:layout_height="86dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginBottom="112dp"
         android:background="@drawable/button_location"
         android:elevation="8dp"
@@ -205,14 +232,14 @@
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/butt_movements"
-        app:layout_constraintTop_toBottomOf="@+id/butt_save_locally" />
+        app:layout_constraintStart_toStartOf="@+id/butt_test" />
 
     <Button
         android:id="@+id/butt_movements"
         android:layout_width="220dp"
         android:layout_height="86dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="144dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="112dp"
         android:background="@drawable/button_movement"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -228,8 +255,7 @@
         android:id="@+id/butt_balloon"
         android:layout_width="200dp"
         android:layout_height="86dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="44dp"
         android:layout_marginBottom="112dp"
         android:background="@drawable/button_balloon"
         android:elevation="8dp"
@@ -246,8 +272,8 @@
         android:id="@+id/butt_shapes"
         android:layout_width="200dp"
         android:layout_height="86dp"
-        android:layout_marginEnd="144dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="112dp"
         android:background="@drawable/button_shapes"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -257,7 +283,7 @@
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBaseline_toBaselineOf="@+id/butt_location"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/butt_save_on_google_drive" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

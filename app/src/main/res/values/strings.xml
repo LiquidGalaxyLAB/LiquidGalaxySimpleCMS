@@ -49,6 +49,7 @@
     <string name="button_update_import_drive">Update files from to Google Drive</string>
 
     <string name="file_name">File Name</string>
+    <string name="storyboards_steps_scroll">Storyboards steps scroll</string>
     <string name="file_name_example">Sample File 1</string>
     <string name="file_description">Description</string>
     <string name="file_description_slot">Description needed</string>
