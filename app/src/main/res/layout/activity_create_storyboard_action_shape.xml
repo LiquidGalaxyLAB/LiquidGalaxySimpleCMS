@@ -226,9 +226,9 @@
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="30dp"
         android:background="@color/background"
+        android:scrollbars="vertical"
         android:minHeight="578dp"
         android:padding="20dp"
-        android:scrollbars="horizontal"
         android:textColor="@color/textColorClick"
         app:layout_constraintBottom_toTopOf="@+id/butt_cancel"
         app:layout_constraintEnd_toEndOf="parent" />

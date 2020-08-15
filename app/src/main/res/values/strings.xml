@@ -49,7 +49,8 @@
     <string name="button_update_import_drive">Update files from to Google Drive</string>
 
     <string name="file_name">File Name</string>
-    <string name="storyboards_steps_scroll">Storyboards steps scroll</string>
+    <string name="storyboards_steps_scroll">Storyboard steps scroll</string>
+    <string name="add_main_contents">Add main contents</string>
     <string name="file_name_example">Sample File 1</string>
     <string name="file_description">Description</string>
     <string name="file_description_slot">Description needed</string>
@@ -66,7 +67,7 @@
     <string name="menu_external_api">External API</string>
     <string name="menu_account">Account</string>
     <string name="menu_demo">Demo</string>
-    <string name="menu_about">About Simple CMS</string>
+    <string name="menu_about">Simple CMS</string>
 
     <string name="account_username">Username</string>
     <string name="account_password">Password</string>

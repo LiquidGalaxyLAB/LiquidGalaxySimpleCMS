@@ -26,9 +26,10 @@
         android:fontFamily="@font/roboto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/logos"
+        app:layout_constraintHorizontal_bias="0.846"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/logos"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintVertical_bias="0.028" />
 
     <ImageView
         android:id="@+id/logos"
@@ -38,11 +39,11 @@
         android:contentDescription="@string/logos"
         android:src="@drawable/logos"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/connection_status"
-        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.729"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
-        app:layout_constraintVertical_bias="0.388" />
+        app:layout_constraintVertical_bias="0.238" />
 
     <Button
         android:id="@+id/butt_demo"
@@ -60,8 +61,9 @@
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logos" />
+        app:layout_constraintTop_toBottomOf="@+id/logos"
+        app:layout_constraintVertical_bias="0.333" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

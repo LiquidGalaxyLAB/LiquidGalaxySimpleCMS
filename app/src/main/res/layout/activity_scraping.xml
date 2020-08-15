@@ -128,7 +128,7 @@
         android:id="@+id/butt_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="952dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_refresh"
         android:elevation="8dp"
@@ -140,13 +140,13 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/butt_tour" />
 
     <Button
         android:id="@+id/butt_tour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="700dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_tour"
         android:elevation="8dp"
@@ -158,13 +158,13 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/action_search" />
 
     <Button
         android:id="@+id/butt_stop_tour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="700dp"
+        android:layout_marginEnd="84dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_tour"
         android:elevation="8dp"
@@ -177,27 +177,27 @@
         android:textSize="@dimen/button_text_font_size"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/action_search" />
 
     <EditText
         android:id="@+id/action_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="150dp"
+        android:layout_marginEnd="112dp"
         android:layout_marginBottom="20dp"
+        android:autofillHints="@string/text_search"
         android:background="@drawable/text_search"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
+        android:hint="@string/text_search"
+        android:imeOptions="actionDone"
+        android:inputType="text"
         android:minWidth="400dp"
         android:minHeight="80dp"
-        android:hint="@string/text_search"
-        android:autofillHints="@string/text_search"
         android:singleLine="true"
-        android:imeOptions="actionDone"
         android:textAllCaps="false"
         android:textColorHint="@color/textColorPrimary"
         android:textSize="@dimen/button_text_font_size"
-        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

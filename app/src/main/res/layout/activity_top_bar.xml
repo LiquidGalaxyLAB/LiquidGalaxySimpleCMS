@@ -8,14 +8,15 @@
     android:background="@color/background"
     tools:context=".top_bar.TobBarActivity">
 
+
     <Button
-        android:id="@+id/butt_create_menu"
+        android:id="@+id/butt_about"
         android:layout_width="0dp"
         android:layout_height="86dp"
         android:background="@color/colorPrimary"
         android:fontFamily="@font/roboto"
-        android:onClick="buttCreateMenu"
-        android:text="@string/menu_create"
+        android:onClick="buttAbout"
+        android:text="@string/menu_about"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
@@ -36,7 +37,7 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintEnd_toStartOf="@+id/butt_import_google_drive"
-        app:layout_constraintStart_toEndOf="@+id/butt_create_menu"
+        app:layout_constraintStart_toEndOf="@+id/butt_about"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ButtonStyle" />
 
@@ -52,18 +53,18 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
         app:layout_constraintBaseline_toBaselineOf="@+id/butt_my_storyboards_menu"
-        app:layout_constraintEnd_toStartOf="@+id/butt_connect_menu"
+        app:layout_constraintEnd_toStartOf="@+id/butt_create_menu"
         app:layout_constraintStart_toEndOf="@+id/butt_my_storyboards_menu"
         tools:ignore="ButtonStyle" />
 
     <Button
-        android:id="@+id/butt_connect_menu"
+        android:id="@+id/butt_create_menu"
         android:layout_width="0dp"
         android:layout_height="86dp"
         android:background="@color/colorPrimary"
         android:fontFamily="@font/roboto"
-        android:onClick="buttConnectMenu"
-        android:text="@string/menu_connect"
+        android:onClick="buttCreateMenu"
+        android:text="@string/menu_create"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
@@ -83,25 +84,9 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/butt_connect_menu"
-        app:layout_constraintEnd_toStartOf="@+id/butt_account"
-        app:layout_constraintStart_toEndOf="@+id/butt_connect_menu"
-        tools:ignore="ButtonStyle" />
-
-    <Button
-        android:id="@+id/butt_account"
-        android:layout_width="0dp"
-        android:layout_height="86dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="@font/roboto"
-        android:onClick="buttAccount"
-        android:text="@string/menu_account"
-        android:textAllCaps="false"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/butt_scraping"
-        app:layout_constraintEnd_toEndOf="@+id/butt_demo"
-        app:layout_constraintStart_toEndOf="@+id/butt_scraping"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_import_google_drive"
+        app:layout_constraintEnd_toStartOf="@+id/butt_demo"
+        app:layout_constraintStart_toEndOf="@+id/butt_create_menu"
         tools:ignore="ButtonStyle" />
 
     <Button
@@ -115,25 +100,52 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/butt_account"
-        app:layout_constraintEnd_toEndOf="@+id/butt_about"
-        app:layout_constraintStart_toEndOf="@+id/butt_account"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_scraping"
+        app:layout_constraintEnd_toEndOf="@+id/butt_connect_menu"
+        app:layout_constraintStart_toEndOf="@+id/butt_scraping"
         tools:ignore="ButtonStyle" />
 
+
     <Button
-        android:id="@+id/butt_about"
+        android:id="@+id/butt_connect_menu"
         android:layout_width="0dp"
         android:layout_height="86dp"
         android:background="@color/colorPrimary"
         android:fontFamily="@font/roboto"
-        android:onClick="buttAbout"
-        android:text="@string/menu_about"
+        android:onClick="buttConnectMenu"
+        android:text="@string/menu_connect"
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_demo"
+        app:layout_constraintEnd_toStartOf="@+id/butt_account"
         app:layout_constraintStart_toEndOf="@+id/butt_demo"
         tools:ignore="ButtonStyle" />
+
+
+
+    <Button
+        android:id="@+id/butt_account"
+        android:layout_width="0dp"
+        android:layout_height="86dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/roboto"
+        android:onClick="buttAccount"
+        android:text="@string/menu_account"
+        android:textAllCaps="false"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_demo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/butt_connect_menu"
+        tools:ignore="ButtonStyle" />
+
+
+
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

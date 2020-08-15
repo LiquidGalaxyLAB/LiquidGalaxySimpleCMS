@@ -41,9 +41,8 @@ public class DemoActivity extends TobBarActivity {
     private DemoThread demoThread = null;
     private Handler handler = new Handler();
     private TextView connectionStatus;
-    private Button buttonDemo;
-
     private List<Action> actionsSaved = new ArrayList<>();
+    private Button buttDemo;
 
 
     @Override
@@ -51,10 +50,13 @@ public class DemoActivity extends TobBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
 
+        View topBar = findViewById(R.id.top_bar);
+        buttDemo = topBar.findViewById(R.id.butt_demo);
         connectionStatus = findViewById(R.id.connection_status);
-        buttonDemo = findViewById(R.id.butt_demo);
 
         runDemo();
+
+        changeButtonClickableBackgroundColor();
 
     }
 
@@ -67,8 +69,7 @@ public class DemoActivity extends TobBarActivity {
             try {
                 String string = readDemoFile();
                 StoryBoard storyBoard = new StoryBoard();
-                JSONObject jsonStoryBoard = null;
-                jsonStoryBoard = new JSONObject(string.toString());
+                JSONObject jsonStoryBoard =  new JSONObject(string);
                 storyBoard.unpack(jsonStoryBoard);
                 actionsSaved = storyBoard.getActions();
                 testStoryboard(actionsSaved);
@@ -166,6 +167,13 @@ public class DemoActivity extends TobBarActivity {
         } else {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
         }
+    }
+
+    /**
+     * Change the background color and the option clickable to false of the button_connect
+     */
+    private void changeButtonClickableBackgroundColor() {
+        changeButtonClickableBackgroundColor(getApplicationContext(), buttDemo);
     }
 
     public void buttDemoRun(View view) {
