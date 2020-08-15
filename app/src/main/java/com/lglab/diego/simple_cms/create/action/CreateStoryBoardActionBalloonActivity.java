@@ -85,7 +85,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
         if (poi != null) {
             setTextView();
-        }else{
+        } else {
             locationName.setVisibility(View.VISIBLE);
             locationNameTitle.setVisibility(View.VISIBLE);
             locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
@@ -97,7 +97,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
 
         int positionValue;
-        if(position == -1) positionValue = actionsSize;
+        if (position == -1) positionValue = actionsSize;
         else positionValue = position;
         positionValue++;
         positionSave.setText(String.valueOf(positionValue));
@@ -109,19 +109,18 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             poi = balloon.getPoi();
             setTextView();
             description.setText(balloon.getDescription());
-            imageUri = balloon.getImageUri();
-            if (imageUri != null) {
-                try{
+            try {
+                imageUri = balloon.getImageUri();
+                if (imageUri != null) {
                     imagePath = getFilePath(imageUri);
                     imageView.setImageURI(imageUri);
-                }catch (Exception e){
-                    Log.w(TAG_DEBUG, "ERROR MESSAGE: " + e.getMessage());
-                    CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
-                    imageUri = null;
-                    imagePath = "";
                 }
+            } catch (Exception e) {
+                Log.w(TAG_DEBUG, "ERROR MESSAGE: " + e.getMessage());
+                CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
+                imageUri = null;
+                imagePath = "";
             }
-
             videoURL.setText(balloon.getVideoPath());
             duration.setText(String.valueOf(balloon.getDuration()));
         }
@@ -190,14 +189,14 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      */
     private String getFilePath(Uri uri) {
         String imagePath;
-        try{
+        try {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             Objects.requireNonNull(cursor).moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             imagePath = cursor.getString(idx);
             cursor.close();
-        }catch (Exception e){
-            Log.w(TAG_DEBUG, "ERROR MESSAGE: " + e.getMessage());
+        } catch (Exception e) {
+            Log.w(TAG_DEBUG, "FILE PATH ERROR MESSAGE: " + e.getMessage());
             CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
             imagePath = "";
         }

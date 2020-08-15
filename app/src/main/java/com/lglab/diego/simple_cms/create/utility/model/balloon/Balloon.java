@@ -3,6 +3,7 @@ package com.lglab.diego.simple_cms.create.utility.model.balloon;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcel;
@@ -164,7 +165,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
             encodedImage = encodeFileToBase64Binary();
         }
         if(encodedImage == null) encodedImage = "";
-        Log.w(TAG_DEBUG, "encodedImage: " + encodedImage);
         obj.put("encodedImage", encodedImage);
 
 
@@ -226,6 +226,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         }
 
         description = obj.getString("description");
+
         String uri = obj.getString("image_uri");
         imageUri = !uri.equals("") ?  Uri.parse(obj.getString("image_uri")):null;
         imagePath = obj.getString("image_path");
@@ -239,7 +240,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
 
                 String[] route = imagePath.split("/");
                 String fileName = route[route.length - 1];
-                String path = Environment.getExternalStorageDirectory().toString();
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
                 OutputStream fOut;
 
                 File file = new File(path, fileName);
@@ -261,7 +262,11 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
                     imagePath = file.getAbsolutePath();
 
                 } else{
-                    imageUri = Uri.fromFile(file);
+                    MediaScannerConnection.scanFile(context, new String[] { file.getAbsolutePath() }, null,
+                            (pathImage, uriImage) -> {
+                                imageUri = uriImage;
+                                Log.w(TAG_DEBUG, "URI: " + imageUri);
+                            });
                     imagePath = file.getAbsolutePath();
                 }
             }catch (Exception e){

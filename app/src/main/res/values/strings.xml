@@ -81,6 +81,10 @@
     <string name="example_save">Step Position</string>
 
 
+    //Create messages
+    <string name="create_message_charging_storyboard">Charging the storyboard</string>
+    <string name="create_message_error_charging_storyboard">There was an unexpected error charging the storyboard /n Please, try again</string>
+
 
     //String for create storyboard location activity
     <string name="location_name">Location name </string>
@@ -179,6 +183,8 @@
     <string name="alert_message_delete_storyboard">The storyboard will be deleted</string>
     <string name="alert_permission_denied_image">Permission denied, you cannot select an image</string>
     <string name="alert_permission_denied_save">Permission denied, you cannot save a story board</string>
+    <string name="alert_permission_denied_import_google_drive">Permission denied, you cannot open the story board from Google Drive</string>
+    <string name="alert_permission_denied_import_locally">Permission denied,  you cannot open the story board from My Storyboards</string>
     <string name="alert_permission_denied_test_image">Permission denied, you cannot test the balloon in liquid galaxy</string>
     <string name="alert_permission_denied_video">Permission denied, you cannot select an video</string>
     <string name="alert_save_story_board">The storyboard has been successfully saved</string>
