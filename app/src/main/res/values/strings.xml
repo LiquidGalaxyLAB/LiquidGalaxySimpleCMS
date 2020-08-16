@@ -22,7 +22,7 @@
     <string name="button_clean_story_board">Clean Storyboard</string>
     <string name="button_test">Test</string>
     <string name="button_stop">Stop</string>
-    <string name="button_demo">Demo</string>
+    <string name="button_demo">Demo Colombia</string>
     <string name="button_refresh">Refresh</string>
     <string name="button_gdg">GDG</string>
     <string name="button_tour">Tour GDG</string>
@@ -154,6 +154,7 @@
 
     //Image Label
     <string name="label_logo">Logo Liquid Galaxy</string>
+    <string name="barranquilla_colombian_flags">Barranquilla and Colombian Flags</string>
     <string name="logos">partner logos</string>
     <string name="tittle_TobBar">Topbar</string>
 
@@ -243,7 +244,7 @@
     <string name="github_account">https://github.com/dfriveros11</string>
 
     //Demo
-    <string name="start_demo">Check out your Liquid Galaxy. The demo is running</string>
+    <string name="start_demo">Check out your Liquid Galaxy /n Running Barranquilla, Colombia Demo</string>
     <string name="stop_demo">Stop</string>
     <string name="stop_message">Thanks for watching the demo. We hope you like it!</string>
 

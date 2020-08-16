@@ -59,13 +59,13 @@
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/logos"
+        app:layout_constraintBottom_toTopOf="@+id/barranquilla_colombian_flags"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linked_id" />
 
     <ImageView
-        android:id="@+id/logos"
+        android:id="@+id/barranquilla_colombian_flags"
         android:layout_width="581dp"
         android:layout_height="302dp"
         android:layout_marginBottom="56dp"

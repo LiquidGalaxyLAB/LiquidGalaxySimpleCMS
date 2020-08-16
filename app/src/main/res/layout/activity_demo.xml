@@ -26,29 +26,28 @@
         android:fontFamily="@font/roboto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.846"
+        app:layout_constraintHorizontal_bias="0.946"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logos"
-        app:layout_constraintVertical_bias="0.028" />
+        app:layout_constraintTop_toTopOf="@+id/barranquilla_colombian_flags"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/logos"
-        android:layout_width="987dp"
-        android:layout_height="437dp"
-        android:layout_marginBottom="48dp"
-        android:contentDescription="@string/logos"
-        android:src="@drawable/logos"
+        android:id="@+id/barranquilla_colombian_flags"
+        android:layout_width="859dp"
+        android:layout_height="405dp"
+        android:contentDescription="@string/barranquilla_colombian_flags"
+        android:src="@drawable/barranquilla_colombian_flags"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.729"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
-        app:layout_constraintVertical_bias="0.238" />
+        app:layout_constraintVertical_bias="0.146" />
 
     <Button
         android:id="@+id/butt_demo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="407dp"
+        android:layout_height="70dp"
         android:background="@drawable/button_test"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -63,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logos"
+        app:layout_constraintTop_toBottomOf="@+id/barranquilla_colombian_flags"
         app:layout_constraintVertical_bias="0.333" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

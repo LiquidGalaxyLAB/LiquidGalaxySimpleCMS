@@ -179,4 +179,11 @@ public class DemoActivity extends TobBarActivity {
     public void buttDemoRun(View view) {
         runDemo();
     }
+
+    @Override
+    protected void onPause() {
+        if (demoThread != null) stopDemo();
+        demoThread = null;
+        super.onPause();
+    }
 }
