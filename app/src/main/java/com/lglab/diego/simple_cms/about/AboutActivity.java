@@ -1,8 +1,10 @@
 package com.lglab.diego.simple_cms.about;
 
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -21,6 +23,12 @@ public class AboutActivity extends TobBarActivity {
          View topBar = findViewById(R.id.top_bar);
          buttAbout = topBar.findViewById(R.id.butt_about);
          changeButtonClickableBackgroundColor();
+
+        TextView linkLinkedId= findViewById(R.id.linked_id);
+        linkLinkedId.setMovementMethod(LinkMovementMethod.getInstance());
+
+        TextView linkGithub= findViewById(R.id.github_account);
+        linkGithub.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
 

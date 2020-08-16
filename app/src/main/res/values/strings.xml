@@ -240,8 +240,12 @@
 
     //About
     <string name="my_name">Diego Riveros</string>
-    <string name="linked_id">https://www.linkedin.com/in/diego-riveros-121b22181/</string>
-    <string name="github_account">https://github.com/dfriveros11</string>
+    <string name="linked_id">Learn more about me at my
+        <a href="https://www.linkedin.com/in/diego-riveros-121b22181/">Linked in</a>
+    </string>
+    <string name="github_account">Check out. My work at
+        <a href="https://github.com/dfriveros11">Github</a>
+    </string>
 
     //Demo
     <string name="start_demo">Check out your Liquid Galaxy /n Running Barranquilla, Colombia Demo</string>

@@ -257,12 +257,12 @@
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent" />
-     <Button
+
+    <Button
         android:id="@+id/butt_logout"
         android:layout_width="357dp"
         android:layout_height="71dp"
-        android:layout_marginEnd="448dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="96dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -274,6 +274,8 @@
         android:textSize="@dimen/button_text_font_size"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
