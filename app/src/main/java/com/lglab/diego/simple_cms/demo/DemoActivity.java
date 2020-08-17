@@ -54,8 +54,6 @@ public class DemoActivity extends TobBarActivity {
         buttDemo = topBar.findViewById(R.id.butt_demo);
         connectionStatus = findViewById(R.id.connection_status);
 
-        runDemo();
-
         changeButtonClickableBackgroundColor();
 
     }

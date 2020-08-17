@@ -591,7 +591,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= 0) {
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-                if (isSave && position < lastPosition) lastPosition++;
+                if (isSave && position <= lastPosition) lastPosition++;
                 actions.add(position, shape);
                 if (isSave) actions.remove(lastPosition);
             }
@@ -638,7 +638,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= 0) {
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-                if (isSave && position < lastPosition) lastPosition++;
+                if (isSave && position <= lastPosition) lastPosition++;
                 actions.add(position, movement);
                 if (isSave) actions.remove(lastPosition);
             }
@@ -666,7 +666,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 balloon.setPoi(poi);
             }
             boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            if (isSave && position < lastPosition) lastPosition++;
+            if (isSave && position <= lastPosition) lastPosition++;
             actions.add(position, balloon);
             if (isSave) actions.remove(lastPosition);
         }
@@ -735,7 +735,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         } else if (position >= 0) {
             boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
             int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
-            if (isSave && position < lastPosition) lastPosition++;
+            if (isSave && position <= lastPosition) lastPosition++;
             actions.add(position, poi);
             if (isSave) actions.remove(lastPosition);
             Action action;

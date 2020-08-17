@@ -44,8 +44,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE_IMAGE = 1001;
 
-    private TextView connectionStatus,
-            locationName, locationNameTitle, textPositionSave;
+    private TextView connectionStatus, locationName, locationNameTitle;
 
     private EditText description, videoURL, duration, positionSave;
     private ImageView imageView;
@@ -71,7 +70,6 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         videoURL = findViewById(R.id.video_url);
         duration = findViewById(R.id.duration);
         positionSave = findViewById(R.id.position_save);
-        textPositionSave = findViewById(R.id.text_position_save);
 
 
         Button buttTest = findViewById(R.id.butt_gdg);
