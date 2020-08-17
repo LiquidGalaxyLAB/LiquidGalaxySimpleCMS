@@ -591,9 +591,15 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= 0) {
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-                if (isSave && position <= lastPosition) lastPosition++;
-                actions.add(position, shape);
-                if (isSave) actions.remove(lastPosition);
+                if (isSave && position == lastPosition) {
+                    actions.set(position, shape);
+                }else{
+                    if (isSave && position <= lastPosition){
+                        actions.add(position, shape);
+                        lastPosition++;
+                    }else actions.add(position + 1, shape);
+                    if (isSave) actions.remove(lastPosition);
+                }
             }
         }
     }
@@ -638,9 +644,15 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= 0) {
                 boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-                if (isSave && position <= lastPosition) lastPosition++;
-                actions.add(position, movement);
-                if (isSave) actions.remove(lastPosition);
+                if (isSave && position == lastPosition) {
+                    actions.set(position, movement);
+                }else{
+                    if (isSave && position <= lastPosition){
+                        actions.add(position, movement);
+                        lastPosition++;
+                    }else actions.add(position + 1, movement);
+                    if (isSave) actions.remove(lastPosition);
+                }
             }
         }
     }
@@ -660,15 +672,23 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         } else {
             Balloon balloon = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
             int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
-            if (position > actions.size()) position = actions.size();
+            if (position > actions.size()) position = actions.size() - 1;
             POI poi = findLastPOI(position);
             if (balloon != null && poi != null) {
                 balloon.setPoi(poi);
             }
-            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            if (isSave && position <= lastPosition) lastPosition++;
-            actions.add(position, balloon);
-            if (isSave) actions.remove(lastPosition);
+            if(position >= 0){
+                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+                if (isSave && position == lastPosition) {
+                    actions.set(position, balloon);
+                }else{
+                    if (isSave && position <= lastPosition){
+                        actions.add(position, balloon);
+                        lastPosition++;
+                    }else actions.add(position + 1, balloon);
+                    if (isSave) actions.remove(lastPosition);
+                }
+            }
         }
     }
 
@@ -730,32 +750,61 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      */
     private void savePOI(@NonNull Intent data, int position) {
         POI poi = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
+        int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
         if (position >= actions.size()) {
             actions.add(poi);
+            if(isSave) actions.remove(lastPosition);
         } else if (position >= 0) {
-            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
-            int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
-            if (isSave && position <= lastPosition) lastPosition++;
-            actions.add(position, poi);
-            if (isSave) actions.remove(lastPosition);
-            Action action;
-            for (int i = position + 1; i < actions.size(); i++) {
-                action = actions.get(i);
-                if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
-                if (action.getType() == ActionIdentifier.MOVEMENT_ACTIVITY.getId()) {
-                    Movement movement = (Movement) action;
-                    movement.setPoi(poi);
-                    actions.set(i, movement);
-                } else if (action.getType() == ActionIdentifier.BALLOON_ACTIVITY.getId()) {
-                    Balloon balloon = (Balloon) action;
-                    balloon.setPoi(poi);
-                    actions.set(i, balloon);
-                } else if (action.getType() == ActionIdentifier.SHAPES_ACTIVITY.getId()) {
-                    Shape shape = (Shape) action;
-                    shape.setPoi(poi);
-                    actions.set(i, shape);
-                }
+            if (position == lastPosition){
+                actions.set(position, poi);
             }
+            else {
+                cleanActions(position, poi, isSave, lastPosition);
+            }
+        }
+    }
+
+    /**
+     * Modify the actions and clean it
+     * @param position position to be cahnge
+     * @param poi poi to change
+     * @param isSave if a save action
+     * @param lastPosition last position of the poi
+     */
+    private void cleanActions(int position, POI poi, boolean isSave, int lastPosition) {
+        if (isSave && position <= lastPosition){
+            actions.add(position, poi);
+            lastPosition++;
+        }else actions.add(position + 1, poi);
+        if (isSave) actions.remove(lastPosition);
+        Action action;
+        for (int i = position + 1; i < actions.size(); i++) {
+            action = actions.get(i);
+            if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
+            if (action.getType() == ActionIdentifier.MOVEMENT_ACTIVITY.getId()) {
+                Movement movement = (Movement) action;
+                movement.setPoi(poi);
+                actions.set(i, movement);
+            } else if (action.getType() == ActionIdentifier.BALLOON_ACTIVITY.getId()) {
+                Balloon balloon = (Balloon) action;
+                balloon.setPoi(poi);
+                actions.set(i, balloon);
+            } else if (action.getType() == ActionIdentifier.SHAPES_ACTIVITY.getId()) {
+                Shape shape = (Shape) action;
+                shape.setPoi(poi);
+                actions.set(i, shape);
+            }
+        }
+        if(lastPosition == 0){
+            int nextPOI = 0;
+            for(int l = 0; l < actions.size(); l++){
+                action = actions.get(l);
+                nextPOI = l;
+                if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
+            }
+            List<Action> newActions = actions.subList(nextPOI, actions.size());
+            actions = newActions;
         }
     }
 
