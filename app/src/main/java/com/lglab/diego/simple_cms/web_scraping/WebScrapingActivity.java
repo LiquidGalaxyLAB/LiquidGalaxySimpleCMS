@@ -218,6 +218,13 @@ public class WebScrapingActivity extends TobBarActivity implements
         initRecyclerView();
     }
 
+    @Override
+    protected void onPause() {
+        if (tourGDG != null) stopTour();
+        tourGDG = null;
+        super.onPause();
+    }
+
 
     /**
      * Set the length text

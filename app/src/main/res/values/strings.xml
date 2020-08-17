@@ -248,7 +248,7 @@
     </string>
 
     //Demo
-    <string name="start_demo">Check out your Liquid Galaxy /n Running Barranquilla, Colombia Demo</string>
+    <string name="start_demo">Check out your Liquid Galaxy \n Running Barranquilla, Colombia Demo</string>
     <string name="stop_demo">Stop</string>
     <string name="stop_message">Thanks for watching the demo. We hope you like it!</string>
 
