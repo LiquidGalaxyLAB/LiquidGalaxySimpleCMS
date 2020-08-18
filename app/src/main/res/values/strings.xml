@@ -78,13 +78,14 @@
 
     //Use by all the Create options
     <string name="location_name_title_empty">NA</string>
-    <string name="position_save">Step Position</string>
+    <string name="position_save">Step Position*</string>
     <string name="example_save">Step Position</string>
 
 
     //Create messages
     <string name="create_message_charging_storyboard">Charging the storyboard</string>
     <string name="create_message_error_charging_storyboard">There was an unexpected error charging the storyboard /n Please, try again</string>
+    <string name="explain_step_position">*The position where the content is going to be saved in the storyboard</string>
 
 
     //String for create storyboard location activity

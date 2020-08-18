@@ -39,8 +39,8 @@
 
             <Button
                 android:id="@+id/butt_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="220dp"
+                android:layout_height="86dp"
                 android:background="@drawable/button_location"
                 android:elevation="8dp"
                 android:fontFamily="@font/roboto_light"
@@ -64,14 +64,14 @@
 
             <Button
                 android:id="@+id/butt_movement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="220dp"
+                android:layout_height="86dp"
                 android:background="@drawable/button_movement"
                 android:elevation="8dp"
                 android:fontFamily="@font/roboto_light"
                 android:minWidth="200dp"
                 android:minHeight="80dp"
-                android:text="@string/button_location"
+                android:text="@string/button_movements"
                 android:textAllCaps="false"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/button_text_font_size"
@@ -89,8 +89,8 @@
 
             <Button
                 android:id="@+id/butt_balloon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="220dp"
+                android:layout_height="86dp"
                 android:background="@drawable/button_balloon"
                 android:elevation="8dp"
                 android:fontFamily="@font/roboto_light"
@@ -114,8 +114,8 @@
 
             <Button
                 android:id="@+id/butt_shape"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="220dp"
+                android:layout_height="86dp"
                 android:background="@drawable/button_shapes"
                 android:elevation="8dp"
                 android:fontFamily="@font/roboto_light"
@@ -635,6 +635,55 @@
                 android:textSize="@dimen/primary_text_font_size"
                 android:padding="5dp"
                 android:text="@string/butt_try_again_liquid_galaxy_explain" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_position_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/position_save"
+                    android:textColor="@color/textColorClick"
+                    android:textSize="@dimen/hint_text_font_size" />
+
+                <EditText
+                    android:id="@+id/position_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/example_save"
+                    android:background="@drawable/rectangle_insert_url"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/roboto"
+                    android:hint="@string/example_save"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="30"
+                    android:minWidth="244dp"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorClick"
+                    android:textColorHint="@color/hintColor"
+                    android:textSize="@dimen/primary_text_font_size" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/explain_step_position"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="84dp"
+                android:padding="5dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/explain_step_position"
+                android:textColor="@color/textColorClick"
+                android:textSize="@dimen/primary_text_font_size" />
+
 
         </LinearLayout>
 

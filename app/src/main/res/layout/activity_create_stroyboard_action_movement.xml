@@ -64,9 +64,9 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="352dp"
             android:thumb="@drawable/custom_switch_button"
-            app:track="@drawable/custom_switch_button_track"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orbit_mode" />
+            app:layout_constraintEnd_toStartOf="@+id/orbit_mode"
+            app:track="@drawable/custom_switch_button_track" />
 
         <TextView
             android:id="@+id/orbit_mode"
@@ -87,8 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="355dp"
-            android:text="@string/duration"
             android:fontFamily="@font/roboto"
+            android:text="@string/duration"
             android:textAlignment="center"
             android:textColor="@color/textColorClick"
             android:textSize="@dimen/hint_text_font_size"
@@ -124,8 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="468dp"
             android:layout_marginBottom="352dp"
-            android:text="@string/seconds"
             android:fontFamily="@font/roboto"
+            android:text="@string/seconds"
             android:textAlignment="center"
             android:textColor="@color/textColorClick"
             android:textSize="@dimen/hint_text_font_size"
@@ -170,13 +170,28 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
+            android:id="@+id/explain_step_position"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/explain_step_position"
+            android:textColor="@color/textColorClick"
+            android:textSize="@dimen/primary_text_font_size"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.258"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_position_save"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="240dp"
-            android:text="@string/old_heading"
             android:fontFamily="@font/roboto"
+            android:text="@string/old_heading"
             android:textAlignment="center"
             android:textColor="@color/textColorClick"
             android:textSize="@dimen/hint_text_font_size"
@@ -221,7 +236,7 @@
             android:textColor="@color/textColorClick"
             android:textSize="@dimen/hint_text_font_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <TextView
