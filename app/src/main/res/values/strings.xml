@@ -255,6 +255,33 @@
     <string name="stop_message">Thanks for watching the demo. We hope you like it!</string>
 
 
+    //Explain texts
+    <string name="butt_location_explain">Open a location content</string>
+    <string name="butt_movement_explain">Open a movement content</string>
+    <string name="butt_balloon_explain">Open a balloon content</string>
+    <string name="butt_shape_explain">Open a shape content</string>
+    <string name="butt_stop_explain">Stop a running test</string>
+    <string name="butt_test_explain2">Test a storyboard, location, movement, balloon, shape</string>
+    <string name="butt_clean_story_board_explain">Clean the storyboard</string>
+    <string name="butt_save_locally_explain">Save the storyboard in your tablet</string>
+    <string name="butt_save_on_google_driver_explain">Save the storyboard in Google Drive</string>
+    <string name="butt_delete_explain">Delete the action</string>
+    <string name="butt_cancel_explain">Cancel the edition of the content</string>
+    <string name="butt_add_explain">Add a location, movement, balloon, shape to the storyboard</string>
+    <string name="butt_save_explain">Save a location, movement, balloon, shape to the storyboard</string>
+    <string name="butt_add_point_explain">Add a point at the end</string>
+    <string name="butt_delete_point_explain">Delete the last point</string>
+    <string name="butt_delete_points_explain">Delete all the point and leave the first two</string>
+    <string name="butt_demo_barranquilla_explain">Starts the demo from barranquilla</string>
+    <string name="butt_connect_google_drive_explain">Connect to Google Drive and download all the files</string>
+    <string name="butt_update_liquid_galaxy_explain">Update the files that are in Google Drive</string>
+    <string name="butt_refresh_explain">Refresh all the information of the GDG\'s communities</string>
+    <string name="butt_tour_explain">Start a tour in all the GDG\'s communities</string>
+    <string name="butt_stop_tour_explain">Stop the GDG\'s communities tour</string>
+    <string name="butt_connect_liquid_galaxy_explain">Connect to Liquid Galaxy</string>
+    <string name="butt_try_again_liquid_galaxy_explain">Try to connect to the Liquid Galaxy, again</string>
+
+
 
     //Elevation Types
     <string-array name="elevation_types">

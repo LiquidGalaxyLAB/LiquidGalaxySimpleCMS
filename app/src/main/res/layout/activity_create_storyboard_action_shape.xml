@@ -14,18 +14,19 @@
         android:id="@+id/connection_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="316dp"
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
         app:layout_constraintBaseline_toBaselineOf="@+id/location_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/location_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="160dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/roboto"
         android:text="@string/location_name"
@@ -34,20 +35,21 @@
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/butt_add_point"
-        app:layout_constraintEnd_toEndOf="@+id/location_name_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/location_name_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523" />
 
     <TextView
         android:id="@+id/location_name_title"
         android:layout_width="0dp"
         android:layout_height="28dp"
-        android:layout_marginEnd="500dp"
+        android:layout_marginEnd="12dp"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
         app:layout_constraintBaseline_toBaselineOf="@+id/location_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/connection_status" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_button"

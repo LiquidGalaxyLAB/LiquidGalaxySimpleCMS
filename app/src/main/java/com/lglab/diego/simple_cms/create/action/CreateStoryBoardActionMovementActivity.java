@@ -35,9 +35,13 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
 
     //private static final String TAG_DEBUG = "CreateStoryBoardActionMovementActivity";
 
-    private TextView seekBarValueHeading, seekBarValueTilt,
-            oldHeading, oldTilt, connectionStatus,
-            locationName, locationNameTitle, textPositionSave;
+    private TextView seekBarValueHeading;
+    private TextView seekBarValueTilt;
+    private TextView oldHeading;
+    private TextView oldTilt;
+    private TextView connectionStatus;
+    private TextView locationName;
+    private TextView locationNameTitle;
     private EditText duration, positionSave;
     private SeekBar seekBarHeading, seekBarTilt;
     private SwitchCompat switchCompatOrbitMode;
@@ -62,7 +66,6 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
         positionSave = findViewById(R.id.position_save);
-        textPositionSave = findViewById(R.id.text_position_save);
 
 
 

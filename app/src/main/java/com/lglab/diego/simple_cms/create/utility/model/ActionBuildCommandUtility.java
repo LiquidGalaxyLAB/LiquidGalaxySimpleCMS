@@ -121,7 +121,7 @@ public class ActionBuildCommandUtility {
                 "  </body>\n" +
                 "]]>" +
                 "    </description>\n" +
-                "    <gx:balloonVisibility>colombia_flags</gx:balloonVisibility>\n" +
+                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
                 "    <Point>\n" +
                 "      <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
                 "    </Point>\n" +

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,16 +42,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
-/*
+
     private static final String TAG_DEBUG = "CreateStoryBoardActionShapeActivity";
-*/
+
 
     private TextView connectionStatus,
-            locationName, locationNameTitle, textPositionSave;
+            locationName, locationNameTitle;
     private EditText duration, positionSave;
 
     private RecyclerView mRecyclerView;
     List<Point> points = new ArrayList<>();
+    PointRecyclerAdapter mAdapter;
 
     private Handler handler = new Handler();
     private POI poi;
@@ -69,7 +71,6 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
         positionSave = findViewById(R.id.position_save);
-        textPositionSave = findViewById(R.id.text_position_save);
 
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
@@ -152,14 +153,12 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             point.setLongitude(temp);
             point.setLatitude(temp);
             point.setAltitude(temp);
-            points.add(point);
-            rePaintRecyclerView();
+            mAdapter.addPoint(point);
         });
 
         buttDeletePoint.setOnClickListener((view) -> {
             if(points.size() > 2 ) {
-                points.remove(points.size() - 1);
-                rePaintRecyclerView();
+                mAdapter.deleteLastPoint();
             } else{
                 CustomDialogUtility.showDialog(CreateStoryBoardActionShapeActivity.this,
                         getResources().getString(R.string.delete_point));
@@ -168,9 +167,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
         buttDeletePoints.setOnClickListener( (view) -> {
             if(points.size() > 2){
-                List<Point> initPoints = points.subList(0, 2);
-                points = new ArrayList<>(initPoints);
-                rePaintRecyclerView();
+               mAdapter.deleteAllPoints();
             } else{
                 CustomDialogUtility.showDialog(CreateStoryBoardActionShapeActivity.this,
                         getResources().getString(R.string.delete_point));
@@ -256,15 +253,6 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
     }
 
     /**
-     * It re paints the recyclerview with the points
-     */
-    private void rePaintRecyclerView(){
-        RecyclerView.Adapter mAdapter = new PointRecyclerAdapter(points);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.scrollToPosition(points.size() - 1);
-    }
-
-    /**
      * Initiate the recycleview
      */
     private void initRecyclerView() {
@@ -286,7 +274,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.Adapter mAdapter = new PointRecyclerAdapter(points);
+        mAdapter = new PointRecyclerAdapter(points);
         mRecyclerView.setAdapter(mAdapter);
     }
 

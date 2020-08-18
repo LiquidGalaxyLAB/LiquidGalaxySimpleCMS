@@ -133,6 +133,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_movement));
             } else {
+                POI lastPOI = findLastPOI(actions.size());
+                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), lastPOI);
                 intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
                 startActivityForResult(intent, ActionIdentifier.MOVEMENT_ACTIVITY.getId());
             }
@@ -144,6 +146,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_balloon));
             } else {
+                POI lastPOI = findLastPOI(actions.size());
+                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), lastPOI);
                 intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
                 startActivityForResult(intent, ActionIdentifier.BALLOON_ACTIVITY.getId());
             }
@@ -155,6 +159,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
                         getResources().getString(R.string.You_need_a_location_to_create_a_shape));
             } else {
+                POI lastPOI = findLastPOI(actions.size());
+                intent.putExtra(ActionIdentifier.LOCATION_ACTIVITY.name(), lastPOI);
                 intent.putExtra(ActionIdentifier.POSITION.name(), actions.size());
                 startActivityForResult(intent, ActionIdentifier.SHAPES_ACTIVITY.getId());
             }
@@ -583,14 +589,17 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
         } else {
             Shape shape = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
             int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
             if (position > actions.size()) position = actions.size();
             POI poi = findLastPOI(position);
             if (shape != null && poi != null) {
                 shape.setPoi(poi);
             }
-            if (position >= 0) {
-                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            if (position >= actions.size()) {
+                actions.add(shape);
+                if(isSave) actions.remove(lastPosition);
+            }else if (position >= 0) {
                 if (isSave && position == lastPosition) {
                     actions.set(position, shape);
                 }else{
@@ -636,14 +645,17 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
         } else {
             Movement movement = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
             int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
             if (position > actions.size()) position = actions.size();
             POI poi = findLastPOI(position);
             if (movement != null && poi != null) {
                 movement.setPoi(poi);
             }
-            if (position >= 0) {
-                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            if (position >= actions.size()) {
+                actions.add(movement);
+                if(isSave) actions.remove(lastPosition);
+            }else if (position >= 0) {
                 if (isSave && position == lastPosition) {
                     actions.set(position, movement);
                 }else{
@@ -671,14 +683,17 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
         } else {
             Balloon balloon = Objects.requireNonNull(data).getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
+            boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
             int lastPosition = Objects.requireNonNull(data).getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
             if (position > actions.size()) position = actions.size() - 1;
             POI poi = findLastPOI(position);
             if (balloon != null && poi != null) {
                 balloon.setPoi(poi);
             }
-            if(position >= 0){
-                boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
+            if (position >= actions.size()) {
+                actions.add(balloon);
+                if(isSave) actions.remove(lastPosition);
+            }else if(position >= 0){
                 if (isSave && position == lastPosition) {
                     actions.set(position, balloon);
                 }else{
