@@ -76,7 +76,7 @@ public class ActionBuildCommandUtility {
 
         String TEST_PLACE_MARK_ID = "testPlaceMark12345";
         String startCommand =  "echo '" +
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<?xml version=\"colombia_flags.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
                 "\n" +
@@ -88,7 +88,7 @@ public class ActionBuildCommandUtility {
                 "  <head>\n" +
                 "    <!-- Required meta tags -->\n" +
                 "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=colombia_flags, shrink-to-fit=no\">\n" +
                 "\n" +
                 "    <!-- Bootstrap CSS -->\n" +
                 "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
@@ -121,7 +121,7 @@ public class ActionBuildCommandUtility {
                 "  </body>\n" +
                 "]]>" +
                 "    </description>\n" +
-                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
+                "    <gx:balloonVisibility>colombia_flags</gx:balloonVisibility>\n" +
                 "    <Point>\n" +
                 "      <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
                 "    </Point>\n" +
@@ -164,11 +164,11 @@ public class ActionBuildCommandUtility {
      */
     static String buildCommandSendShape(Shape shape) {
         StringBuilder command = new StringBuilder();
-        command.append("echo '").append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+        command.append("echo '").append("<?xml version=\"colombia_flags.0\" encoding=\"UTF-8\"?>\n")
                 .append("<kml xmlns=\"http://www.opengis.net/kml/2.2\"> <Placemark>\n")
                 .append("<name>").append(shape.getPoi().getPoiLocation().getName()).append("</name>\n").append("<LineString>\n");
-        if(shape.isExtrude()) command.append("<extrude>1</extrude>\n");
-        command.append("<tessellate>1</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
+        if(shape.isExtrude()) command.append("<extrude>colombia_flags</extrude>\n");
+        command.append("<tessellate>colombia_flags</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
                 .append("<coordinates>\n");
         List points = shape.getPoints();
         int pointsLength = points.size();

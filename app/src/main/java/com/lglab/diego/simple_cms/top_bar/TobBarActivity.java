@@ -22,6 +22,7 @@ import com.lglab.diego.simple_cms.account.LogIn;
 import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
 import com.lglab.diego.simple_cms.demo.DemoActivity;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
+import com.lglab.diego.simple_cms.help.HelpActivity;
 import com.lglab.diego.simple_cms.import_google_drive.ImportGoogleDriveActivity;
 import com.lglab.diego.simple_cms.my_storyboards.MyStoryBoardActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
@@ -145,6 +146,16 @@ public class TobBarActivity extends AppCompatActivity {
     }
 
     /**
+     * Pass form the actual activity to the activity help
+     *
+     * @param view The view which is call.
+     */
+    public void buttHelp(View view) {
+        Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Change the background color and the option clickable to false of the button_connect
      *
      * @param context The context which is the button
@@ -164,6 +175,7 @@ public class TobBarActivity extends AppCompatActivity {
         return sharedPreferences.getBoolean(ConstantsLogInLogOut.IS_LOGIN.name(), false);
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
       if (requestCode == PERMISSION_CODE_UNPACK_NOT_LOCALLY) {
@@ -180,4 +192,5 @@ public class TobBarActivity extends AppCompatActivity {
             }
         }
     }
+
 }

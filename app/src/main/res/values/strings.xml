@@ -66,6 +66,7 @@
     <string name="menu_connect">Connect</string>
     <string name="menu_external_api">External API</string>
     <string name="menu_account">Account</string>
+    <string name="menu_help">Help</string>
     <string name="menu_demo">Demo</string>
     <string name="menu_about">Simple CMS</string>
 
@@ -149,6 +150,7 @@
     <string name="tittle_demo">Demo</string>
     <string name="tittle_about">About</string>
     <string name="tittle_web_scraping">Web Scraping</string>
+    <string name="tittle_help">Help</string>
     <string name="tittle_main_activity">Main Activity</string>
     <string name="toast">Toast</string>
 
@@ -264,6 +266,7 @@
     </string-array>
 
 
+    <dimen name="top_bar_text_font_size">18sp</dimen>
     <dimen name="primary_text_font_size">20sp</dimen>
     <dimen name="button_text_font_size">23sp</dimen>
     <dimen name="button_main_text_font_size">25sp</dimen>

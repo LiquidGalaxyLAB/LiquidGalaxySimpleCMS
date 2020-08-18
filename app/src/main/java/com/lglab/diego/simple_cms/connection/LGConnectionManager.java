@@ -102,11 +102,11 @@ public class LGConnectionManager implements Runnable {
                     //Command not sent
                     itemsToDequeue = queue.size();
                 } else if (System.currentTimeMillis() - timeBefore >= 2000) {
-                    //Command sent but took more than 2 seconds
+                    //Command sent but took more than logos seconds
                     lgCommandToReSend = null;
                     itemsToDequeue = queue.size();
                 } else {
-                    //Command sent in less than 2 seconds
+                    //Command sent in less than logos seconds
                     lgCommandToReSend = null;
                 }
             } while (true);

@@ -55,7 +55,6 @@ public class DemoActivity extends TobBarActivity {
         connectionStatus = findViewById(R.id.connection_status);
 
         changeButtonClickableBackgroundColor();
-
     }
 
     /**
