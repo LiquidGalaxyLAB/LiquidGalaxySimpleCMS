@@ -773,6 +773,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         } else if (position >= 0) {
             if (position == lastPosition){
                 actions.set(position, poi);
+                updateData(position, poi);
             }
             else {
                 cleanActions(position, poi, isSave, lastPosition);
@@ -793,6 +794,21 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             lastPosition++;
         }else actions.add(position + 1, poi);
         if (isSave) actions.remove(lastPosition);
+        updateData(position, poi);
+        Action action;
+        if(lastPosition == 0){
+            int nextPOI = 0;
+            for(int l = 0; l < actions.size(); l++){
+                action = actions.get(l);
+                nextPOI = l;
+                if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
+            }
+            List<Action> newActions = actions.subList(nextPOI, actions.size());
+            actions = newActions;
+        }
+    }
+
+    private void updateData(int position, POI poi) {
         Action action;
         for (int i = position + 1; i < actions.size(); i++) {
             action = actions.get(i);
@@ -810,16 +826,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 shape.setPoi(poi);
                 actions.set(i, shape);
             }
-        }
-        if(lastPosition == 0){
-            int nextPOI = 0;
-            for(int l = 0; l < actions.size(); l++){
-                action = actions.get(l);
-                nextPOI = l;
-                if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
-            }
-            List<Action> newActions = actions.subList(nextPOI, actions.size());
-            actions = newActions;
         }
     }
 
