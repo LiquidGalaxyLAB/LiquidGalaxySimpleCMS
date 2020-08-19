@@ -5,7 +5,7 @@
 
 ## Description
 
-It is a content management system for the creation and administration of storyboards in Liquid Galaxy. The project Simple CMS is an android application that allows the creation of a storyboard with the following functionalities, that are going to be shown in the Liquid Galaxy: 
+Simple CMS is a content management system for the creation and administration of storyboards in Liquid Galaxy, developed as part of Google Summer of Code 2020 by Diego Riveros, with Andreu Ibañez as mentor, and Marc Capdevila and Moisés Martínez as co-mentors. The project Simple CMS is an android application that allows the creation of a storyboard with the following functionalities, that are going to be shown in the Liquid Galaxy: 
 
 1. Location. Add a position. 
 2. Movements. Add a movement or orbit. 
