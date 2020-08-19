@@ -36,5 +36,5 @@ Download the project locally. Afterwards, open the project using Android Studio.
 
 ## Help Content
 
-<img src="https://media.giphy.com/media/U89yKN2S7dK3R9m5v3/giphy.gif" width="350" height="250"/>
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/helptab.gif" width="350" height="250"/>
 
