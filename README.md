@@ -38,3 +38,11 @@ Download the project locally. Afterwards, open the project using Android Studio.
 
 <img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/helptab.gif" width="350" height="250"/>
 
+## Used Technologies
+* Java
+* Android 
+* Room
+* SQLite 
+* Drive
+* Jsoup
+
