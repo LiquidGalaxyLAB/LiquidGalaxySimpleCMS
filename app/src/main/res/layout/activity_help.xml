@@ -440,7 +440,7 @@
                 android:id="@+id/butt_demo_barranquilla"
                 android:layout_width="407dp"
                 android:layout_height="70dp"
-                android:background="@drawable/button_primary"
+                android:background="@drawable/button_test"
                 android:elevation="8dp"
                 android:fontFamily="@font/roboto_light"
                 android:minWidth="200dp"
