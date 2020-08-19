@@ -34,4 +34,7 @@ After clicking on the apk, the tablet might ask for permissions. Give the permis
 
 Download the project locally. Afterwards, open the project using Android Studio. Then, connect a device or emulator and click on the run button. For more instructions on how to do this, [check out the Android Developers official guide](https://developer.android.com/training/basics/firstapp/running-app)
 
+## Help Content
+
+<img src="https://media.giphy.com/media/U89yKN2S7dK3R9m5v3/giphy.gif" width="350" height="250"/>
 
