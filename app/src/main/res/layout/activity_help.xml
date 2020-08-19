@@ -676,7 +676,7 @@
             <TextView
                 android:id="@+id/explain_step_position"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="84dp"
                 android:padding="5dp"
                 android:fontFamily="@font/roboto"
