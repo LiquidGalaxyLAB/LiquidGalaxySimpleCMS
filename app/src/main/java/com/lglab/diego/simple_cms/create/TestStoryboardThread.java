@@ -13,6 +13,7 @@ import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
 import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
+import com.lglab.diego.simple_cms.create.utility.model.poi.POILocation;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 
@@ -68,11 +69,14 @@ public class TestStoryboardThread implements Runnable {
                 if (movement.isOrbitMode()) {
                     actionController.orbit(poi, null);
                 } else {
-                    POICamera poiCamera = poi.getPoiCamera();
+                    POICamera camera = poi.getPoiCamera();
+                    POICamera poiCamera = new POICamera(camera.getHeading(), camera.getTilt(), camera.getRange(), camera.getAltitudeMode(), camera.getDuration());
+                    POI poiSend = new POI();
                     poiCamera.setHeading(movement.getNewHeading());
                     poiCamera.setTilt(movement.getNewTilt());
-                    poi.setPoiCamera(poiCamera);
-                    actionController.moveToPOI(poi, null);
+                    poiSend.setPoiCamera(poiCamera);
+                    poiSend.setPoiLocation(poi.getPoiLocation());
+                    actionController.moveToPOI(poiSend, null);
                 }
                 duration = movement.getDuration() * 1000;
             } else if (actionSend instanceof Balloon) {

@@ -2,8 +2,6 @@ package com.lglab.diego.simple_cms.demo;
 
 import android.app.Dialog;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,8 +44,10 @@ public class DemoThread implements Runnable {
     @Override
     public void run() {
         running.set(true);
-        Action actionSend;
         ActionController actionController = ActionController.getInstance();
+        passingAllImages(actionController);
+        dialog.dismiss();
+        Action actionSend;
         int duration = 4000;
         for (int i = 0; i < actions.size() && running.get(); i++) {
             actionSend = actions.get(i);
@@ -61,11 +61,14 @@ public class DemoThread implements Runnable {
                 if (movement.isOrbitMode()) {
                     actionController.orbit(poi, null);
                 } else {
-                    POICamera poiCamera = poi.getPoiCamera();
+                    POICamera camera = poi.getPoiCamera();
+                    POICamera poiCamera = new POICamera(camera.getHeading(), camera.getTilt(), camera.getRange(), camera.getAltitudeMode(), camera.getDuration());
+                    POI poiSend = new POI();
                     poiCamera.setHeading(movement.getNewHeading());
                     poiCamera.setTilt(movement.getNewTilt());
-                    poi.setPoiCamera(poiCamera);
-                    actionController.moveToPOI(poi, null);
+                    poiSend.setPoiCamera(poiCamera);
+                    poiSend.setPoiLocation(poi.getPoiLocation());
+                    actionController.moveToPOI(poiSend, null);
                 }
                 duration = movement.getDuration() * 1000;
             } else if (actionSend instanceof Balloon) {
@@ -88,5 +91,17 @@ public class DemoThread implements Runnable {
         }
         actionController.cleanFileKMLs(500);
         activity.runOnUiThread(() -> dialog.dismiss());
+    }
+
+    private void passingAllImages(ActionController actionController) {
+        actionController.createResourcesFolder();
+        Action action;
+        for (int i = 0; i < actions.size() && running.get(); i++) {
+            action = actions.get(i);
+            if (action instanceof Balloon) {
+                Balloon balloon = (Balloon) action;
+                actionController.sendImageTestStoryboard(balloon);
+            }
+        }
     }
 }

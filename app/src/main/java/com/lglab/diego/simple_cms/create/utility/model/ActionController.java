@@ -117,6 +117,7 @@ public class ActionController {
      */
     public void sendBalloon(Balloon balloon, LGCommand.Listener listener) {
         cleanFileKMLs(0);
+
         Uri imageUri = balloon.getImageUri();
         if (imageUri != null) {
             createResourcesFolder();
@@ -157,7 +158,6 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
 
         handler.postDelayed(this::writeFileBalloonFile, 500);
-        cleanFileKMLs(balloon.getDuration()*1000 - 500);
     }
 
     /**
@@ -187,6 +187,8 @@ public class ActionController {
         lgConnectionSendFile.addPath(imagePath);
         lgConnectionSendFile.startConnection();
 
+        cleanFileKMLs(0);
+
         handler.postDelayed(() -> {
             LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonWithLogos(),
                     LGCommand.CRITICAL_MESSAGE, (String result) -> {
@@ -194,12 +196,7 @@ public class ActionController {
             LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
             lgConnectionManager.startConnection();
             lgConnectionManager.addCommandToLG(lgCommand);
-
-            cleanFileKMLs(0);
-
-            handler.postDelayed(this::writeFileBalloonWithLogosFile, 500);
-            cleanFileKMLs(5500);
-        }, 30000);
+            }, 2000);
     }
 
     private String getLogosFile(AppCompatActivity activity) {
@@ -208,6 +205,7 @@ public class ActionController {
             try {
                 InputStream is = activity.getAssets().open("logos.png");
                 int size = is.available();
+                Log.w(TAG_DEBUG, "SIZE: " + size);
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
@@ -218,24 +216,12 @@ public class ActionController {
 
                 return file.getPath();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
             }
         }
-        return "";
+        return file.getPath();
     }
 
-
-    /**
-     * Write the file of the balloon
-     */
-    private void writeFileBalloonWithLogosFile() {
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.writeFileBalloonWithLogosFile(),
-                LGCommand.CRITICAL_MESSAGE, (String result) -> {
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
-    }
 
     /**
      * Create the Resource folder
@@ -280,7 +266,6 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
 
         handler.postDelayed(this::writeFileShapeFile, 500);
-        cleanFileKMLs(shape.getDuration() * 1000 - 500);
     }
 
     /**

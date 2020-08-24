@@ -66,17 +66,6 @@ public class ActionBuildCommandUtility {
     }
 
     /**
-     * @return Command to write the path to the balloon.kml
-     */
-    public static String writeFileBalloonWithLogosFile() {
-        String command = "echo \"http://localhost:81/balloonLogos.kml\"  > " +
-                BASE_PATH +
-                "kmls.txt";
-        Log.w(TAG_DEBUG, "command: " + command);
-        return command;
-    }
-
-    /**
      * Build the command to paint a balloon in Liquid Galaxy
      * @return String with command
      */
@@ -90,6 +79,9 @@ public class ActionBuildCommandUtility {
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
                 "\n" +
                 " <Document>\n" +
+                "<BalloonStyle>\n" +
+                "<text>$[description]</text>\n" +
+                "</BalloonStyle>\n" +
                 " <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
                 "    <description>\n" +
                 "<![CDATA[\n" +
@@ -105,7 +97,7 @@ public class ActionBuildCommandUtility {
                 "  <body>\n" +
                 "    <div class=\"p-lg-5\" align=\"center\">\n" +
                 "\n";
-        String imageCommand =  "        <img src=\"./resources/logos.png\" width=\"320\" height=\"240\"> \n" +
+        String imageCommand =  "        <img src=\"./../resources/logos.png\" width=\"320\" height=\"240\"> \n" +
                     "        <br>\n";
         String endCommand = "    </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
                 "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
@@ -113,6 +105,7 @@ public class ActionBuildCommandUtility {
                 "  </body>\n" +
                 "]]>" +
                 "    </description>\n" +
+                "<styleUrl>#exampleBalloonStyle</styleUrl>\n"+
                 "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
                 "    <Point>\n" +
                 "      <coordinates>" + 100.1140 + "," + 76.2506 + "</coordinates>\n" +
@@ -122,7 +115,8 @@ public class ActionBuildCommandUtility {
                 "</kml>" +
                 "' > " +
                 BASE_PATH +
-                "balloonLogos.kml";
+                "kml/slave_2.kml";
+        Log.w(TAG_DEBUG, "Command: " + endCommand);
         return startCommand + imageCommand + endCommand;
     }
 
