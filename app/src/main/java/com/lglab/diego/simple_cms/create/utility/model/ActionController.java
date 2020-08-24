@@ -3,6 +3,7 @@ package com.lglab.diego.simple_cms.create.utility.model;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,7 +37,8 @@ public class ActionController {
     /**
      * Enforce private constructor
      */
-    private ActionController() {}
+    private ActionController() {
+    }
 
     /**
      * Move the screen to the poi
@@ -45,6 +47,7 @@ public class ActionController {
      * @param listener The listener of lgcommand
      */
     public void moveToPOI(POI poi, LGCommand.Listener listener) {
+        cleanFileKMLs(0);
         sendPoiToLG(poi, listener);
     }
 
@@ -67,7 +70,8 @@ public class ActionController {
 
     /**
      * First Clean the KML and then do the orbit
-     * @param poi POI
+     *
+     * @param poi      POI
      * @param listener Listener
      */
     public synchronized void cleanOrbit(POI poi, LGCommand.Listener listener) {
@@ -77,7 +81,8 @@ public class ActionController {
 
     /**
      * Do the orbit
-     * @param poi POI
+     *
+     * @param poi      POI
      * @param listener Listener
      */
     public void orbit(POI poi, LGCommand.Listener listener) {
@@ -136,6 +141,42 @@ public class ActionController {
     }
 
     /**
+     * @param balloon  Balloon with the information to build command
+     * @param listener listener
+     */
+    public void sendBalloonTestStoryBoard(Balloon balloon, LGCommand.Listener listener) {
+        cleanFileKMLs(0);
+
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+
+        handler.postDelayed(this::writeFileBalloonFile, 500);
+        cleanFileKMLs(balloon.getDuration()*1000 - 500);
+    }
+
+    /**
+     * Send the image of the balloon
+     *
+     * @param balloon Balloon
+     */
+    public void sendImageTestStoryboard(Balloon balloon) {
+        Uri imageUri = balloon.getImageUri();
+        if (imageUri != null) {
+            String imagePath = balloon.getImagePath();
+            Log.w(TAG_DEBUG, "Image Path: " + imagePath);
+            LGConnectionSendFile lgConnectionSendFile = LGConnectionSendFile.getInstance();
+            lgConnectionSendFile.addPath(imagePath);
+            lgConnectionSendFile.startConnection();
+        }
+    }
+
+    /**
      * Paint a balloon with the logos
      */
     public void sendBalloonWithLogos(AppCompatActivity activity) {
@@ -148,7 +189,8 @@ public class ActionController {
 
         handler.postDelayed(() -> {
             LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonWithLogos(),
-                    LGCommand.CRITICAL_MESSAGE, (String result) -> {});
+                    LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            });
             LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
             lgConnectionManager.startConnection();
             lgConnectionManager.addCommandToLG(lgCommand);
@@ -161,8 +203,8 @@ public class ActionController {
     }
 
     private String getLogosFile(AppCompatActivity activity) {
-        File file = new File(activity.getCacheDir()+"/logos.png");
-        if (!file.exists()){
+        File file = new File(activity.getCacheDir() + "/logos.png");
+        if (!file.exists()) {
             try {
                 InputStream is = activity.getAssets().open("logos.png");
                 int size = is.available();
@@ -238,7 +280,7 @@ public class ActionController {
         lgConnectionManager.addCommandToLG(lgCommand);
 
         handler.postDelayed(this::writeFileShapeFile, 500);
-        cleanFileKMLs(shape.getDuration() * 1000 + 500);
+        cleanFileKMLs(shape.getDuration() * 1000 - 500);
     }
 
     /**
@@ -272,7 +314,8 @@ public class ActionController {
 
     /**
      * Send both command to the Liquid Galaxy
-     * @param poi Poi with the location information
+     *
+     * @param poi     Poi with the location information
      * @param balloon Balloon with the information to paint the balloon
      */
     public void TourGDG(POI poi, Balloon balloon) {
@@ -282,6 +325,7 @@ public class ActionController {
 
     /**
      * Send a balloon in the case of the tour
+     *
      * @param balloon  Balloon with the information to build command
      * @param listener listener
      */
@@ -311,4 +355,5 @@ public class ActionController {
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
     }
+
 }

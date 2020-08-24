@@ -213,12 +213,13 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         handler.postDelayed(() -> {
             if (isConnected.get()) {
-                testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest);
+                Dialog dialog = CustomDialogUtility.getDialog(CreateStoryBoardActivity.this, "Setting Files");
+                dialog.show();
+                testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest, dialog);
                 testStoryboardThread.start();
                 CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
                 buttTest.setVisibility(View.INVISIBLE);
                 buttStopTest.setVisibility(View.VISIBLE);
-
             }
             loadConnectionStatus(sharedPreferences);
         }, 1200);

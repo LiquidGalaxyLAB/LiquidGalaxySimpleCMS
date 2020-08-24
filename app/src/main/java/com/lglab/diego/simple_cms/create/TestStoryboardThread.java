@@ -1,5 +1,6 @@
 package com.lglab.diego.simple_cms.create;
 
+import android.app.Dialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,14 +27,16 @@ public class TestStoryboardThread implements Runnable {
     private List<Action> actions;
     private AppCompatActivity activity;
     private Button buttTest, buttStopTest;
+    private Dialog dialog;
 
 
     TestStoryboardThread(List<Action> actions, AppCompatActivity activity, Button buttTest,
-                         Button buttStopTest){
+                         Button buttStopTest, Dialog dialog){
         this.actions = actions;
         this.activity = activity;
         this.buttTest = buttTest;
         this.buttStopTest = buttStopTest;
+        this.dialog = dialog;
     }
 
     void start() {
@@ -47,8 +51,10 @@ public class TestStoryboardThread implements Runnable {
     @Override
     public void run() {
         running.set(true);
-        Action actionSend;
         ActionController actionController = ActionController.getInstance();
+        passingAllImages(actionController);
+        dialog.dismiss();
+        Action actionSend;
         int duration = 4000;
         for (int i = 0; i < actions.size() && running.get(); i++) {
             actionSend = actions.get(i);
@@ -72,13 +78,11 @@ public class TestStoryboardThread implements Runnable {
             } else if (actionSend instanceof Balloon) {
                 Balloon balloon = (Balloon) actionSend;
                 duration = balloon.getDuration() * 1000;
-                actionController.sendBalloon(balloon, null);
-                actionController.cleanFileKMLs(duration - 200);
+                actionController.sendBalloonTestStoryBoard(balloon, null);
             } else if (actionSend instanceof Shape) {
                 Shape shape = (Shape) actionSend;
                 duration = shape.getDuration() * 1000;
                 actionController.sendShape(shape, null);
-                actionController.cleanFileKMLs(duration - 200);
             }
             try {
                 Log.w(TAG_DEBUG, "DURATION ACTION: " + duration);
@@ -87,10 +91,22 @@ public class TestStoryboardThread implements Runnable {
                 Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
             }
         }
-        actionController.cleanFileKMLs(500);
+        actionController.cleanFileKMLs(1000);
         activity.runOnUiThread(() -> {
                 buttTest.setVisibility(View.VISIBLE);
                 buttStopTest.setVisibility(View.INVISIBLE);
         });
+    }
+
+    private void passingAllImages(ActionController actionController) {
+        actionController.createResourcesFolder();
+        Action action;
+        for (int i = 0; i < actions.size() && running.get(); i++) {
+            action = actions.get(i);
+            if (action instanceof Balloon) {
+                Balloon balloon = (Balloon) action;
+                actionController.sendImageTestStoryboard(balloon);
+            }
+        }
     }
 }
