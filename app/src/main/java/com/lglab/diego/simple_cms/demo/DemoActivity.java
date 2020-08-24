@@ -55,6 +55,8 @@ public class DemoActivity extends TobBarActivity {
         connectionStatus = findViewById(R.id.connection_status);
 
         changeButtonClickableBackgroundColor();
+        SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
+        loadConnectionStatus(sharedPreferences);
     }
 
     /**

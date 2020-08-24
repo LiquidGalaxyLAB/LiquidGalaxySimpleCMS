@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.lglab.diego.simple_cms.connection.LGCommand;
 import com.lglab.diego.simple_cms.connection.LGConnectionManager;
 import com.lglab.diego.simple_cms.connection.LGConnectionSendFile;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 import com.lglab.diego.simple_cms.utility.ConstantPrefs;
@@ -102,25 +103,33 @@ public class MainActivity extends TobBarActivity {
         String usernameText = username.getText().toString();
         String passwordText = password.getText().toString();
 
-        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
-        editor.putString(ConstantPrefs.URI_TEXT.name(), hostPort);
-        editor.putString(ConstantPrefs.USER_NAME.name(), usernameText);
-        editor.putString(ConstantPrefs.USER_PASSWORD.name(), passwordText);
+        saveConnectionInfo(hostPort, usernameText, passwordText);
 
         if (!isValidHostNPort(hostPort)) {
             CustomDialogUtility.showDialog(MainActivity.this, getResources().getString(R.string.activity_connection_host_port_error));
-            editor.apply();
             return;
         }
-
-        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
-        editor.apply();
 
         Dialog dialog = CustomDialogUtility.getDialog(this, getResources().getString(R.string.connecting));
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         changeButtonTextConnecting();
         createLgCommand(hostPort, usernameText, passwordText, dialog);
+    }
+
+    /**
+     * Save the information in shared preference
+     * @param hostPort Host:port
+     * @param usernameText username
+     * @param passwordText password
+     */
+    private void saveConnectionInfo(String hostPort, String usernameText, String passwordText) {
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putString(ConstantPrefs.URI_TEXT.name(), hostPort);
+        editor.putString(ConstantPrefs.USER_NAME.name(), usernameText);
+        editor.putString(ConstantPrefs.USER_PASSWORD.name(), passwordText);
+        editor.putBoolean(ConstantPrefs.TRY_TO_RECONNECT.name(), true);
+        editor.apply();
     }
 
     /**
@@ -131,19 +140,7 @@ public class MainActivity extends TobBarActivity {
      * @param dialog The dialog that is going to be shown to the user
      */
     private void createLgCommand(String hostPort, String usernameText, String passwordText, Dialog dialog) {
-       final String command = "echo 'flytoview=" +
-                "<gx:duration> 3 </gx:duration>" +
-                "<gx:flyToMode>smooth</gx:flyToMode>" +
-                "<LookAt>" +
-                "<longitude>" + -122.4783 + "</longitude>" +
-                "<latitude>" + 37.8120 + "</latitude>" +
-                "<altitude>" + 2.0 + "</altitude>" +
-                "<heading>" + 10 + "</heading>" +
-                "<tilt>" + 90.0 + "</tilt>" +
-                "<range>" + 10 + "</range>" +
-                "<gx:altitudeMode> clampToGround   </gx:altitudeMode>" +
-                "</LookAt>' > /tmp/query.txt";
-
+        final String command = "echo 'connection';";
         LGCommand lgCommand = new LGCommand(command, LGCommand.CRITICAL_MESSAGE, response -> dialog.dismiss());
         createConnection(usernameText, passwordText, hostPort, lgCommand);
         sendMessageError(lgCommand, dialog);
@@ -200,6 +197,9 @@ public class MainActivity extends TobBarActivity {
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), true);
                 editor.apply();
                 changeToNewView();
+/*
+                ActionController.getInstance().sendBalloonWithLogos(MainActivity.this);
+*/
             }
         }, 2000);
     }
@@ -234,6 +234,7 @@ public class MainActivity extends TobBarActivity {
         textInsertUrl.setVisibility(View.VISIBLE);
         logo.setVisibility(View.INVISIBLE);
         buttTryAgain.setVisibility(View.INVISIBLE);
+        loadSharedData();
     }
 
     /**

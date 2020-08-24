@@ -190,7 +190,6 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
                 if(isConnected.get()){
                     Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked()).setDuration(Integer.parseInt(durationString));
                     ActionController.getInstance().sendShape(shape, null);
-                    ActionController.getInstance().cleanFileKMLs(shape.getDuration() * 1000);
                 }
                 loadConnectionStatus(sharedPreferences);
             }, 1200);

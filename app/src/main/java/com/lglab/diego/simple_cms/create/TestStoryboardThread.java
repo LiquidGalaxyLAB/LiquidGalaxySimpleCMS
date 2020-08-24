@@ -60,7 +60,7 @@ public class TestStoryboardThread implements Runnable {
                 Movement movement = (Movement) actionSend;
                 POI poi = movement.getPoi();
                 if (movement.isOrbitMode()) {
-                    actionController.orbit(poi);
+                    actionController.orbit(poi, null);
                 } else {
                     POICamera poiCamera = poi.getPoiCamera();
                     poiCamera.setHeading(movement.getNewHeading());
@@ -87,8 +87,6 @@ public class TestStoryboardThread implements Runnable {
                 Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
             }
         }
-        actionController.cleanBalloonKML(500);
-        actionController.cleanShapeKML(500);
         actionController.cleanFileKMLs(500);
         activity.runOnUiThread(() -> {
                 buttTest.setVisibility(View.VISIBLE);

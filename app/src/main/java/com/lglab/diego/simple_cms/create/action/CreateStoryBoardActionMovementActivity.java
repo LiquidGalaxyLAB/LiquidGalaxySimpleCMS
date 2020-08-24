@@ -203,7 +203,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             if(isConnected.get()){
                 if(switchCompatOrbitMode.isChecked()){
-                    ActionController.getInstance().orbit(poi);
+                    ActionController.getInstance().orbit(poi, null);
                 } else{
                     POI poiSend = new POI(poi);
                     POICamera poiCamera = poiSend.getPoiCamera();

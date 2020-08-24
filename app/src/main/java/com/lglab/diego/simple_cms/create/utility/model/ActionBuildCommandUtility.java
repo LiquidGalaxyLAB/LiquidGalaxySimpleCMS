@@ -58,11 +58,72 @@ public class ActionBuildCommandUtility {
      * @return Command to write the path to the balloon.kml
      */
     static String buildWriteBalloonFile() {
-        String command = "echo \"http://localhost:81/balloon.kml\"  > " +
+        String command = "echo 'http://localhost:81/balloon.kml'  > " +
                 BASE_PATH +
                 "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
         return command;
+    }
+
+    /**
+     * @return Command to write the path to the balloon.kml
+     */
+    public static String writeFileBalloonWithLogosFile() {
+        String command = "echo \"http://localhost:81/balloonLogos.kml\"  > " +
+                BASE_PATH +
+                "kmls.txt";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
+    }
+
+    /**
+     * Build the command to paint a balloon in Liquid Galaxy
+     * @return String with command
+     */
+    public static String buildCommandBalloonWithLogos() {
+
+
+        String TEST_PLACE_MARK_ID = "logos12345";
+        String startCommand =  "echo '" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
+                " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
+                "\n" +
+                " <Document>\n" +
+                " <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
+                "    <description>\n" +
+                "<![CDATA[\n" +
+                "  <head>\n" +
+                "    <!-- Required meta tags -->\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
+                "\n" +
+                "    <!-- Bootstrap CSS -->\n" +
+                "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
+                "\n" +
+                "  </head>\n" +
+                "  <body>\n" +
+                "    <div class=\"p-lg-5\" align=\"center\">\n" +
+                "\n";
+        String imageCommand =  "        <img src=\"./resources/logos.png\" width=\"320\" height=\"240\"> \n" +
+                    "        <br>\n";
+        String endCommand = "    </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
+                "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
+                "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
+                "  </body>\n" +
+                "]]>" +
+                "    </description>\n" +
+                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
+                "    <Point>\n" +
+                "      <coordinates>" + 100.1140 + "," + 76.2506 + "</coordinates>\n" +
+                "    </Point>\n" +
+                "  </Placemark>\n" +
+                "</Document>\n" +
+                "</kml>" +
+                "' > " +
+                BASE_PATH +
+                "balloonLogos.kml";
+        return startCommand + imageCommand + endCommand;
     }
 
     /**
@@ -76,7 +137,7 @@ public class ActionBuildCommandUtility {
 
         String TEST_PLACE_MARK_ID = "testPlaceMark12345";
         String startCommand =  "echo '" +
-                "<?xml version=\"colombia_flags.0\" encoding=\"UTF-8\"?>\n" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
                 "\n" +
@@ -88,7 +149,7 @@ public class ActionBuildCommandUtility {
                 "  <head>\n" +
                 "    <!-- Required meta tags -->\n" +
                 "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=colombia_flags, shrink-to-fit=no\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
                 "\n" +
                 "    <!-- Bootstrap CSS -->\n" +
                 "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
@@ -105,7 +166,7 @@ public class ActionBuildCommandUtility {
                 String imageCommand = "";
 
                 if(balloon.getImagePath() != null && !balloon.getImagePath().equals("")) {
-                    imageCommand =  "        <img src=\"./resources/" + getFileName(balloon.getImagePath()) + "\" width=\"80\" height=\"60\"> \n" +
+                    imageCommand =  "        <img src=\"./resources/" + getFileName(balloon.getImagePath()) + "\"> \n" +
                             "        <br>\n";
                 }
                 String videoCommand = "";
@@ -150,7 +211,7 @@ public class ActionBuildCommandUtility {
      * @return Command to write the path to the shape.kml
      */
     static String buildWriteShapeFile() {
-        String command = "echo \"http://localhost:81/shape.kml\"  > " +
+        String command = "echo 'http://localhost:81/shape.kml' > " +
                 BASE_PATH +
                 "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
@@ -164,11 +225,21 @@ public class ActionBuildCommandUtility {
      */
     static String buildCommandSendShape(Shape shape) {
         StringBuilder command = new StringBuilder();
-        command.append("echo '").append("<?xml version=\"colombia_flags.0\" encoding=\"UTF-8\"?>\n")
-                .append("<kml xmlns=\"http://www.opengis.net/kml/2.2\"> <Placemark>\n")
+        command.append("echo '").append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+                .append("<kml xmlns=\"http://www.opengis.net/kml/2.2\"> \n")
+                .append("<Document>\n" +
+                        "  <name>shape.kml</name>\n" +
+                        "  <open>1</open>\n")
+                .append("  <Style id=\"linestyleExample\">\n" +
+                        "    <LineStyle>\n" +
+                        "      <width>100</width>\n" +
+                        "      <gx:labelVisibility>1</gx:labelVisibility>\n" +
+                        "    </LineStyle>\n" +
+                        " </Style>\n")
+                .append("<Placemark>\n").append("<styleUrl>#linestyleExample</styleUrl>\n")
                 .append("<name>").append(shape.getPoi().getPoiLocation().getName()).append("</name>\n").append("<LineString>\n");
-        if(shape.isExtrude()) command.append("<extrude>colombia_flags</extrude>\n");
-        command.append("<tessellate>colombia_flags</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
+        if(shape.isExtrude()) command.append("<extrude>1</extrude>\n");
+        command.append("<tessellate>1</tessellate>\n").append("<altitudeMode>absolute</altitudeMode>\n")
                 .append("<coordinates>\n");
         List points = shape.getPoints();
         int pointsLength = points.size();
@@ -178,7 +249,8 @@ public class ActionBuildCommandUtility {
             command.append("    ").append(point.getLongitude()).append(",").append(point.getLatitude())
                     .append(",").append(point.getAltitude()).append("\n");
         }
-        command.append("</coordinates>\n").append("</LineString>\n").append("</Placemark>\n</kml> " + "' > ")
+        command.append("</coordinates>\n").append("</LineString>\n").append("</Placemark>\n")
+                .append("</Document>\n").append("</kml> " + "' > ")
                 .append(BASE_PATH).append("shape.kml");
         Log.w(TAG_DEBUG, "Command: " + command.toString());
         return  command.toString();
@@ -187,7 +259,7 @@ public class ActionBuildCommandUtility {
     /**
      * @return Command to clean the kmls.txt
      */
-    static String buildCleanKMLs() {
+    public static String buildCleanKMLs() {
         String command = "echo '' > " +
                 BASE_PATH +
                 "kmls.txt";
@@ -196,23 +268,58 @@ public class ActionBuildCommandUtility {
     }
 
     /**
-     * @return Command to clean the balloon.kml
+     * @return Command to clean the query.txt
      */
-    static String buildCleanBalloonKML() {
-        String command = "echo '' > " +
-                BASE_PATH +
-                "balloon.kml";
+    public static String buildCleanQuery() {
+        String command = "echo '' > /tmp/query.txt";
         Log.w(TAG_DEBUG, "command: " + command);
         return command;
     }
-    /**
-     * @return Command to clean the shape.kml
-     */
-    static String buildCleanShapeKML() {
-        String command = "echo '' > " +
+
+
+    public static String buildCommandOrbit(POI poi) {
+        StringBuilder command = new StringBuilder();
+        command.append( "echo '").append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+        .append("<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n")
+        .append("xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\"> \n")
+        .append("<gx:Tour> \n").append(" <name>Orbit</name> \n").append(" <gx:Playlist> \n");
+        double heading = poi.getPoiCamera().getHeading();
+        int orbit = 0;
+        while(orbit <= 36){
+            if(heading >= 360) heading = heading - 360;
+            command.append("  <gx:FlyTo>\n").append("   <gx:duration>1.2</gx:duration> \n")
+                    .append("   <gx:flyToMode>smooth</gx:flyToMode> \n")
+                    .append("   <LookAt> \n")
+                    .append("    <longitude>").append(poi.getPoiLocation().getLongitude()).append("</longitude> \n")
+                    .append("    <latitude>").append(poi.getPoiLocation().getLatitude()).append("</latitude> \n")
+                    .append("    <heading>").append(heading).append("</heading> \n")
+                    .append("    <tilt>").append(poi.getPoiCamera().getTilt()).append("</tilt> \n")
+                    .append("    <gx:fovy>35</gx:fovy> \n")
+                    .append("    <range>").append(poi.getPoiCamera().getRange()).append("</range> \n")
+                    .append("    <gx:altitudeMode>absolute</gx:altitudeMode> \n")
+                    .append("   </LookAt> \n").append("  </gx:FlyTo> \n");
+            heading = heading + 10;
+            orbit++;
+        }
+        command.append(" </gx:Playlist>\n")
+        .append("</gx:Tour>\n").append("</kml> " + "' > ")
+                .append(BASE_PATH).append("Orbit.kml");
+        Log.w(TAG_DEBUG, "Command: " + command.toString());
+        return  command.toString();
+    }
+
+    public static String buildCommandWriteOrbit() {
+        String command = "echo 'http://localhost:81/Orbit.kml'  > " +
                 BASE_PATH +
-                "shape.kml";
+                "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
         return command;
     }
+
+    public static String buildCommandStartOrbit() {
+        String command = "echo 'playtour=Orbit' > /tmp/query.txt";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
+    }
+
 }
