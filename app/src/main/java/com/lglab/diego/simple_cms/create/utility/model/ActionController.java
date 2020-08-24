@@ -37,8 +37,7 @@ public class ActionController {
     /**
      * Enforce private constructor
      */
-    private ActionController() {
-    }
+    private ActionController() {}
 
     /**
      * Move the screen to the poi
@@ -107,7 +106,7 @@ public class ActionController {
                 listener.onResponse(result);
             }
         });
-        lgConnectionManager.addCommandToLG(lgCommandStartOrbit);
+        handler.postDelayed(() -> lgConnectionManager.addCommandToLG(lgCommandStartOrbit), 500);
         cleanFileKMLs(46000);
     }
 
@@ -304,8 +303,9 @@ public class ActionController {
      * @param balloon Balloon with the information to paint the balloon
      */
     public void TourGDG(POI poi, Balloon balloon) {
+        cleanFileKMLs(0);
         sendBalloonTourGDG(balloon, null);
-        moveToPOI(poi, null);
+        sendPoiToLG(poi, null);
     }
 
     /**
@@ -315,8 +315,6 @@ public class ActionController {
      * @param listener listener
      */
     private void sendBalloonTourGDG(Balloon balloon, LGCommand.Listener listener) {
-        cleanFileKMLs(0);
-
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandBalloonTest(balloon), LGCommand.CRITICAL_MESSAGE, (String result) -> {
             if (listener != null) {
                 listener.onResponse(result);

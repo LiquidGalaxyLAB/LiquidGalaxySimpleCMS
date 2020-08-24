@@ -70,54 +70,28 @@ public class ActionBuildCommandUtility {
      * @return String with command
      */
     public static String buildCommandBalloonWithLogos() {
-
-
-        String TEST_PLACE_MARK_ID = "logos12345";
         String startCommand =  "echo '" +
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
-                " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
-                "\n" +
-                " <Document>\n" +
-                "<BalloonStyle>\n" +
-                "<text>$[description]</text>\n" +
-                "</BalloonStyle>\n" +
-                " <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
-                "    <description>\n" +
-                "<![CDATA[\n" +
-                "  <head>\n" +
-                "    <!-- Required meta tags -->\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
-                "\n" +
-                "    <!-- Bootstrap CSS -->\n" +
-                "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
-                "\n" +
-                "  </head>\n" +
-                "  <body>\n" +
-                "    <div class=\"p-lg-5\" align=\"center\">\n" +
-                "\n";
-        String imageCommand =  "        <img src=\"./../resources/logos.png\" width=\"320\" height=\"240\"> \n" +
-                    "        <br>\n";
-        String endCommand = "    </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
-                "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
-                "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
-                "  </body>\n" +
-                "]]>" +
-                "    </description>\n" +
-                "<styleUrl>#exampleBalloonStyle</styleUrl>\n"+
-                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
-                "    <Point>\n" +
-                "      <coordinates>" + 100.1140 + "," + 76.2506 + "</coordinates>\n" +
-                "    </Point>\n" +
-                "  </Placemark>\n" +
-                "</Document>\n" +
-                "</kml>" +
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
+                "  <Document>\n" +
+                "    <Folder>\n" +
+                "      <ScreenOverlay>\n" +
+                "        <name>Logos</name>\n" +
+                "        <Icon>\n" +
+                "          <href>http://localhost:81/resources/logos.png</href>\n" +
+                "        </Icon>\n" +
+                "        <overlayXY x=\"0\" y=\"1\" xunits=\"fraction\" yunits=\"fraction\"/>\n" +
+                "        <screenXY x=\"0.02\" y=\"0.9\" xunits=\"fraction\" yunits=\"fraction\"/>\n" +
+                "        <rotationXY x=\"0\" y=\"0\" xunits=\"fraction\" yunits=\"fraction\"/>\n" +
+                "        <size x=\"0.5\" y=\"0.5\" xunits=\"fraction\" yunits=\"fraction\"/>\n" +
+                "      </ScreenOverlay>\n" +
+                "    </Folder>\n" +
+                "  </Document>\n" +
+                "</kml>\n" +
                 "' > " +
                 BASE_PATH +
-                "kml/slave_2.kml";
-        Log.w(TAG_DEBUG, "Command: " + endCommand);
-        return startCommand + imageCommand + endCommand;
+                "kml/slave_3.kml";
+        Log.w(TAG_DEBUG, "Command: " + startCommand);
+        return startCommand;
     }
 
     /**
@@ -287,7 +261,7 @@ public class ActionBuildCommandUtility {
                     .append("    <longitude>").append(poi.getPoiLocation().getLongitude()).append("</longitude> \n")
                     .append("    <latitude>").append(poi.getPoiLocation().getLatitude()).append("</latitude> \n")
                     .append("    <heading>").append(heading).append("</heading> \n")
-                    .append("    <tilt>").append(poi.getPoiCamera().getTilt()).append("</tilt> \n")
+                    .append("    <tilt>").append(60).append("</tilt> \n")
                     .append("    <gx:fovy>35</gx:fovy> \n")
                     .append("    <range>").append(poi.getPoiCamera().getRange()).append("</range> \n")
                     .append("    <gx:altitudeMode>absolute</gx:altitudeMode> \n")
@@ -311,7 +285,7 @@ public class ActionBuildCommandUtility {
     }
 
     public static String buildCommandStartOrbit() {
-        String command = "echo 'playtour=Orbit' > /tmp/query.txt";
+        String command = "echo \"playtour=Orbit\" > /tmp/query.txt";
         Log.w(TAG_DEBUG, "command: " + command);
         return command;
     }

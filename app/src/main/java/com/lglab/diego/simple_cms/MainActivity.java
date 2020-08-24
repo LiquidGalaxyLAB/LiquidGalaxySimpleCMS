@@ -197,9 +197,7 @@ public class MainActivity extends TobBarActivity {
                 editor.putBoolean(ConstantPrefs.IS_CONNECTED.name(), true);
                 editor.apply();
                 changeToNewView();
-/*
                 ActionController.getInstance().sendBalloonWithLogos(MainActivity.this);
-*/
             }
         }, 2000);
     }

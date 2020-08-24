@@ -52,7 +52,6 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -451,9 +450,27 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             storyBoardName.setText("");
             initRecyclerView();
             setSizeFile();
+            cleanLocationData();
             dialog.dismiss();
         });
         cancel.setOnClickListener(v1 -> dialog.dismiss());
+    }
+
+    /**
+     * Clean the location data
+     */
+    private void cleanLocationData() {
+        SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
+        editor.putString(ConstantPrefs.FILE_NAME.name(), "");
+        editor.putString(ConstantPrefs.LATITUDE.name(), "");
+        editor.putString(ConstantPrefs.LONGITUDE.name(), "");
+        editor.putString(ConstantPrefs.ALTITUDE.name(), "");
+        editor.putString(ConstantPrefs.DURATION.name(), "");
+        editor.putString(ConstantPrefs.HEADING.name(), "");
+        editor.putString(ConstantPrefs.TILT.name(), "");
+        editor.putString(ConstantPrefs.RANGE.name(), "");
+        editor.putString(ConstantPrefs.ALTITUDE_MODE.name(), "");
+        editor.apply();
     }
 
 
@@ -805,8 +822,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 nextPOI = l;
                 if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;
             }
-            List<Action> newActions = actions.subList(nextPOI, actions.size());
-            actions = newActions;
+            actions = actions.subList(nextPOI, actions.size());
         }
     }
 
