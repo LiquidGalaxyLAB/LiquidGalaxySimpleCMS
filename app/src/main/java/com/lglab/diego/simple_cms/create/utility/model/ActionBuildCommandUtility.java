@@ -139,7 +139,7 @@ public class ActionBuildCommandUtility {
                 }
                 String videoCommand = "";
                 if(balloon.getVideoPath() != null && !balloon.getVideoPath().equals("")) {
-                    videoCommand = "<iframe width=\"80\" height=\"60\"" +
+                    videoCommand = "<iframe" +
                             " src=\""+ balloon.getVideoPath() + "\" frameborder=\"0\"" +
                             " allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen>" +
                             "</iframe>";
