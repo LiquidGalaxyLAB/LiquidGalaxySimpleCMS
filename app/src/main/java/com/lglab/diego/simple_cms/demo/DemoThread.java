@@ -1,10 +1,12 @@
 package com.lglab.diego.simple_cms.demo;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
 import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.balloon.Balloon;
@@ -12,6 +14,8 @@ import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POI;
 import com.lglab.diego.simple_cms.create.utility.model.poi.POICamera;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
+import com.lglab.diego.simple_cms.dialog.CustomDialog;
+import com.lglab.diego.simple_cms.dialog.CustomDialogUtility;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,7 +50,6 @@ public class DemoThread implements Runnable {
         running.set(true);
         ActionController actionController = ActionController.getInstance();
         passingAllImages(actionController);
-        dialog.dismiss();
         Action actionSend;
         int duration = 4000;
         for (int i = 0; i < actions.size() && running.get(); i++) {
@@ -74,13 +77,11 @@ public class DemoThread implements Runnable {
             } else if (actionSend instanceof Balloon) {
                 Balloon balloon = (Balloon) actionSend;
                 duration = balloon.getDuration() * 1000;
-                actionController.sendBalloon(balloon, null);
-                actionController.cleanFileKMLs(duration - 200);
+                actionController.sendBalloonTestStoryBoard(balloon, null);
             } else if (actionSend instanceof Shape) {
                 Shape shape = (Shape) actionSend;
                 duration = shape.getDuration() * 1000;
                 actionController.sendShape(shape, null);
-                actionController.cleanFileKMLs(duration - 200);
             }
             try {
                 Log.w(TAG_DEBUG, "DURATION ACTION: " + duration);
@@ -89,8 +90,15 @@ public class DemoThread implements Runnable {
                 Log.w(TAG_DEBUG, "ERROR: " + e.getMessage());
             }
         }
-        actionController.cleanFileKMLs(500);
-        activity.runOnUiThread(() -> dialog.dismiss());
+        actionController.cleanFileKMLs(1000);
+        activity.runOnUiThread(() -> {
+            dialog.dismiss();
+            CustomDialog dialogFragment = new CustomDialog();
+            Bundle bundle = new Bundle();
+            bundle.putString("TEXT", activity.getResources().getString(R.string.stop_message));
+            dialogFragment.setArguments(bundle);
+            dialogFragment.show(activity.getSupportFragmentManager(),"Image Dialog");
+        });
     }
 
     private void passingAllImages(ActionController actionController) {
