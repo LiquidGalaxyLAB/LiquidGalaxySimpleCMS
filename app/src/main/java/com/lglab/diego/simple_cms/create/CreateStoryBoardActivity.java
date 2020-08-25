@@ -33,6 +33,7 @@ import com.lglab.diego.simple_cms.create.action.CreateStoryBoardActionShapeActiv
 import com.lglab.diego.simple_cms.create.utility.adapter.ActionRecyclerAdapter;
 import com.lglab.diego.simple_cms.create.utility.connection.LGConnectionTest;
 import com.lglab.diego.simple_cms.create.utility.model.Action;
+import com.lglab.diego.simple_cms.create.utility.model.ActionController;
 import com.lglab.diego.simple_cms.create.utility.model.ActionIdentifier;
 import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.create.utility.model.movement.Movement;
@@ -72,7 +73,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     private boolean isPOI = false;
     private long currentStoryBoardId = Long.MIN_VALUE;
     private String currentStoryBoardGoogleDriveID = null;
-    private TestStoryboardThread testStoryboardThread = null;
     private Handler handler = new Handler();
 
 
@@ -215,14 +215,55 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             if (isConnected.get()) {
                 Dialog dialog = CustomDialogUtility.getDialog(CreateStoryBoardActivity.this, "Setting Files");
                 dialog.show();
-                testStoryboardThread = new TestStoryboardThread(actions, CreateStoryBoardActivity.this, buttTest, buttStopTest, dialog);
-                testStoryboardThread.start();
-                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard");
-                buttTest.setVisibility(View.INVISIBLE);
-                buttStopTest.setVisibility(View.VISIBLE);
+                ActionController actionController = ActionController.getInstance();
+                passingAllImages(actionController);
+                actionController.sendTour(actions, null);
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard.");
+                handler.postDelayed(() ->{
+                    buttTest.setVisibility(View.VISIBLE);
+                    buttStopTest.setVisibility(View.INVISIBLE);
+                }, calculateStoryboardDuration());
             }
             loadConnectionStatus(sharedPreferences);
         }, 1200);
+    }
+
+    private long calculateStoryboardDuration() {
+        long duration = 500;
+        Action action;
+        for(int i = 0; i < actions.size(); i++){
+            action = actions.get(i);
+            if (action instanceof POI) {
+                POI poi = (POI) action;
+                duration = duration + poi.getPoiCamera().getDuration();
+            } else if (action instanceof Movement) {
+                Movement movement = (Movement) action;
+                duration = duration + movement.getDuration();
+            } else if (action instanceof Balloon) {
+                Balloon balloon = (Balloon) action;
+                duration = duration + balloon.getDuration();
+            } else if (action instanceof Shape) {
+                Shape shape = (Shape) action;
+                duration = duration + shape.getDuration();
+            }
+        }
+        return duration;
+    }
+
+    /**
+     * Pass all the images of the storyboard to the Liquid Galaxy
+     * @param actionController ActionController
+     */
+    private void passingAllImages(ActionController actionController) {
+        actionController.createResourcesFolder();
+        Action action;
+        for (int i = 0; i < actions.size(); i++) {
+            action = actions.get(i);
+            if (action instanceof Balloon) {
+                Balloon balloon = (Balloon) action;
+                actionController.sendImageTestStoryboard(balloon);
+            }
+        }
     }
 
 
@@ -230,7 +271,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      * Stop the testing of the storyboard
      */
     private void stopTestStoryBoard() {
-        testStoryboardThread.stop();
+        ActionController actionController = ActionController.getInstance();
+        actionController.exitTour();
         buttTest.setVisibility(View.VISIBLE);
         buttStopTest.setVisibility(View.INVISIBLE);
     }
@@ -518,8 +560,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     @Override
     protected void onPause() {
-        if (testStoryboardThread != null) stopTestStoryBoard();
-        testStoryboardThread = null;
         saveStoryBoardCache();
         super.onPause();
     }

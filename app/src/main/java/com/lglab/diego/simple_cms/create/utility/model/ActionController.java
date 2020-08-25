@@ -17,6 +17,7 @@ import com.lglab.diego.simple_cms.create.utility.model.shape.Shape;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * This class is in charge of sending the commands to liquid galaxy
@@ -338,5 +339,48 @@ public class ActionController {
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
     }
+
+    /**
+     * Send the tour kml
+     * @param actions Storyboard's actions
+     * @param listener Listener
+     */
+    public void sendTour(List<Action> actions, LGCommand.Listener listener){
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandTour(actions), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            if (listener != null) {
+                listener.onResponse(result);
+            }
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+
+        handler.postDelayed(this::startTour, 500);
+    }
+
+    /**
+     * Start Tour
+     */
+    private void startTour(){
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandStartTour(),
+                LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+    };
+
+    /**
+     * Exit Tour
+     */
+    public void exitTour(){
+        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandExitTour(),
+                LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        });
+        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+        lgConnectionManager.startConnection();
+        lgConnectionManager.addCommandToLG(lgCommand);
+        cleanFileKMLs(0);
+    };
 
 }
