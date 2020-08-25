@@ -180,6 +180,7 @@
     <string name="activity_create_missing_duration_field_error">Please, fill the duration field</string>
     <string name="You_need_a_name_to_create_a_story_board">You need to insert a name to create a storyboard</string>
     <string name="error_my_storyboards">Error. The file has been corrupted</string>
+    <string name="You_must_have_a_location">You must have a location. Before any action</string>
     <string name="You_need_a_location_to_create_a_movement">You need a location to create a movement</string>
     <string name="You_need_a_location_to_create_a_balloon">You need a location to create a balloon</string>
     <string name="You_need_a_location_to_create_a_shape">You need a location to create a shape</string>

@@ -252,7 +252,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      * It charge the storyboard that was selected from google drive
      */
     private void chargeStoryBoardJsonGoogleDrive() {
-            unpackStoryBoardGoogleDrive();
+        unpackStoryBoardGoogleDrive();
     }
 
     /**
@@ -269,7 +269,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
      * Charge the storyboard that was selected locally
      */
     private void chargeStoryBoardLocally() {
-            unpackStoryBoardLocally();
+        unpackStoryBoardLocally();
     }
 
     /**
@@ -292,6 +292,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     /**
      * Un pack and charge the storyboard
+     *
      * @param storyBoardJson the storyboard
      */
     private void unpackStoryBoard(String storyBoardJson) {
@@ -617,15 +618,19 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= actions.size()) {
                 actions.add(shape);
-                if(isSave) actions.remove(lastPosition);
-            }else if (position >= 0) {
+                if (isSave) actions.remove(lastPosition);
+            }else if(position == 0){
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.You_must_have_a_location));
+            } else if (position > 0) {
                 if (isSave && position == lastPosition) {
                     actions.set(position, shape);
-                }else{
-                    if (isSave && position <= lastPosition){
+                } else {
+                    if (isSave && position <= lastPosition) {
                         actions.add(position, shape);
                         lastPosition++;
-                    }else actions.add(position + 1, shape);
+                    } else if (!isSave) actions.add(position, shape);
+                    else actions.add(position + 1, shape);
                     if (isSave) actions.remove(lastPosition);
                 }
             }
@@ -673,15 +678,19 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= actions.size()) {
                 actions.add(movement);
-                if(isSave) actions.remove(lastPosition);
-            }else if (position >= 0) {
+                if (isSave) actions.remove(lastPosition);
+            }else if(position == 0){
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.You_must_have_a_location));
+            } else if (position > 0) {
                 if (isSave && position == lastPosition) {
                     actions.set(position, movement);
-                }else{
-                    if (isSave && position <= lastPosition){
+                } else {
+                    if (isSave && position <= lastPosition) {
                         actions.add(position, movement);
                         lastPosition++;
-                    }else actions.add(position + 1, movement);
+                    } else if (!isSave) actions.add(position, movement);
+                    else actions.add(position + 1, movement);
                     if (isSave) actions.remove(lastPosition);
                 }
             }
@@ -711,15 +720,20 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             }
             if (position >= actions.size()) {
                 actions.add(balloon);
-                if(isSave) actions.remove(lastPosition);
-            }else if(position >= 0){
+                if (isSave) actions.remove(lastPosition);
+            } else if(position == 0){
+                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this,
+                        getResources().getString(R.string.You_must_have_a_location));
+            }
+            else if (position > 0) {
                 if (isSave && position == lastPosition) {
                     actions.set(position, balloon);
-                }else{
-                    if (isSave && position <= lastPosition){
+                } else {
+                    if (isSave && position <= lastPosition) {
                         actions.add(position, balloon);
                         lastPosition++;
-                    }else actions.add(position + 1, balloon);
+                    } else if (!isSave) actions.add(position, balloon);
+                    else actions.add(position + 1, balloon);
                     if (isSave) actions.remove(lastPosition);
                 }
             }
@@ -788,13 +802,12 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         boolean isSave = Objects.requireNonNull(data).getBooleanExtra(ActionIdentifier.IS_SAVE.name(), false);
         if (position >= actions.size()) {
             actions.add(poi);
-            if(isSave) actions.remove(lastPosition);
+            if (isSave) actions.remove(lastPosition);
         } else if (position >= 0) {
-            if (position == lastPosition){
+            if (position == lastPosition) {
                 actions.set(position, poi);
                 updateData(position, poi);
-            }
-            else {
+            } else {
                 cleanActions(position, poi, isSave, lastPosition);
             }
         }
@@ -802,22 +815,24 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
     /**
      * Modify the actions and clean it
-     * @param position position to be cahnge
-     * @param poi poi to change
-     * @param isSave if a save action
+     *
+     * @param position     position to be cahnge
+     * @param poi          poi to change
+     * @param isSave       if a save action
      * @param lastPosition last position of the poi
      */
     private void cleanActions(int position, POI poi, boolean isSave, int lastPosition) {
-        if (isSave && position <= lastPosition){
+        if (isSave && position <= lastPosition) {
             actions.add(position, poi);
             lastPosition++;
-        }else actions.add(position + 1, poi);
+        } else if (!isSave) actions.add(position, poi);
+        else actions.add(position + 1, poi);
         if (isSave) actions.remove(lastPosition);
         updateData(position, poi);
         Action action;
-        if(lastPosition == 0){
+        if (lastPosition == 0) {
             int nextPOI = 0;
-            for(int l = 0; l < actions.size(); l++){
+            for (int l = 0; l < actions.size(); l++) {
                 action = actions.get(l);
                 nextPOI = l;
                 if (action.getType() == ActionIdentifier.LOCATION_ACTIVITY.getId()) break;

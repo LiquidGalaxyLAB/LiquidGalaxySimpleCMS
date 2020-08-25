@@ -207,11 +207,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="118dp"
+        android:layout_height="125dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="150dp"
         android:layout_marginEnd="150dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:background="@color/background"
         android:minHeight="578dp"
         android:padding="20dp"
