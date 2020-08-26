@@ -383,6 +383,11 @@ public class ActionController {
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
+
+        LGCommand lgCommandCleanSlaves = new LGCommand(ActionBuildCommandUtility.buildCommandCleanSlaves(),
+                LGCommand.CRITICAL_MESSAGE, (String result) -> {
+        });
+        lgConnectionManager.addCommandToLG(lgCommandCleanSlaves);
     };
 
 }

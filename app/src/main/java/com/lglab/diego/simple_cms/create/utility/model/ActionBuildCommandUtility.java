@@ -304,7 +304,9 @@ public class ActionBuildCommandUtility {
                         "   </Style>\n\n");
         String middleCommand = buildTour(actions, folderBalloonShapes);
         folderBalloonShapes.append("  </Folder>\n");
-        folderBalloonShapes.append("</Document>\n" + "</kml> ' > ").append(BASE_PATH).append("Tour.kml");
+        folderBalloonShapes.append("</Document>\n" + "</kml> ' | cat ").append(BASE_PATH).append("Tour.kml")
+        .append("  && cat ").append(BASE_PATH).append("Tour.kml").append(">").append(BASE_PATH).append("kml/slave_2.kml")
+        .append("  && cat ").append(BASE_PATH).append("Tour.kml").append(">").append(BASE_PATH).append("kml/slave_3.kml");
         Log.w(TAG_DEBUG, "FOLDER COMMAND: " + folderBalloonShapes.toString());
         String endCommand = "    </gx:Playlist>\n" +
                 "  </gx:Tour>\n\n";
@@ -558,4 +560,11 @@ public class ActionBuildCommandUtility {
         return command;
     }
 
+    public static String buildCommandCleanSlaves() {
+        String command = "echo '' | cat " + BASE_PATH + "kmls.txt " +
+                "&& cat " + BASE_PATH + "kmls.txt>" + BASE_PATH + "/kml/slave_2.kml " +
+                "&& cat " + BASE_PATH + "kmls.txt>"  + BASE_PATH + "/kml/slave_3.kml";
+        Log.w(TAG_DEBUG, "commandCleanSlaves: " + command);
+        return command;
+    }
 }

@@ -74,6 +74,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     private long currentStoryBoardId = Long.MIN_VALUE;
     private String currentStoryBoardGoogleDriveID = null;
     private Handler handler = new Handler();
+    private boolean isStopStoryboard = false;
 
 
     private EditText storyBoardName;
@@ -213,6 +214,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         handler.postDelayed(() -> {
             if (isConnected.get()) {
+                isStopStoryboard = false;
                 Dialog dialog = CustomDialogUtility.getDialog(CreateStoryBoardActivity.this, "Setting Files");
                 dialog.show();
                 handler.postDelayed(() -> {
@@ -224,9 +226,12 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                     CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard.");
                     dialog.dismiss();
                     handler.postDelayed(() ->{
-                        buttTest.setVisibility(View.VISIBLE);
-                        buttStopTest.setVisibility(View.INVISIBLE);
-                    }, calculateStoryboardDuration() * 3000 + 200);
+                        if(!isStopStoryboard){
+                            stopTestStoryBoard();
+                            buttTest.setVisibility(View.VISIBLE);
+                            buttStopTest.setVisibility(View.INVISIBLE);
+                        }
+                    }, calculateStoryboardDuration() * 1000 + 1000);
                 }, 200);
             }
             loadConnectionStatus(sharedPreferences);
@@ -234,7 +239,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     }
 
     private long calculateStoryboardDuration() {
-        long duration = 20;
+        long duration = 0;
         Action action;
         for(int i = 0; i < actions.size(); i++){
             action = actions.get(i);
@@ -243,14 +248,11 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 duration = duration + poi.getPoiCamera().getDuration();
             } else if (action instanceof Movement) {
                 Movement movement = (Movement) action;
-                if(movement.isOrbitMode()) duration = duration + 55;
+                if(movement.isOrbitMode()) duration = duration + 45;
                 else  duration = duration + movement.getDuration();
             } else if (action instanceof Balloon) {
                 Balloon balloon = (Balloon) action;
                 duration = duration + balloon.getDuration();
-            } else if (action instanceof Shape) {
-                Shape shape = (Shape) action;
-                duration = duration + shape.getDuration();
             }
         }
         Log.w(TAG_DEBUG, "duration: " + duration);
@@ -287,6 +289,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         actionController.exitTour();
         buttTest.setVisibility(View.VISIBLE);
         buttStopTest.setVisibility(View.INVISIBLE);
+        isStopStoryboard = true;
     }
 
     /**
@@ -532,6 +535,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     @Override
     protected void onResume() {
         super.onResume();
+        isStopStoryboard = false;
         loadData();
         rePaintRecyclerView();
         setSizeFile();
