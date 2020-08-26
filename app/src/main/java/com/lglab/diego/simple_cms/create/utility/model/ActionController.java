@@ -28,6 +28,7 @@ public class ActionController {
 
     private static ActionController instance = null;
     private Handler handler = new Handler(Looper.getMainLooper());
+    private Handler handler2 = new Handler(Looper.getMainLooper());
 
     public synchronized static ActionController getInstance() {
         if (instance == null)
@@ -367,7 +368,7 @@ public class ActionController {
             LGCommand lgCommandStartTour = new LGCommand(ActionBuildCommandUtility.buildCommandStartTour(),
                     LGCommand.CRITICAL_MESSAGE, (String result) -> {
             });
-            handler.postDelayed(() -> lgConnectionManager.addCommandToLG(lgCommandStartTour), 1000);
+            handler2.postDelayed(() -> lgConnectionManager.addCommandToLG(lgCommandStartTour), 1500);
         }, 1000);
     }
 

@@ -74,6 +74,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
     private long currentStoryBoardId = Long.MIN_VALUE;
     private String currentStoryBoardGoogleDriveID = null;
     private Handler handler = new Handler();
+    private Handler handler2 = new Handler();
     private boolean isStopStoryboard = false;
 
 
@@ -225,8 +226,9 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                     actionController.sendTour(actions, null);
                     CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard.");
                     dialog.dismiss();
-                    handler.postDelayed(() ->{
+                    handler2.postDelayed(() ->{
                         if(!isStopStoryboard){
+                            Log.w(TAG_DEBUG, "WHAT");
                             stopTestStoryBoard();
                             buttTest.setVisibility(View.VISIBLE);
                             buttStopTest.setVisibility(View.INVISIBLE);

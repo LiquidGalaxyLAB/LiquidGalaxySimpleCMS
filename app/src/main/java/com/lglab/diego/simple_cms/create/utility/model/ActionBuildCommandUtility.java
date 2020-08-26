@@ -59,7 +59,7 @@ public class ActionBuildCommandUtility {
      * @return Command to write the path to the balloon.kml
      */
     static String buildWriteBalloonFile() {
-        String command = "echo 'http://localhost:81/balloon.kml'  > " +
+        String command = "echo 'http://lg1:81/balloon.kml'  > " +
                 BASE_PATH +
                 "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
@@ -87,7 +87,7 @@ public class ActionBuildCommandUtility {
                 "  <overlayXY x=\"0\" y=\"1\" xunits=\"fraction\" yunits=\"fraction\"/> \n" +
                 "  <screenXY x=\"0.02\" y=\"0.95\" xunits=\"fraction\" yunits=\"fraction\"/> \n" +
                 "  <rotationXY x=\"0\" y=\"0\" xunits=\"fraction\" yunits=\"fraction\"/> \n" +
-                "  <size x=\"0.6\" y=\"0.2\" xunits=\"fraction\" yunits=\"fraction\"/> \n" +
+                "  <size x=\"0.4\" y=\"0.2\" xunits=\"fraction\" yunits=\"fraction\"/> \n" +
                 "  </ScreenOverlay> \n" +
                 " </Folder> \n" +
                 "</Document> \n" +
@@ -184,7 +184,7 @@ public class ActionBuildCommandUtility {
      * @return Command to write the path to the shape.kml
      */
     static String buildWriteShapeFile() {
-        String command = "echo 'http://localhost:81/shape.kml' > " +
+        String command = "echo 'http://lg1:81/shape.kml' > " +
                 BASE_PATH +
                 "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
@@ -266,7 +266,7 @@ public class ActionBuildCommandUtility {
     }
 
     public static String buildCommandWriteOrbit() {
-        String command = "echo 'http://localhost:81/Orbit.kml'  > " +
+        String command = "echo 'http://lg1:81/Orbit.kml'  > " +
                 BASE_PATH +
                 "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
@@ -304,9 +304,7 @@ public class ActionBuildCommandUtility {
                         "   </Style>\n\n");
         String middleCommand = buildTour(actions, folderBalloonShapes);
         folderBalloonShapes.append("  </Folder>\n");
-        folderBalloonShapes.append("</Document>\n" + "</kml> ' | cat ").append(BASE_PATH).append("Tour.kml")
-        .append("  && cat ").append(BASE_PATH).append("Tour.kml").append(">").append(BASE_PATH).append("kml/slave_2.kml")
-        .append("  && cat ").append(BASE_PATH).append("Tour.kml").append(">").append(BASE_PATH).append("kml/slave_3.kml");
+        folderBalloonShapes.append("</Document>\n" + "</kml> ' > ").append(BASE_PATH).append("Tour.kml");
         Log.w(TAG_DEBUG, "FOLDER COMMAND: " + folderBalloonShapes.toString());
         String endCommand = "    </gx:Playlist>\n" +
                 "  </gx:Tour>\n\n";
@@ -541,7 +539,7 @@ public class ActionBuildCommandUtility {
     }
 
     public static String buildCommandwriteStartTourFile(){
-        String command = "echo \"http://localhost:81/Tour.kml\"  > " +
+        String command = "echo \"http://lg1:81/Tour.kml\"  > " +
                 BASE_PATH +
                 "kmls.txt";
         Log.w(TAG_DEBUG, "command: " + command);
@@ -561,9 +559,7 @@ public class ActionBuildCommandUtility {
     }
 
     public static String buildCommandCleanSlaves() {
-        String command = "echo '' | cat " + BASE_PATH + "kmls.txt " +
-                "&& cat " + BASE_PATH + "kmls.txt>" + BASE_PATH + "/kml/slave_2.kml " +
-                "&& cat " + BASE_PATH + "kmls.txt>"  + BASE_PATH + "/kml/slave_3.kml";
+        String command = "echo '' > " + BASE_PATH + "kmls.txt ";
         Log.w(TAG_DEBUG, "commandCleanSlaves: " + command);
         return command;
     }
