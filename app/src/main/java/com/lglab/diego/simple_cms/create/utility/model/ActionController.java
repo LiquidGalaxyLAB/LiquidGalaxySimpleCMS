@@ -346,41 +346,43 @@ public class ActionController {
      * @param listener Listener
      */
     public void sendTour(List<Action> actions, LGCommand.Listener listener){
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandTour(actions), LGCommand.CRITICAL_MESSAGE, (String result) -> {
-            if (listener != null) {
-                listener.onResponse(result);
-            }
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
+        cleanFileKMLs(0);
+        handler.postDelayed(() -> {
+            LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandTour(actions), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+                if (listener != null) {
+                    listener.onResponse(result);
+                }
+            });
+            LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
+            lgConnectionManager.startConnection();
+            lgConnectionManager.addCommandToLG(lgCommand);
 
-        handler.postDelayed(this::startTour, 500);
+            LGCommand lgCommandWriteTour = new LGCommand(ActionBuildCommandUtility.buildCommandwriteStartTourFile(), LGCommand.CRITICAL_MESSAGE, (String result) -> {
+                if (listener != null) {
+                    listener.onResponse(result);
+                }
+            });
+            lgConnectionManager.addCommandToLG(lgCommandWriteTour);
+
+            LGCommand lgCommandStartTour = new LGCommand(ActionBuildCommandUtility.buildCommandStartTour(),
+                    LGCommand.CRITICAL_MESSAGE, (String result) -> {
+            });
+            handler.postDelayed(() -> lgConnectionManager.addCommandToLG(lgCommandStartTour), 1000);
+        }, 1000);
     }
 
-    /**
-     * Start Tour
-     */
-    private void startTour(){
-        LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandStartTour(),
-                LGCommand.CRITICAL_MESSAGE, (String result) -> {
-        });
-        LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
-        lgConnectionManager.startConnection();
-        lgConnectionManager.addCommandToLG(lgCommand);
-    };
 
     /**
      * Exit Tour
      */
     public void exitTour(){
+        cleanFileKMLs(0);
         LGCommand lgCommand = new LGCommand(ActionBuildCommandUtility.buildCommandExitTour(),
                 LGCommand.CRITICAL_MESSAGE, (String result) -> {
         });
         LGConnectionManager lgConnectionManager = LGConnectionManager.getInstance();
         lgConnectionManager.startConnection();
         lgConnectionManager.addCommandToLG(lgCommand);
-        cleanFileKMLs(0);
     };
 
 }

@@ -205,7 +205,7 @@ public class ActionBuildCommandUtility {
                         "  <open>1</open>\n")
                 .append("  <Style id=\"linestyleExample\">\n" +
                         "    <LineStyle>\n" +
-                        "      <color>7f00ffff</color>\n" +
+                        "      <color>501400FF</color>\n" +
                         "      <width>100</width>\n" +
                         "      <gx:labelVisibility>1</gx:labelVisibility>\n" +
                         "    </LineStyle>\n" +
@@ -284,26 +284,35 @@ public class ActionBuildCommandUtility {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://www.opengis.net/kml/2.2\"\n" +
                 " xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n" +
-                "\n" +
                 "<Document>\n" +
                 "  <name>Tour</name>\n" +
-                "  <open>1</open>\n" +
+                "  <open>1</open>\n\n" +
                 "  <gx:Tour>\n" +
-                "    <name>Tour</name>\n" +
-                "    <gx:Playlist>";
+                "    <name>TestTour</name>\n" +
+                "    <gx:Playlist>\n\n";
 
         //Build the tour
-        String middleCommand = buildTour(actions);
-
+        StringBuilder folderBalloonShapes = new StringBuilder();
+        folderBalloonShapes.append("  <Folder>\n" +
+                "   <name>Points and Shapes</name>\n\n")
+                .append("   <Style id=\"linestyleExample\">\n" +
+                        "    <LineStyle>\n" +
+                        "    <color>501400FF</color>\n" +
+                        "    <width>100</width>\n" +
+                        "    <gx:labelVisibility>1</gx:labelVisibility>\n" +
+                        "    </LineStyle>\n" +
+                        "   </Style>\n\n");
+        String middleCommand = buildTour(actions, folderBalloonShapes);
+        folderBalloonShapes.append("  </Folder>\n");
+        folderBalloonShapes.append("</Document>\n" + "</kml> ' > ").append(BASE_PATH).append("Tour.kml");
+        Log.w(TAG_DEBUG, "FOLDER COMMAND: " + folderBalloonShapes.toString());
         String endCommand = "    </gx:Playlist>\n" +
-                "  </gx:Tour>\n" +
-                "</Document>\n" +
-                "</kml> ' > " + BASE_PATH + "Tour.kml";
-        Log.w(TAG_DEBUG, "FINAL COMMAND: " + startCommand + middleCommand + endCommand);
-        return startCommand + middleCommand + endCommand;
+                "  </gx:Tour>\n\n";
+        Log.w(TAG_DEBUG, "FINAL COMMAND: " + startCommand + middleCommand + folderBalloonShapes.toString() + endCommand);
+        return startCommand + middleCommand + endCommand + folderBalloonShapes.toString();
     }
 
-    private static String buildTour(List<Action> actions) {
+    private static String buildTour(List<Action> actions, StringBuilder folderBalloonShapes) {
         StringBuilder command = new StringBuilder();
         Action action;
         for(int i = 0; i < actions.size(); i++){
@@ -316,10 +325,10 @@ public class ActionBuildCommandUtility {
                 command.append(MovementCommand(movement));
             } else if (action instanceof Balloon) {
                 Balloon balloon = (Balloon) action;
-                command.append(BalloonCommand(balloon));
+                command.append(BalloonCommand(balloon, i, folderBalloonShapes));
             } else if (action instanceof Shape) {
                 Shape shape = (Shape) action;
-                command.append(ShapeCommand(shape));
+                command.append(ShapeCommand(shape, i, folderBalloonShapes));
             }
         }
         return command.toString();
@@ -328,19 +337,19 @@ public class ActionBuildCommandUtility {
     private static String POICommand(POI poi) {
         POILocation poiLocation = poi.getPoiLocation();
         POICamera poiCamera = poi.getPoiCamera();
-        String command =  "<gx:FlyTo>\n" +
-                " <gx:duration>" + poiCamera.getDuration()*1000 + "</gx:duration>\n" +
-                " <gx:flyToMode>smooth</gx:flyToMode>\n" +
-                " <LookAt>\n" +
-                "  <longitude>" + poiLocation.getLongitude() + "</longitude>\n" +
-                "  <latitude>" + poiLocation.getLatitude() + "</latitude>\n" +
-                "  <altitude>" + poiLocation.getAltitude() + "</altitude>\n" +
-                "  <heading>" + poiCamera.getHeading() + "</heading>\n" +
-                "  <tilt>" + poiCamera.getTilt() + "</tilt>\n" +
-                "  <range>" + poiCamera.getRange() + "</range>\n" +
-                "  <gx:altitudeMode>" + poiCamera.getAltitudeMode() + "</gx:altitudeMode>\n" +
-                " </LookAt>\n" +
-                "</gx:FlyTo>\n\n";
+        String command =  "     <gx:FlyTo>\n" +
+                "      <gx:duration>" + poiCamera.getDuration() + "</gx:duration>\n" +
+                "      <gx:flyToMode>bounce</gx:flyToMode>\n" +
+                "      <LookAt>\n" +
+                "       <longitude>" + poiLocation.getLongitude() + "</longitude>\n" +
+                "       <latitude>" + poiLocation.getLatitude() + "</latitude>\n" +
+                "       <altitude>" + poiLocation.getAltitude() + "</altitude>\n" +
+                "       <heading>" + poiCamera.getHeading() + "</heading>\n" +
+                "       <tilt>" + poiCamera.getTilt() + "</tilt>\n" +
+                "       <range>" + poiCamera.getRange() + "</range>\n" +
+                "       <gx:altitudeMode>" + poiCamera.getAltitudeMode() + "</gx:altitudeMode>\n" +
+                "     </LookAt>\n" +
+                "    </gx:FlyTo>\n\n";
         Log.w(TAG_DEBUG, "POI COMMAND: " + command);
         return  command;
     }
@@ -371,17 +380,18 @@ public class ActionBuildCommandUtility {
         int orbit = 0;
         while (orbit <= 36) {
             if (heading >= 360) heading = heading - 360;
-            command.append("  <gx:FlyTo>\n").append("   <gx:duration>1.2</gx:duration> \n")
-                    .append("   <gx:flyToMode>smooth</gx:flyToMode> \n")
-                    .append("   <LookAt> \n")
-                    .append("    <longitude>").append(poi.getPoiLocation().getLongitude()).append("</longitude> \n")
-                    .append("    <latitude>").append(poi.getPoiLocation().getLatitude()).append("</latitude> \n")
-                    .append("    <heading>").append(heading).append("</heading> \n")
-                    .append("    <tilt>").append(60).append("</tilt> \n")
-                    .append("    <gx:fovy>35</gx:fovy> \n")
-                    .append("    <range>").append(poi.getPoiCamera().getRange()).append("</range> \n")
-                    .append("    <gx:altitudeMode>absolute</gx:altitudeMode> \n")
-                    .append("   </LookAt> \n").append("  </gx:FlyTo> \n\n");
+            command.append("    <gx:FlyTo>\n").append("    <gx:duration>1.2</gx:duration> \n")
+                    .append("    <gx:flyToMode>smooth</gx:flyToMode> \n")
+                    .append("     <LookAt> \n")
+                    .append("      <longitude>").append(poi.getPoiLocation().getLongitude()).append("</longitude> \n")
+                    .append("      <latitude>").append(poi.getPoiLocation().getLatitude()).append("</latitude> \n")
+                    .append("      <heading>").append(heading).append("</heading> \n")
+                    .append("      <tilt>").append(60).append("</tilt> \n")
+                    .append("      <gx:fovy>35</gx:fovy> \n")
+                    .append("      <range>").append(poi.getPoiCamera().getRange()).append("</range> \n")
+                    .append("      <gx:altitudeMode>absolute</gx:altitudeMode> \n")
+                    .append("      </LookAt> \n")
+                    .append("    </gx:FlyTo> \n\n");
             heading = heading + 10;
             orbit++;
         }
@@ -390,120 +400,154 @@ public class ActionBuildCommandUtility {
     private static void movement(POI poi, StringBuilder command, int duration) {
         POILocation poiLocation = poi.getPoiLocation();
         POICamera poiCamera = poi.getPoiCamera();
-        command.append("<gx:FlyTo>\n")
-                .append(" <gx:duration>").append(duration*1000).append("</gx:duration>\n")
-                .append(" <gx:flyToMode>smooth</gx:flyToMode>\n")
-                .append(" <LookAt>\n")
-                .append("  <longitude>").append(poiLocation.getLongitude()).append("</longitude>\n")
-                .append("  <latitude>").append(poiLocation.getLatitude()).append("</latitude>\n")
-                .append("  <altitude>").append(poiLocation.getAltitude()).append("</altitude>\n")
-                .append("  <heading>").append(poiCamera.getHeading()).append("</heading>\n")
-                .append("  <tilt>").append(poiCamera.getTilt()).append("</tilt>\n")
-                .append("  <range>").append(poiCamera.getRange()).append("</range>\n")
-                .append("  <gx:altitudeMode>").append(poiCamera.getAltitudeMode()).append("</gx:altitudeMode>\n")
-                .append(" </LookAt>\n")
-                .append("</gx:FlyTo>\n\n");
+        command.append("    <gx:FlyTo>\n")
+                .append("    <gx:duration>").append(duration).append("</gx:duration>\n")
+                .append("    <gx:flyToMode>smooth</gx:flyToMode>\n")
+                .append("     <LookAt>\n")
+                .append("      <longitude>").append(poiLocation.getLongitude()).append("</longitude>\n")
+                .append("      <latitude>").append(poiLocation.getLatitude()).append("</latitude>\n")
+                .append("      <altitude>").append(poiLocation.getAltitude()).append("</altitude>\n")
+                .append("      <heading>").append(poiCamera.getHeading()).append("</heading>\n")
+                .append("      <tilt>").append(poiCamera.getTilt()).append("</tilt>\n")
+                .append("      <range>").append(poiCamera.getRange()).append("</range>\n")
+                .append("      <gx:altitudeMode>").append(poiCamera.getAltitudeMode()).append("</gx:altitudeMode>\n")
+                .append("     </LookAt>\n")
+                .append("    </gx:FlyTo>\n\n");
     }
 
-    private static String BalloonCommand(Balloon balloon) {
+    private static String BalloonCommand(Balloon balloon, int position, StringBuilder folderBalloonShapes) {
         POI poi = balloon.getPoi();
+        String TEST_PLACE_MARK_ID = "balloon" + position;
 
-        String TEST_PLACE_MARK_ID = "balloon12345";
-        String startCommand = " <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
-                "    <name>" + balloon.getPoi().getPoiLocation().getName() + "</name>\n" +
-                "    <description>\n" +
-                "<![CDATA[\n" +
-                "  <head>\n" +
-                "    <!-- Required meta tags -->\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
+        String animate = "    <gx:AnimatedUpdate>\n" +
+                "    <gx:duration>0</gx:duration>\n" +
+                "     <Update>\n" +
+                "      <targetHref/>\n" +
+                "      <Change>\n" +
+                "       <Placemark targetId=\"" +  TEST_PLACE_MARK_ID  + "\">\n" +
+                "        <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
+                "       </Placemark>\n" +
+                "      </Change>\n" +
+                "     </Update>\n" +
+                "    </gx:AnimatedUpdate>\n\n";
+
+        String startCommand = "    <Placemark id=\"" + TEST_PLACE_MARK_ID + "\">\n" +
+                "     <name>" + balloon.getPoi().getPoiLocation().getName() + "</name>\n" +
+                "     <description>\n" +
+                "      <![CDATA[\n" +
+                "      <head>\n" +
+                "      <!-- Required meta tags -->\n" +
+                "      <meta charset=\"UTF-8\">\n" +
+                "      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
                 "\n" +
-                "    <!-- Bootstrap CSS -->\n" +
-                "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
+                "      <!-- Bootstrap CSS -->\n" +
+                "      <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n" +
                 "\n" +
-                "  </head>\n" +
-                "  <body>\n" +
-                "    <div class=\"p-lg-5\" align=\"center\">\n" +
+                "      </head>\n" +
+                "      <body>\n" +
+                "       <div class=\"p-lg-5\" align=\"center\">\n" +
                 "\n";
         String description = "";
         if(!balloon.getDescription().equals("")) {
-            description = "        <h5>" + balloon.getDescription() + "</h5>\n" +
-                    "        <br>\n";
+            description = "       <h5>" + balloon.getDescription() + "</h5>\n" +
+                    "       <br>\n";
         }
         String imageCommand = "";
 
         if(balloon.getImagePath() != null && !balloon.getImagePath().equals("")) {
-            imageCommand =  "        <img src=\"./resources/" + getFileName(balloon.getImagePath()) + "\"> \n" +
-                    "        <br>\n";
+            imageCommand =  "       <img src=\"./resources/" + getFileName(balloon.getImagePath()) + "\"> \n" +
+                    "       <br>\n";
         }
         String videoCommand = "";
         if(balloon.getVideoPath() != null && !balloon.getVideoPath().equals("")) {
-            videoCommand = "<iframe" +
+            videoCommand = "       <iframe" +
                     " src=\""+ balloon.getVideoPath() + "\" frameborder=\"0\"" +
                     " allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen>" +
                     "</iframe>";
         }
-        String endCommand = "    </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
-                "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
-                "    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
-                "  </body>\n" +
-                "]]>" +
-                "    </description>\n" +
-                "    <gx:balloonVisibility>1</gx:balloonVisibility>\n" +
-                "    <Point>\n" +
-                "      <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
-                "    </Point>\n" +
-                "  </Placemark>\n\n";
-        Log.w(TAG_DEBUG, "BALLOON COMMAND:" + startCommand + description +  imageCommand + videoCommand + endCommand);
+        String endCommand = "       </div>\n    <script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n" +
+                "       <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n" +
+                "       <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n" +
+                "       </body>\n" +
+                "       ]]>\n" +
+                "      </description>\n" +
+                "      <Point>\n" +
+                "       <coordinates>" + poi.getPoiLocation().getLongitude() + "," + poi.getPoiLocation().getLatitude() + "</coordinates>\n" +
+                "      </Point>\n" +
+                "    </Placemark>\n\n";
         String wait = commandWait(balloon.getDuration());
-        return startCommand + description + imageCommand + videoCommand + endCommand + wait;
+        folderBalloonShapes.append(startCommand + description + imageCommand + videoCommand + endCommand);
+        Log.w(TAG_DEBUG, "BALLOON: " + folderBalloonShapes);
+        String animateClose = "    <gx:AnimatedUpdate>\n" +
+                "    <gx:duration>0</gx:duration>\n" +
+                "     <Update>\n" +
+                "      <targetHref/>\n" +
+                "      <Change>\n" +
+                "       <Placemark targetId=\"" +  TEST_PLACE_MARK_ID  + "\">\n" +
+                "        <gx:balloonVisibility>0</gx:balloonVisibility>\n" +
+                "       </Placemark>\n" +
+                "      </Change>\n" +
+                "     </Update>\n" +
+                "    </gx:AnimatedUpdate>\n\n";
+        return animate + wait + animateClose;
     }
 
-    private static String ShapeCommand(Shape shape) {
+    private static String ShapeCommand(Shape shape, int position, StringBuilder folderBalloonShapes) {
+        String TEST_PLACE_MARK_ID = "shape" + position;
+        String animate = "    <gx:AnimatedUpdate>\n" +
+                "    <gx:duration>0</gx:duration>\n" +
+                "     <Update>\n" +
+                "      <targetHref/>\n" +
+                "       <Change>\n" +
+                "       <Placemark targetId=\"" +  TEST_PLACE_MARK_ID  + "\">\n" +
+                "        </Placemark>\n" +
+                "       </Change>\n" +
+                "      </Update>\n" +
+                "    </gx:AnimatedUpdate>\n\n";
+
         StringBuilder command = new StringBuilder();
-        command.append("<Document>\n" +
-                        "  <name>shape.kml</name>\n" +
-                        "  <open>1</open>\n")
-                .append("  <Style id=\"linestyleExample\">\n" +
-                        "    <LineStyle>\n" +
-                        "      <color>7f00ffff</color>\n" +
-                        "      <width>100</width>\n" +
-                        "      <gx:labelVisibility>1</gx:labelVisibility>\n" +
-                        "    </LineStyle>\n" +
-                        " </Style>\n")
-                .append("<Placemark>\n").append("<styleUrl>#linestyleExample</styleUrl>\n")
-                .append("<name>").append(shape.getPoi().getPoiLocation().getName()).append("</name>\n")
-                .append("<LineString>\n");
-        if(shape.isExtrude()) command.append(" <extrude>1</extrude>\n");
-        command.append(" <tessellate>1</tessellate>\n").append(" <altitudeMode>absolute</altitudeMode>\n")
-                .append(" <coordinates>\n");
+        command.append("     <Placemark id=\"").append(TEST_PLACE_MARK_ID).append("\">\n")
+                .append("      <styleUrl>#linestyleExample</styleUrl>\n")
+                .append("     <name>").append(shape.getPoi().getPoiLocation().getName()).append("</name>\n")
+                .append("      <LineString>\n");
+        if(shape.isExtrude()) command.append("       <extrude>1</extrude>\n");
+        command.append("       <tessellate>1</tessellate>\n").append("       <altitudeMode>absolute</altitudeMode>\n")
+                .append("       <coordinates>\n");
         List points = shape.getPoints();
         int pointsLength = points.size();
         Point point;
         for(int i = 0; i < pointsLength; i++){
             point = (Point) points.get(i);
-            command.append("    ").append(point.getLongitude()).append(",").append(point.getLatitude())
+            command.append("        ").append(point.getLongitude()).append(",").append(point.getLatitude())
                     .append(",").append(point.getAltitude()).append("\n");
         }
-        command.append(" </coordinates>\n")
-                .append("</LineString>\n")
-                .append("</Placemark>\n\n");
+        command.append("       </coordinates>\n")
+                .append("      </LineString>\n")
+                .append("     </Placemark>\n\n");
         Log.w(TAG_DEBUG, "SHAPE COMMAND: " + command.toString());
-        command.append(commandWait(shape.getDuration()));
-        return  command.toString();
+        folderBalloonShapes.append(command.toString());
+        return  animate;
     }
 
 
     private static String commandWait(int duration) {
-        String waitCommand =  " <gx:Wait>\n" +
-                "  <gx:duration>" + duration *1000 + "</gx:duration>\n" +
-                "</gx:Wait>\n\n";
+        String waitCommand =  "    <gx:Wait>\n" +
+                "     <gx:duration>" + duration + "</gx:duration>\n" +
+                "    </gx:Wait>\n\n";
         Log.w(TAG_DEBUG, "WAIT COMMAND:" + waitCommand);
         return  waitCommand;
     }
 
+    public static String buildCommandwriteStartTourFile(){
+        String command = "echo \"http://localhost:81/Tour.kml\"  > " +
+                BASE_PATH +
+                "kmls.txt";
+        Log.w(TAG_DEBUG, "command: " + command);
+        return command;
+    }
+
     public static String buildCommandStartTour() {
-        String command = "echo \"playtour=Tour\" > /tmp/query.txt";
+        String command = "echo \"playtour=TestTour\" > /tmp/query.txt";
         Log.w(TAG_DEBUG, "command: " + command);
         return command;
     }

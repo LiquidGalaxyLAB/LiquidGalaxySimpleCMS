@@ -91,6 +91,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
         buttCreate = topBar.findViewById(R.id.butt_create_menu);
         storyBoardName = findViewById(R.id.text_name);
         sizeFile = findViewById(R.id.size_file);
+        //Charging data for other activities
 
 
         buttTest = findViewById(R.id.butt_test);
@@ -105,7 +106,6 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
 
         connectionStatus = findViewById(R.id.connection_status);
 
-        //Charging data for other activities
         //MyStoryboards
         long storyboardID = getIntent().getLongExtra(StoryBoardConstant.STORY_BOARD_ID.name(), Long.MIN_VALUE);
 
@@ -215,21 +215,26 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             if (isConnected.get()) {
                 Dialog dialog = CustomDialogUtility.getDialog(CreateStoryBoardActivity.this, "Setting Files");
                 dialog.show();
-                ActionController actionController = ActionController.getInstance();
-                passingAllImages(actionController);
-                actionController.sendTour(actions, null);
-                CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard.");
-                handler.postDelayed(() ->{
-                    buttTest.setVisibility(View.VISIBLE);
-                    buttStopTest.setVisibility(View.INVISIBLE);
-                }, calculateStoryboardDuration());
+                handler.postDelayed(() -> {
+                    buttTest.setVisibility(View.INVISIBLE);
+                    buttStopTest.setVisibility(View.VISIBLE);
+                    ActionController actionController = ActionController.getInstance();
+                    passingAllImages(actionController);
+                    actionController.sendTour(actions, null);
+                    CustomDialogUtility.showDialog(CreateStoryBoardActivity.this, "Testing the storyboard.");
+                    dialog.dismiss();
+                    handler.postDelayed(() ->{
+                        buttTest.setVisibility(View.VISIBLE);
+                        buttStopTest.setVisibility(View.INVISIBLE);
+                    }, calculateStoryboardDuration() * 3000 + 200);
+                }, 200);
             }
             loadConnectionStatus(sharedPreferences);
         }, 1200);
     }
 
     private long calculateStoryboardDuration() {
-        long duration = 500;
+        long duration = 20;
         Action action;
         for(int i = 0; i < actions.size(); i++){
             action = actions.get(i);
@@ -238,7 +243,8 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 duration = duration + poi.getPoiCamera().getDuration();
             } else if (action instanceof Movement) {
                 Movement movement = (Movement) action;
-                duration = duration + movement.getDuration();
+                if(movement.isOrbitMode()) duration = duration + 55;
+                else  duration = duration + movement.getDuration();
             } else if (action instanceof Balloon) {
                 Balloon balloon = (Balloon) action;
                 duration = duration + balloon.getDuration();
@@ -247,6 +253,7 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
                 duration = duration + shape.getDuration();
             }
         }
+        Log.w(TAG_DEBUG, "duration: " + duration);
         return duration;
     }
 
@@ -262,6 +269,11 @@ public class CreateStoryBoardActivity extends ExportGoogleDriveActivity implemen
             if (action instanceof Balloon) {
                 Balloon balloon = (Balloon) action;
                 actionController.sendImageTestStoryboard(balloon);
+            }
+            try {
+                Thread.sleep(500);
+            }catch (Exception e){
+                Log.w(TAG_DEBUG, "ERROR SENDING FILES: " + e.getMessage());
             }
         }
     }
