@@ -258,6 +258,7 @@
 
 
     //Explain texts
+    <string name="text_version">Version 0.2.20</string>
     <string name="butt_location_explain">Open a location content</string>
     <string name="butt_movement_explain">Open a movement content</string>
     <string name="butt_balloon_explain">Open a balloon content</string>

@@ -36,6 +36,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/text_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/textColorClick"
+                android:textSize="@dimen/primary_text_font_size"
+                android:padding="5dp"
+                android:text="@string/text_version" />
 
             <Button
                 android:id="@+id/butt_location"
