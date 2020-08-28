@@ -52,6 +52,6 @@ Download the project locally. Afterwards, open the project using Android Studio.
 
 # MIT License
 
-This project is licensed by the MIT [License](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/find/develop).
+This project is licensed by the MIT [License](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/blob/develop/MIT%20License).
 
 
