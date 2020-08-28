@@ -1,7 +1,5 @@
 package com.lglab.diego.simple_cms.import_google_drive;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -120,7 +117,7 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                .requestScopes(new Scope(DriveScopes.DRIVE))
                 //The scope should be changed in order to see other files... https://developers.google.com/drive/api/v3/about-auth https://www.googleapis.com/auth/drive
                 .build();
 
@@ -173,8 +170,8 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
         GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener(googleAccount -> {
                     Log.w(TAG_DEBUG, "Signed in as " + googleAccount.getEmail());
-                    CustomDialogUtility.showDialog(this,"Signed in as " + googleAccount.getEmail());
-
+                    Dialog dialog = CustomDialogUtility.getDialog(ImportGoogleDriveActivity.this,"Signed in as " + googleAccount.getEmail());
+                    dialog.show();
                     // Use the authenticated account to sign in to the Drive service.
                     GoogleAccountCredential credential =
                             GoogleAccountCredential.usingOAuth2(
@@ -185,6 +182,7 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
                             .build();
 
                     GoogleDriveManager.DriveServiceHelper = new DriveServiceHelper(googleDriveService);
+                    dialog.dismiss();
                     readGoogleDrive();
                 })
                 .addOnFailureListener(exception ->  {
@@ -205,10 +203,8 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
      */
     public void readGoogleDrive() {
         if(GoogleDriveManager.DriveServiceHelper.files == null) {
-            setLoadingDialog(getResources().getString(R.string.message_google_drive_success_log_in));
             updateLocalData();
         } else {
-            setLoadingDialog(getResources().getString(R.string.message_google_drive_success_log_in));
             updateLocalData();
         }
     }
@@ -217,6 +213,8 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
      * Update the recycler view with the information in google drive
      */
     public void updateLocalData() {
+        Dialog dialog = CustomDialogUtility.getDialog(ImportGoogleDriveActivity.this, getResources().getString(R.string.message_google_drive_success_log_in));
+        dialog.show();
         GoogleDriveManager.DriveServiceHelper.searchForAppFolderID(() -> {
 
             List<StoryBoard> storyBoardsGoogleDrive = new ArrayList<>();
@@ -242,47 +240,18 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
             RecyclerView.Adapter mAdapter = new GoogleDriveStoryBoardRecyclerAdapter(storyBoards, this);
             mRecyclerView.setAdapter(mAdapter);
 
+            dialog.dismiss();
+
         }, null);
-    }
-
-    /**
-     * Set the dialog
-     * @param message The message to be show
-     */
-    private void setLoadingDialog(String message) {
-        @SuppressLint("InflateParams") View v = this.getLayoutInflater().inflate(R.layout.dialog_fragment, null);
-        v.getBackground().setAlpha(220);
-        Button ok = v.findViewById(R.id.ok);
-        TextView textMessage = v.findViewById(R.id.message);
-        textMessage.setText(message);
-        textMessage.setTextSize(23);
-        textMessage.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        Button cancel = v.findViewById(R.id.cancel);
-        cancel.setVisibility(View.VISIBLE);
-
-        createAlertDialog(v, ok, cancel);
-    }
-
-    /**
-     * Create a alert dialog for the user
-     * @param v view
-     * @param ok button ok
-     * @param cancel button cancel
-     */
-    private void createAlertDialog(View v, Button ok, Button cancel) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(v);
-        Dialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        ok.setOnClickListener(v1 -> dialog.dismiss());
-        cancel.setOnClickListener(v1 -> dialog.dismiss());
     }
 
     @Override
     public void onNoteClick(int position) {
         StoryBoard selected = storyBoards.get(position);
         if(isSignedIn()){
+            Dialog dialog = CustomDialogUtility.getDialog(ImportGoogleDriveActivity.this,
+                    getResources().getString(R.string.message_downloading_file));
+            dialog.show();
             GoogleDriveManager.DriveServiceHelper.readFile(selected.getStoryBoardFileId()).addOnSuccessListener((result) -> {
                 SharedPreferences.Editor editor = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE).edit();
                 editor.putString(ConstantPrefs.STORY_BOARD_JSON.name(), result.second);
@@ -290,7 +259,11 @@ public class ImportGoogleDriveActivity extends TobBarActivity implements
                 Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
                 intent.putExtra(StoryBoardConstant.STORY_BOARD_JSON_ID.name(), selected.getStoryBoardFileId());
                 startActivity(intent);
-            });
+                dialog.dismiss();
+            }).addOnFailureListener( (result -> {
+                dialog.dismiss();
+                CustomDialogUtility.showDialog(ImportGoogleDriveActivity.this, "It was not possible to download the file");
+            }));
         }else{
             requestSignIn();
         }

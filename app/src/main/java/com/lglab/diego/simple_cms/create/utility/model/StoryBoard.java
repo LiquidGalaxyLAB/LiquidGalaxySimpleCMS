@@ -30,11 +30,6 @@ public class StoryBoard implements IJsonPacker {
 
     public StoryBoard() {}
 
-    public StoryBoard(long storyBoardId, String name, List<Action> actions) {
-        this.storyBoardId = storyBoardId;
-        this.name = name;
-        this.actions = actions;
-    }
 
 
     public long getStoryBoardId() {
@@ -73,23 +68,6 @@ public class StoryBoard implements IJsonPacker {
         this.actions = actions;
     }
 
-    public static List<StoryBoard> getStoryBoardsWithOutActions(List<com.lglab.diego.simple_cms.db.entity.StoryBoard> storyBoardsDB) {
-        List<StoryBoard> storyBoards = new ArrayList<>();
-
-        com.lglab.diego.simple_cms.db.entity.StoryBoard storyBoardDB;
-        for (int i = 0; i < storyBoardsDB.size(); i++) {
-            storyBoardDB = storyBoardsDB.get(i);
-
-            StoryBoard storyBoard = new StoryBoard();
-            storyBoard.storyBoardId = storyBoardDB.storyBoardId;
-            storyBoard.name = storyBoardDB.nameStoryBoard;
-            storyBoard.actions = new ArrayList<>();
-
-            storyBoards.add(storyBoard);
-        }
-
-        return storyBoards;
-    }
 
     @Override
     public JSONObject pack() throws JSONException {

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,21 +42,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
-/*
-    private static final String TAG_DEBUG = "CreateStoryBoardActionShapeActivity";
-*/
 
-    private TextView connectionStatus, imageAvailable,
+    private static final String TAG_DEBUG = "CreateStoryBoardActionShapeActivity";
+
+
+    private TextView connectionStatus,
             locationName, locationNameTitle;
-    private EditText duration;
+    private EditText duration, positionSave;
 
     private RecyclerView mRecyclerView;
     List<Point> points = new ArrayList<>();
+    PointRecyclerAdapter mAdapter;
 
     private Handler handler = new Handler();
     private POI poi;
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
     private SwitchCompat switchCompatExtrude;
 
     @Override
@@ -64,15 +67,16 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_shape);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
+        positionSave = findViewById(R.id.position_save);
+
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
         switchCompatExtrude = findViewById(R.id.switch_button);
 
-        Button buttTest = findViewById(R.id.butt_test);
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);
@@ -84,9 +88,23 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
         poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         if (poi != null) {
             setTextView();
+        }else{
+            locationName.setVisibility(View.VISIBLE);
+            locationNameTitle.setVisibility(View.VISIBLE);
+            locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
         }
 
         Shape shape = intent.getParcelableExtra(ActionIdentifier.SHAPES_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
+        int positionValue;
+        if(position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
         if (shape != null) {
             position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
@@ -135,14 +153,12 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             point.setLongitude(temp);
             point.setLatitude(temp);
             point.setAltitude(temp);
-            points.add(point);
-            rePaintRecyclerView();
+            mAdapter.addPoint(point);
         });
 
         buttDeletePoint.setOnClickListener((view) -> {
             if(points.size() > 2 ) {
-                points.remove(points.size() - 1);
-                rePaintRecyclerView();
+                mAdapter.deleteLastPoint();
             } else{
                 CustomDialogUtility.showDialog(CreateStoryBoardActionShapeActivity.this,
                         getResources().getString(R.string.delete_point));
@@ -151,9 +167,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
         buttDeletePoints.setOnClickListener( (view) -> {
             if(points.size() > 2){
-                List<Point> initPoints = points.subList(0, 2);
-                points = new ArrayList<>(initPoints);
-                rePaintRecyclerView();
+               mAdapter.deleteAllPoints();
             } else{
                 CustomDialogUtility.showDialog(CreateStoryBoardActionShapeActivity.this,
                         getResources().getString(R.string.delete_point));
@@ -176,9 +190,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
                 if(isConnected.get()){
                     Shape shape = new Shape().setPoi(poi).setPoints(points).setExtrude(switchCompatExtrude.isChecked()).setDuration(Integer.parseInt(durationString));
                     ActionController.getInstance().sendShape(shape, null);
-                    ActionController.getInstance().cleanFileKMLs(shape.getDuration() * 1000);
-                }else{
-                    connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
+                    ActionController.getInstance().cleanFileKMLs((shape.getDuration())*1000 - 200);
                 }
                 loadConnectionStatus(sharedPreferences);
             }, 1200);
@@ -198,7 +210,9 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
             Intent returnInfoIntent = new Intent();
             returnInfoIntent.putExtra(ActionIdentifier.SHAPES_ACTIVITY.name(), shape);
             returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                    Integer.parseInt(positionSave.getText().toString()) - 1);
+            returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
             setResult(Activity.RESULT_OK, returnInfoIntent);
             finish();
         }
@@ -227,23 +241,15 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
 
 
     /**
-     * Set the conenction status on the view
+     * Set the connection status on the view
      */
     private void loadConnectionStatus(SharedPreferences sharedPreferences) {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
+        }else{
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
         }
-    }
-
-    /**
-     * It re paints the recyclerview with the points
-     */
-    private void rePaintRecyclerView(){
-        RecyclerView.Adapter mAdapter = new PointRecyclerAdapter(points);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.scrollToPosition(points.size() - 1);
     }
 
     /**
@@ -268,7 +274,7 @@ public class CreateStoryBoardActionShapeActivity extends AppCompatActivity {
                 linearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.Adapter mAdapter = new PointRecyclerAdapter(points);
+        mAdapter = new PointRecyclerAdapter(points);
         mRecyclerView.setAdapter(mAdapter);
     }
 

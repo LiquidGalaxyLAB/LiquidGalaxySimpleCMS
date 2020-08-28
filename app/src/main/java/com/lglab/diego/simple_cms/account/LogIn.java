@@ -37,7 +37,7 @@ public class LogIn extends TobBarActivity {
         newAdminPassword = findViewById(R.id.new_admin_password);
         confirmAdminPassword = findViewById(R.id.confirm_new_admin_password);
 
-        textAdminPassword = findViewById(R.id.text_admin_password);
+        textAdminPassword = findViewById(R.id.text_name);
         textCurrentAdminPassword = findViewById(R.id.text_current_admin_password);
         textNewAdminPassword = findViewById(R.id.text_new_admin_password);
         textConfirmAdminPassword = findViewById(R.id.text_confirm_new_admin_password);

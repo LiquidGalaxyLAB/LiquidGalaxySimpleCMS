@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,8 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.w(TAG_DEBUG, "onBindViewHolder called");
         Action currentItem = actions.get(position);
+        String number = "#" + (position + 1);
+        holder.textView.setText(number);
         int type = currentItem.getType();
         if(type == ActionIdentifier.LOCATION_ACTIVITY.getId()){
             holder.imageView.setBackground(ContextCompat.getDrawable(activity, R.drawable.ic_icon_action_location));
@@ -72,11 +75,13 @@ public class ActionRecyclerAdapter extends RecyclerView.Adapter<ActionRecyclerAd
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;
+        TextView textView;
         OnNoteListener mOnNoteListener;
 
         ViewHolder(View itemView, OnNoteListener onNoteListener) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.imageView);
+            this.textView = itemView.findViewById(R.id.textView);
             this.mOnNoteListener = onNoteListener;
 
             itemView.setOnClickListener(this);

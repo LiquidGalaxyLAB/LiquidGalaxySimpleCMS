@@ -7,18 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.lglab.diego.simple_cms.db.dao.StoryBoardDao;
-import com.lglab.diego.simple_cms.db.entity.Action;
-import com.lglab.diego.simple_cms.db.entity.Balloon;
-import com.lglab.diego.simple_cms.db.entity.Movement;
-import com.lglab.diego.simple_cms.db.entity.poi.POI;
-import com.lglab.diego.simple_cms.db.entity.StoryBoard;
-import com.lglab.diego.simple_cms.db.entity.shape.Point;
-import com.lglab.diego.simple_cms.db.entity.shape.Shape;
+import com.lglab.diego.simple_cms.db.entity.StoryBoardDB;
+import com.lglab.diego.simple_cms.db.entity.StoryBoardJsonDB;
 
 /**
  * Singleton of connection to the database
  */
-@Database(entities = {StoryBoard.class, Action.class, POI.class, Movement.class, Balloon.class, Shape.class, Point.class}, version = 1, exportSchema = false)
+@Database(entities = {StoryBoardDB.class, StoryBoardJsonDB.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

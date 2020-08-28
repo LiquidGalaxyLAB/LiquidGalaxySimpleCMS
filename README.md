@@ -2,48 +2,47 @@
 
 <table><tr><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSAndroid.gif" width="350" height="250"/></td><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSLiquidGalaxy.gif" width="350" height="250"/></td></tr></table>
 
-## Deploy
+## Description
 
-The first step is to download the project. (Remember you need to install the USB of OEM controllers of your tablet (windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb) )
 
-There are 3 forms to install the project.
+Simple CMS is a content management system for the creation and administration of storyboards in Liquid Galaxy, developed as part of Google Summer of Code 2020 by Diego Riveros, with Andreu Ibañez as mentor, and Marc Capdevila and Moisés Martínez as co-mentors. The project Simple CMS is an android application that allows the creation of a storyboard with the following functionalities, that are going to be shown in the Liquid Galaxy: 
+
+1. Location. Add a position. 
+2. Movements. Add a movement or orbit. 
+3. Balloon. Add a text, image and a video.
+4. Shape. Add two or more points that will make a shape. Also, it has an extrude option, that will fill up the space of the point to the ground.
+
+After creating a storyboard is feasible to save it locally or in google drive. Also, it is possible to import a storyboard from google drive. It is important to mention that saving and importing storyboards are only available if you are logged in the application. 
+On the other hand, Simple CMS downloads community names, city, country and location of the different Google Developers community at Meetup.com. Finally, It is possible to do a tour of all the google developers community around the world. 
+
+## Deployment
+
+### IMPORTANT
+In order to run the project, it requires Android 8.0 Oreo and up, also, you should have at least a 10-inch tablet. Finally, remember to install the USB of OEM controllers of your tablet (for windows). You can read more of the drivers here: [Drivers]( https://developer.android.com/studio/run/oem-usb).
+
+There are 2 ways to install the project.
 
 ### First
 
-Connected the tablet to the computer, and then, go to the folder you download, open the terminal and write the following command: 
+It is possible to download the last apk in Releases or [clicking in here](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/releases/download/0.2/SimpleCMS-0.2.apk). After you download it to your tablet, go to the where the project has been stored. For example, My Files-> Downloaded History and click on the apk. 
 
-```
-C:\\Downloads\SimpleCMS> gradlew installDebug
-```
+#### Remember
 
-This will create the apk and installed to your tablet. 
-
-You can read more in the following link: [Install the project in your tablet]( https://developer.android.com/studio/build/building-cmdline#DebugMode)
+After clicking on the apk, the tablet might ask for permissions. Give the permissions to try the :sparkler: Simple CMS :sparkler: project! :sunglasses:
 
 ### Second
 
-Open the project in Android Studio. Then, click on the tab build on the top of android studio, and click make the project. 
-Finally, click on the tab Run on the top of android studio, and click on run.  You can follow the step in the following GIF: 
+Download the project locally. Afterwards, open the project using Android Studio. Then, connect a device or emulator and click on the run button. For more instructions on how to do this, [check out the Android Developers official guide](https://developer.android.com/training/basics/firstapp/running-app)
 
-![](https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/RunSimpleCMS.gif)
+## Help Content
 
-### Third 
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/helptab.gif" width="350" height="250"/>
 
-Then, go to the folder you download, open the terminal and write the following command: 
-
-```
-C:\\Downloads\SimpleCMS> gradlew assembleDebug
-```
-
-This command will create an apk in the following route: 
-project_name/module_name/build/outputs/apk/module_name-debug.apk
-
-Finally you can install the apk to your tablet by using the adb install. (You need to have your tablet connect to your computer by USB). Open the terminal and run the following command: 
-
-```
-  C:\\Downloads\SimpleCMS>  adb -d install path/to/your_app.apk
-```
-
-You can read more in the following link: [Install the project in your tablet]( https://developer.android.com/studio/build/building-cmdline#DebugMode)
-
+## Used Technologies
+* Java
+* Android 
+* Room
+* SQLite 
+* Drive
+* Jsoup
 
