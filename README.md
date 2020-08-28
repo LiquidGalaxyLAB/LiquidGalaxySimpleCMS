@@ -4,7 +4,7 @@
 
 ## Simple CMS (GIF)
 
-<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/Help.gif"/>
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/SimpleCMS.gif"/>
 
 ## Description
 
