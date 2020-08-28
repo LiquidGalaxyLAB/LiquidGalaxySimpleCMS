@@ -15,6 +15,10 @@ Simple CMS is a content management system for the creation and administration of
 After creating a storyboard is feasible to save it locally or in google drive. Also, it is possible to import a storyboard from google drive. It is important to mention that saving and importing storyboards are only available if you are logged in the application. 
 On the other hand, Simple CMS downloads community names, city, country and location of the different Google Developers community at Meetup.com. Finally, It is possible to do a tour of all the google developers community around the world. 
 
+## Authors
+
+- [Diego Riveros](https://www.linkedin.com/in/diego-riveros-121b22181/) :man:
+
 ## Deployment
 
 ### IMPORTANT
@@ -45,4 +49,9 @@ Download the project locally. Afterwards, open the project using Android Studio.
 * SQLite 
 * Drive
 * Jsoup
+
+# MIT License
+
+This project is licensed by the MIT [License](https://github.com/dfriveros11/LiquidGalaxySimpleCMS/blob/develop/MIT%20License).
+
 
