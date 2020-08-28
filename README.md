@@ -2,6 +2,8 @@
 
 ## Tour Demostration 
 
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/SimpleCMS.gif"/>
+
 ## Simple CMS (GIF)
 
 <img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/SimpleCMS.gif"/>
