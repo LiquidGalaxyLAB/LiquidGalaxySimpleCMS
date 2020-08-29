@@ -1,6 +1,12 @@
 # Liquid Galaxy Simple CMS
 
-<table><tr><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSAndroid.gif" width="350" height="250"/></td><td><img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/DemoSimpleCMSLiquidGalaxy.gif" width="350" height="250"/></td></tr></table>
+## Tour Demostration 
+
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/Gif_DemoLG.gif"/>
+
+## Simple CMS (GIF)
+
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/Gif_SimpleCMS.gif"/>
 
 ## Description
 
@@ -40,7 +46,7 @@ Download the project locally. Afterwards, open the project using Android Studio.
 
 ## Help Content
 
-<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/helptab.gif" width="350" height="250"/>
+<img src="https://raw.githubusercontent.com/dfriveros11/LiquidGalaxySimpleCMS/develop/Gif_HelpTab.gif"/>
 
 ## Used Technologies
 * Java
