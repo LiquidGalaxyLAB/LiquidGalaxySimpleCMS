@@ -71,11 +71,6 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.duration = movement.duration;
     }
 
-    public static Movement getMovement(com.lglab.diego.simple_cms.db.entity.Movement actionDB) {
-        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
-        return new Movement(actionDB.actionId, poi, actionDB.newHeading, actionDB.newTilt, actionDB.isOrbitMode, actionDB.duration);
-    }
-
     public POI getPoi() {
         return poi;
     }
@@ -127,7 +122,7 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
 
         obj.put("movement_id", this.getId());
         obj.put("type", this.getType());
-        obj.put("movement_poi", poi.pack());
+        if(poi != null) obj.put("movement_poi", poi.pack());
         obj.put("movement_new_heading", newHeading);
         obj.put("movement_new_tilt", newTilt);
         obj.put("movement_orbit_mode", isOrbitMode);
@@ -143,7 +138,11 @@ public class Movement extends Action implements IJsonPacker, Parcelable {
         this.setType(obj.getInt("type"));
 
         POI newPoi = new POI();
-        poi =  newPoi.unpack(obj.getJSONObject("movement_poi"));
+        try{
+            poi =  newPoi.unpack(obj.getJSONObject("movement_poi"));
+        }catch (JSONException JSONException){
+            poi = null;
+        }
         newHeading = obj.getDouble("movement_new_heading");
         newTilt = obj.getDouble("movement_new_tilt");
         isOrbitMode = obj.getBoolean("movement_orbit_mode");

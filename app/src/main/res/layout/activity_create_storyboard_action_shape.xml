@@ -11,37 +11,23 @@
 
 
     <TextView
-        android:id="@+id/admin_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="320dp"
-        android:layout_marginBottom="24dp"
-        android:fontFamily="@font/roboto"
-        android:minWidth="635dp"
-        android:text="@string/image_not_available_on_screen"
-        android:textAlignment="center"
-        android:textColor="@color/textColorClick"
-        android:textSize="@dimen/simple_cms"
-        app:layout_constraintBottom_toBottomOf="@+id/location_name_title"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
         android:id="@+id/connection_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="320dp"
-        android:layout_marginBottom="35dp"
         android:background="@drawable/ic_status_connection_red"
         android:fontFamily="@font/roboto"
-        app:layout_constraintBottom_toBottomOf="@+id/location_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/location_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/location_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/roboto"
         android:text="@string/location_name"
         android:textAlignment="center"
@@ -49,68 +35,70 @@
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/butt_add_point"
-        app:layout_constraintEnd_toEndOf="@+id/location_name_title" />
+        app:layout_constraintEnd_toStartOf="@+id/location_name_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523" />
 
     <TextView
         android:id="@+id/location_name_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="500dp"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="12dp"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/primary_text_font_size"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/location_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/location_name"
+        app:layout_constraintEnd_toStartOf="@+id/connection_status" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="510dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="524dp"
         android:thumb="@drawable/custom_switch_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/extrude"
+        app:layout_constraintStart_toStartOf="parent"
         app:track="@drawable/custom_switch_button_track" />
 
     <TextView
         android:id="@+id/extrude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="510dp"
+        android:layout_marginEnd="170dp"
+        android:layout_marginBottom="516dp"
         android:fontFamily="@font/roboto"
         android:text="@string/extrude"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_add_point"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/butt_add_point" />
+        app:layout_constraintEnd_toStartOf="@+id/butt_add_point"
+        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintStart_toEndOf="@+id/switch_button" />
 
     <TextView
         android:id="@+id/text_view_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="420dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/roboto"
         android:text="@string/duration"
         android:textAlignment="center"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/hint_text_font_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/duration"
         app:layout_constraintEnd_toStartOf="@+id/duration" />
 
     <EditText
         android:id="@+id/duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="452dp"
-        android:layout_marginBottom="426dp"
         android:autofillHints="@string/example_latitude_longitude_altitude"
         android:background="@drawable/rectangle_insert_url"
-        android:fontFamily="@font/roboto_thin"
+        android:fontFamily="@font/roboto"
         android:hint="@string/duration_example"
         android:imeOptions="actionDone"
         android:inputType="number"
@@ -122,15 +110,31 @@
         android:textColor="@color/textColorClick"
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toStartOf="@id/text_seconds"
+        app:layout_constraintTop_toBottomOf="@+id/butt_add_point"
+        app:layout_constraintVertical_bias="0.649" />
+
+    <TextView
+        android:id="@+id/text_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="449dp"
+        android:text="@string/seconds"
+        android:fontFamily="@font/roboto"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/duration"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/butt_add_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="124dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -148,7 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="72dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="156dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -157,7 +161,7 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_add_point"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ButtonStyle" />
 
@@ -165,8 +169,8 @@
         android:id="@+id/butt_delete_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="156dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -175,8 +179,7 @@
         android:textAllCaps="false"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/primary_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
-        app:layout_constraintEnd_toStartOf="@+id/butt_delete_points"
+        app:layout_constraintBaseline_toBaselineOf="@+id/butt_add_point"        app:layout_constraintEnd_toStartOf="@+id/butt_delete_points"
         tools:ignore="ButtonStyle" />
 
     <TextView
@@ -189,11 +192,11 @@
         android:text="@string/longitude"
         android:textColor="@color/textColorClick"
         android:textSize="@dimen/button_main_text_font_size"
-        app:layout_constraintBottom_toTopOf="@+id/video_url"
+        app:layout_constraintBottom_toTopOf="@+id/latitude"
         app:layout_constraintEnd_toStartOf="@+id/my_recycler_view" />
 
     <TextView
-        android:id="@+id/video_url"
+        android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
@@ -225,19 +228,69 @@
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="30dp"
         android:background="@color/background"
+        android:scrollbars="vertical"
         android:minHeight="578dp"
         android:padding="20dp"
-        android:scrollbars="horizontal"
         android:textColor="@color/textColorClick"
         app:layout_constraintBottom_toTopOf="@+id/butt_cancel"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/butt_test"
+
+    <TextView
+        android:id="@+id/text_position_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="260dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/position_save"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/hint_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/position_save"
+        app:layout_constraintEnd_toStartOf="@+id/position_save" />
+
+    <EditText
+        android:id="@+id/position_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:autofillHints="@string/example_save"
+        android:background="@drawable/rectangle_insert_url"
+        android:digits="0123456789"
+        android:fontFamily="@font/roboto"
+        android:hint="@string/example_save"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="30"
+        android:minWidth="244dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@color/textColorClick"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/duration"
+        app:layout_constraintEnd_toStartOf="@+id/text_view_duration" />
+
+    <TextView
+        android:id="@+id/explain_step_position"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/explain_step_position"
+        android:textColor="@color/textColorClick"
+        android:textSize="@dimen/primary_text_font_size"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/position_save" />
+
+    <Button
+        android:id="@+id/butt_gdg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="20dp"
         android:background="@drawable/button_test"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -249,6 +302,8 @@
         android:textSize="@dimen/button_text_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/butt_delete"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ButtonStyle" />
 
     <Button
@@ -276,7 +331,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"
@@ -294,8 +349,8 @@
         android:id="@+id/butt_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/button_primary"
         android:elevation="8dp"
         android:fontFamily="@font/roboto_light"

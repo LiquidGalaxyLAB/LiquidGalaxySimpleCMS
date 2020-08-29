@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.CreateStoryBoardActivity;
-import com.lglab.diego.simple_cms.create.utility.model.StoryBoard;
 import com.lglab.diego.simple_cms.db.AppDatabase;
+import com.lglab.diego.simple_cms.db.entity.StoryBoardDB;
 import com.lglab.diego.simple_cms.top_bar.TobBarActivity;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class MyStoryBoardActivity extends TobBarActivity implements
     private Button buttMyStoryBoard;
 
     private RecyclerView mRecyclerView;
-    List<StoryBoard> storyBoards = new ArrayList<>();
+    List<StoryBoardDB> storyBoards = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class MyStoryBoardActivity extends TobBarActivity implements
      */
     private void loadStoryBoards() {
         AppDatabase db = AppDatabase.getAppDatabase(this);
-        storyBoards = StoryBoard.getStoryBoardsWithOutActions(db.storyBoardDao().getStoryBoardsWithOutActions());
+        storyBoards = db.storyBoardDao().getStoryBoards();
     }
 
     /**
@@ -79,10 +79,9 @@ public class MyStoryBoardActivity extends TobBarActivity implements
 
     @Override
     public void onNoteClick(int position) {
-        StoryBoard selected = storyBoards.get(position);
+        StoryBoardDB selected = storyBoards.get(position);
         Intent intent = new Intent(getApplicationContext(), CreateStoryBoardActivity.class);
-        intent.putExtra(StoryBoardConstant.STORY_BOARD_ID.name(), selected.getStoryBoardId());
-        intent.putExtra(StoryBoardConstant.STORY_BOARD_NAME.name(), selected.getName());
+        intent.putExtra(StoryBoardConstant.STORY_BOARD_ID.name(), selected.storyBoardId);
         startActivity(intent);
     }
 }

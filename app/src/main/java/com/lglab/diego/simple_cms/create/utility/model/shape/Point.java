@@ -49,22 +49,6 @@ public class Point implements IJsonPacker, Parcelable {
         this.altitude = in.readDouble();
     }
 
-     static List<Point> getPoints(List pointsDB) {
-        List<Point> points = new ArrayList<>();
-
-        com.lglab.diego.simple_cms.db.entity.shape.Point pointDB;
-        for(int i = 0; i < pointsDB.size(); i++){
-            pointDB = (com.lglab.diego.simple_cms.db.entity.shape.Point) pointsDB.get(i);
-            Point point = new Point();
-            point.setLongitude(pointDB.pointLongitude);
-            point.setLatitude(pointDB.pointLatitude);
-            point.setAltitude(pointDB.pointAltitude);
-            points.add(point);
-        }
-
-        return points;
-    }
-
     public long getId() {
         return id;
     }

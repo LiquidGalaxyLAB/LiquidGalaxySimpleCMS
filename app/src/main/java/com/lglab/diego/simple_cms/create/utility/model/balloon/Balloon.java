@@ -3,6 +3,7 @@ package com.lglab.diego.simple_cms.create.utility.model.balloon;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcel;
@@ -92,12 +93,6 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.duration = balloon.duration;
     }
 
-    public static Balloon getBalloon(com.lglab.diego.simple_cms.db.entity.Balloon actionDB) {
-        POI poi = POI.getSimplePOI(actionDB.actionId, actionDB.simplePOI);
-        Uri imageUri = actionDB.imageUriBalloon != null ? Uri.parse(actionDB.imageUriBalloon) : null;
-        return  new Balloon(actionDB.actionId, poi, actionDB.descriptionBalloon, imageUri,
-                actionDB.imagePathBalloon, actionDB.videoPathBalloon, actionDB.durationBalloon);
-    }
 
     public POI getPoi() {
         return poi;
@@ -160,7 +155,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
 
         obj.put("balloon_id", this.getId());
         obj.put("type", this.getType());
-        obj.put("place_mark_poi", poi.pack());
+        if(poi != null) obj.put("place_mark_poi", poi.pack());
         obj.put("description", description);
         obj.put("image_uri", imageUri != null ? imageUri.toString(): "");
         obj.put("image_path", imagePath != null ? imagePath: "");
@@ -169,7 +164,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         if(imagePath != null){
             encodedImage = encodeFileToBase64Binary();
         }
-        Log.w(TAG_DEBUG, "encodedImage: " + encodedImage);
+        if(encodedImage == null) encodedImage = "";
         obj.put("encodedImage", encodedImage);
 
 
@@ -202,7 +197,11 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.setType(obj.getInt("type"));
 
         POI newPoi = new POI();
-        poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        try{
+            poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        }catch (JSONException JSONException){
+            poi = null;
+        }
 
         description = obj.getString("description");
         String uri = obj.getString("image_uri");
@@ -220,9 +219,14 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
         this.setType(obj.getInt("type"));
 
         POI newPoi = new POI();
-        poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        try{
+            poi =  newPoi.unpack(obj.getJSONObject("place_mark_poi"));
+        }catch (JSONException JSONException){
+            poi = null;
+        }
 
         description = obj.getString("description");
+
         String uri = obj.getString("image_uri");
         imageUri = !uri.equals("") ?  Uri.parse(obj.getString("image_uri")):null;
         imagePath = obj.getString("image_path");
@@ -236,7 +240,7 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
 
                 String[] route = imagePath.split("/");
                 String fileName = route[route.length - 1];
-                String path = Environment.getExternalStorageDirectory().toString();
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
                 OutputStream fOut;
 
                 File file = new File(path, fileName);
@@ -258,7 +262,11 @@ public class Balloon extends Action implements IJsonPacker, Parcelable {
                     imagePath = file.getAbsolutePath();
 
                 } else{
-                    imageUri = Uri.fromFile(file);
+                    MediaScannerConnection.scanFile(context, new String[] { file.getAbsolutePath() }, null,
+                            (pathImage, uriImage) -> {
+                                imageUri = uriImage;
+                                Log.w(TAG_DEBUG, "URI: " + imageUri);
+                            });
                     imagePath = file.getAbsolutePath();
                 }
             }catch (Exception e){

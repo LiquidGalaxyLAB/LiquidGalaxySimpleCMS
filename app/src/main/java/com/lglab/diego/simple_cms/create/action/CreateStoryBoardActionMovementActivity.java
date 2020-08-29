@@ -35,10 +35,14 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
 
     //private static final String TAG_DEBUG = "CreateStoryBoardActionMovementActivity";
 
-    private TextView seekBarValueHeading, seekBarValueTilt,
-            oldHeading, oldTilt, connectionStatus, imageAvailable,
-            locationName, locationNameTitle;
-    private EditText duration;
+    private TextView seekBarValueHeading;
+    private TextView seekBarValueTilt;
+    private TextView oldHeading;
+    private TextView oldTilt;
+    private TextView connectionStatus;
+    private TextView locationName;
+    private TextView locationNameTitle;
+    private EditText duration, positionSave;
     private SeekBar seekBarHeading, seekBarTilt;
     private SwitchCompat switchCompatOrbitMode;
 
@@ -46,6 +50,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
     private POI poi;
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,10 +62,12 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         oldHeading = findViewById(R.id.old_heading);
         oldTilt = findViewById(R.id.old_tilt);
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         duration = findViewById(R.id.duration);
+        positionSave = findViewById(R.id.position_save);
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
         loadConnectionStatus(sharedPreferences);
@@ -69,7 +76,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         seekBarTilt = findViewById(R.id.seek_bar_tilt);
         switchCompatOrbitMode = findViewById(R.id.switch_button);
 
-        Button buttTest = findViewById(R.id.butt_test);
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);
@@ -79,11 +86,24 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
         if(poi != null){
             setTextView();
+        }else{
+            locationName.setVisibility(View.VISIBLE);
+            locationNameTitle.setVisibility(View.VISIBLE);
+            locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
         }
 
         Movement movement = intent.getParcelableExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
+        int positionValue;
+        if(position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
         if(movement != null){
-            position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
             buttDelete.setVisibility(View.VISIBLE);
@@ -183,7 +203,7 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             if(isConnected.get()){
                 if(switchCompatOrbitMode.isChecked()){
-                    ActionController.getInstance().orbit(poi);
+                    ActionController.getInstance().orbit(poi, null);
                 } else{
                     POI poiSend = new POI(poi);
                     POICamera poiCamera = poiSend.getPoiCamera();
@@ -193,8 +213,6 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
                     poiSend.setPoiCamera(poiCameraSend);
                     ActionController.getInstance().moveToPOI(poiSend, null);
                 }
-            }else{
-                connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
             }
             loadConnectionStatus(sharedPreferences);
         }, 1200);
@@ -238,20 +256,23 @@ public class CreateStoryBoardActionMovementActivity extends AppCompatActivity {
             Intent returnInfoIntent = new Intent();
             returnInfoIntent.putExtra(ActionIdentifier.MOVEMENT_ACTIVITY.name(), movement);
             returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                    Integer.parseInt(positionSave.getText().toString()) - 1);
+            returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
             setResult(Activity.RESULT_OK, returnInfoIntent);
             finish();
         }
     }
 
     /**
-     * Set the conenction status on the view
+     * Set the connection status on the view
      */
     private void loadConnectionStatus(SharedPreferences sharedPreferences) {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
-        if(isConnected){
+        if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
+        }else{
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
         }
     }
 }

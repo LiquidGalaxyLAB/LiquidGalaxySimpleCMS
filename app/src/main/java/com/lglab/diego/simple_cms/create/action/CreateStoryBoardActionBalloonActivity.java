@@ -44,16 +44,16 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE_IMAGE = 1001;
 
-    private TextView connectionStatus, imageAvailable,
-            locationName, locationNameTitle;
+    private TextView connectionStatus, locationName, locationNameTitle;
 
-    private EditText description, videoURL, duration;
+    private EditText description, videoURL, duration, positionSave;
     private ImageView imageView;
 
     private Handler handler = new Handler();
     private POI poi;
     private boolean isSave = false;
     private int position = -1;
+    private int lastPosition = 0;
     private Uri imageUri;
     private String imagePath;
 
@@ -63,15 +63,16 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_storyboard_action_balloon);
 
         connectionStatus = findViewById(R.id.connection_status);
-        imageAvailable = findViewById(R.id.admin_password);
         locationName = findViewById(R.id.location_name);
         locationNameTitle = findViewById(R.id.location_name_title);
         description = findViewById(R.id.description);
         imageView = findViewById(R.id.image_view);
         videoURL = findViewById(R.id.video_url);
         duration = findViewById(R.id.duration);
+        positionSave = findViewById(R.id.position_save);
 
-        Button buttTest = findViewById(R.id.butt_test);
+
+        Button buttTest = findViewById(R.id.butt_gdg);
         Button buttCancel = findViewById(R.id.butt_cancel);
         Button buttAdd = findViewById(R.id.butt_add);
         Button buttDelete = findViewById(R.id.butt_delete);
@@ -79,22 +80,45 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         poi = intent.getParcelableExtra(ActionIdentifier.LOCATION_ACTIVITY.name());
+
         if (poi != null) {
             setTextView();
+        } else {
+            locationName.setVisibility(View.VISIBLE);
+            locationNameTitle.setVisibility(View.VISIBLE);
+            locationNameTitle.setText(getResources().getString(R.string.location_name_title_empty));
         }
 
         Balloon balloon = intent.getParcelableExtra(ActionIdentifier.BALLOON_ACTIVITY.name());
+        position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
+        lastPosition = intent.getIntExtra(ActionIdentifier.LAST_POSITION.name(), -1);
+        int actionsSize = intent.getIntExtra(ActionIdentifier.ACTION_SIZE.name(), -1);
+
+        int positionValue;
+        if (position == -1) positionValue = actionsSize;
+        else positionValue = position;
+        positionValue++;
+        positionSave.setText(String.valueOf(positionValue));
+
         if (balloon != null) {
-            position = intent.getIntExtra(ActionIdentifier.POSITION.name(), -1);
             isSave = true;
             buttAdd.setText(getResources().getString(R.string.button_save));
             buttDelete.setVisibility(View.VISIBLE);
             poi = balloon.getPoi();
             setTextView();
             description.setText(balloon.getDescription());
-            imageUri = balloon.getImageUri();
-            if(imageUri != null) imageView.setImageURI(imageUri);
-            imagePath = balloon.getImagePath();
+            try {
+                imageUri = balloon.getImageUri();
+                if (imageUri != null) {
+                    imagePath = getFilePath(imageUri);
+                    imageView.setImageURI(imageUri);
+                }
+            } catch (Exception e) {
+                Log.w(TAG_DEBUG, "ERROR MESSAGE: " + e.getMessage());
+                CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
+                imageUri = null;
+                imagePath = "";
+            }
             videoURL.setText(balloon.getVideoPath());
             duration.setText(String.valueOf(balloon.getDuration()));
         }
@@ -116,7 +140,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         );
 
         buttTest.setOnClickListener((view) ->
-            testConnection()
+                testConnection()
         );
 
         buttAdd.setOnClickListener((view) ->
@@ -124,7 +148,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
         );
 
         buttDelete.setOnClickListener((view) ->
-            deleteBalloon()
+                deleteBalloon()
         );
     }
 
@@ -133,24 +157,22 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      */
     private void testConnection() {
         String durationString = duration.getText().toString();
-        if(durationString.equals("")){
+        if (durationString.equals("")) {
             CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
-        }else{
+        } else {
             AtomicBoolean isConnected = new AtomicBoolean(false);
             LGConnectionTest.testPriorConnection(this, isConnected);
             SharedPreferences sharedPreferences = getSharedPreferences(ConstantPrefs.SHARED_PREFS.name(), MODE_PRIVATE);
             handler.postDelayed(() -> {
-                if(isConnected.get()){
+                if (isConnected.get()) {
                     Balloon balloon = new Balloon();
-                    if(imageUri != null){
+                    if (imageUri != null) {
                         imagePath = getFilePath(imageUri);
                     }
                     balloon.setPoi(poi).setDescription(description.getText().toString())
                             .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString()).setDuration(Integer.parseInt(durationString));
                     ActionController.getInstance().sendBalloon(balloon, null);
                     ActionController.getInstance().cleanFileKMLs(balloon.getDuration() * 1000);
-                }else{
-                    connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
                 }
                 loadConnectionStatus(sharedPreferences);
             }, 1200);
@@ -159,15 +181,23 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
     /**
      * It return the absolute path of the file
+     *
      * @param uri uri of the file
      * @return the absolute path of the file
      */
     private String getFilePath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        Objects.requireNonNull(cursor).moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        String imagePath = cursor.getString(idx);
-        cursor.close();
+        String imagePath;
+        try {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            Objects.requireNonNull(cursor).moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            imagePath = cursor.getString(idx);
+            cursor.close();
+        } catch (Exception e) {
+            Log.w(TAG_DEBUG, "FILE PATH ERROR MESSAGE: " + e.getMessage());
+            CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, "The image couldn't be load it. Please, add it again");
+            imagePath = "";
+        }
         return imagePath;
     }
 
@@ -177,16 +207,18 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
      */
     private void addBalloon() {
         String durationString = duration.getText().toString();
-        if(durationString.equals("")){
+        if (durationString.equals("")) {
             CustomDialogUtility.showDialog(CreateStoryBoardActionBalloonActivity.this, getResources().getString(R.string.activity_create_missing_duration_field_error));
-        }else{
+        } else {
             Balloon balloon = new Balloon().setPoi(poi).setDescription(description.getText().toString())
                     .setImageUri(imageUri).setImagePath(imagePath).setVideoPath(videoURL.getText().toString())
                     .setDuration(Integer.parseInt(durationString));
             Intent returnInfoIntent = new Intent();
             returnInfoIntent.putExtra(ActionIdentifier.BALLOON_ACTIVITY.name(), balloon);
             returnInfoIntent.putExtra(ActionIdentifier.IS_SAVE.name(), isSave);
-            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(), position);
+            returnInfoIntent.putExtra(ActionIdentifier.POSITION.name(),
+                    Integer.parseInt(positionSave.getText().toString()) - 1);
+            returnInfoIntent.putExtra(ActionIdentifier.LAST_POSITION.name(), lastPosition);
             setResult(Activity.RESULT_OK, returnInfoIntent);
             finish();
         }
@@ -230,7 +262,7 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
             imageView.setImageURI(imageUri);
             imagePath = getFilePath(imageUri);
             Log.w(TAG_DEBUG, "imagePath: " + imagePath);
-        }  else {
+        } else {
             Log.w(TAG_DEBUG, "ERROR there is no other request code type");
         }
     }
@@ -246,13 +278,14 @@ public class CreateStoryBoardActionBalloonActivity extends AppCompatActivity {
 
 
     /**
-     * Set the conenction status on the view
+     * Set the connection status on the view
      */
     private void loadConnectionStatus(SharedPreferences sharedPreferences) {
         boolean isConnected = sharedPreferences.getBoolean(ConstantPrefs.IS_CONNECTED.name(), false);
         if (isConnected) {
             connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_green));
-            imageAvailable.setText(getResources().getString(R.string.image_available_on_screen));
+        } else {
+            connectionStatus.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_status_connection_red));
         }
     }
 }

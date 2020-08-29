@@ -43,30 +43,4 @@ public abstract class Action {
         this.type = type;
     }
 
-    public static List<Action> getAction(List<com.lglab.diego.simple_cms.db.entity.Action> actionsOFStoryBoard) {
-        List<Action> actions = new ArrayList<>();
-
-        com.lglab.diego.simple_cms.db.entity.Action actionDB;
-        for(int i = 0; i < actionsOFStoryBoard.size(); i++){
-            actionDB = actionsOFStoryBoard.get(i);
-            if(actionDB instanceof com.lglab.diego.simple_cms.db.entity.poi.POI){
-                POI poi = POI.getPOI((com.lglab.diego.simple_cms.db.entity.poi.POI) actionDB);
-                actions.add(poi);
-            }else if(actionDB instanceof com.lglab.diego.simple_cms.db.entity.Movement){
-                Movement movement = Movement.getMovement((com.lglab.diego.simple_cms.db.entity.Movement) actionDB);
-                actions.add(movement);
-            }else if(actionDB instanceof com.lglab.diego.simple_cms.db.entity.Balloon){
-                Balloon balloon = Balloon.getBalloon((com.lglab.diego.simple_cms.db.entity.Balloon) actionDB);
-                actions.add(balloon);
-            }else if(actionDB instanceof com.lglab.diego.simple_cms.db.entity.shape.Shape){
-                Shape shape = Shape.getShape((com.lglab.diego.simple_cms.db.entity.shape.Shape) actionDB);
-                actions.add(shape);
-            }else{
-                Log.w("Action", "ERROR TYPE");
-            }
-        }
-
-        return actions;
-    }
-
 }

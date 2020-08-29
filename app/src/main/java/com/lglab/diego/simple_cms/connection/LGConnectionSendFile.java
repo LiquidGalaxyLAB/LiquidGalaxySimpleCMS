@@ -31,7 +31,7 @@ public class LGConnectionSendFile implements Runnable {
     private LGConnectionSendFile() {
         user = "lg";
         password = "1234";
-        this.hostname = "192.168.0.17";
+        this.hostname = "192.168.20.28";
         this.port = 22;
     }
 

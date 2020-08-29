@@ -19,6 +19,6 @@
                     android:color="@color/colorPrimary"/>
             </shape>
         </item>
-        <item android:drawable="@drawable/ic_movements_white" android:gravity="center|right" android:end="10dp"> </item>
+        <item android:drawable="@drawable/ic_movements_white" android:gravity="center|right"> </item>
     </layer-list></item>
 </selector>

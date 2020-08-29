@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lglab.diego.simple_cms.R;
 import com.lglab.diego.simple_cms.create.utility.model.shape.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,22 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
         this.points = points;
     }
 
+    public void addPoint(Point point){
+        points.add(point);
+        notifyItemInserted(points.size() - 1);
+    }
+
+    public void deleteLastPoint(){
+        points.remove(points.size() - 1);
+        notifyItemRemoved(points.size());
+    }
+
+    public void deleteAllPoints(){
+        List<Point> initPoints = points.subList(0, 2);
+        points = new ArrayList<>(initPoints);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,7 +58,6 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String pointPosition = "Point " + (position + 1);
         holder.textView.setText(pointPosition);
-
 
         Point point = points.get(holder.getAdapterPosition());
 
@@ -79,7 +95,7 @@ public class PointRecyclerAdapter extends RecyclerView.Adapter<PointRecyclerAdap
             super(itemView);
             this.textView = itemView.findViewById(R.id.textView);
             this.longitude = itemView.findViewById(R.id.longitude);
-            this.latitude = itemView.findViewById(R.id.video_url);
+            this.latitude = itemView.findViewById(R.id.latitude);
             this.altitude = itemView.findViewById(R.id.altitude);
 
             this.myLongitudeTextListener = myLongitudeTextListener;

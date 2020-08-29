@@ -6,9 +6,19 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:padding="2dp"
         android:contentDescription="@string/icon_action" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/roboto"
+        android:textSize="@dimen/primary_text_font_size"
+        android:textColor="@color/textColorClick"
+        android:layout_below="@+id/imageView"/>
 
 </RelativeLayout>
